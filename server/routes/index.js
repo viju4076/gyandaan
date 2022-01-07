@@ -10,16 +10,22 @@ const isAdmin = require('./authMiddleware').isAdmin;
  * -------------- POST ROUTES ----------------
  */
 
- router.post('/login', passport.authenticate('local', { failureRedirect: '/login-failure', successRedirect: 'login-success' }));
+ router.post('/login', passport.authenticate('local', { failureRedirect: '/login-failure', successRedirect: '/login-success' }));
 
  router.post('/register', (req, res, next) => {
-    const saltHash = genPassword(req.body.pw);
+     console.log("Hii");
+    const saltHash = genPassword(req.body.password);
+    console.log(req.body);
     
     const salt = saltHash.salt;
     const hash = saltHash.hash;
 
     const newUser = new User({
-        username: req.body.uname,
+        username: req.body.username,
+        email:req.body.email,
+        phone:req.body.phone,
+        password:req.body.password,
+        cpassword:req.body.cpassword,
         hash: hash,
         salt: salt,
         admin: true
@@ -28,9 +34,8 @@ const isAdmin = require('./authMiddleware').isAdmin;
     newUser.save()
         .then((user) => {
             console.log(user);
+            res.status(201).json({message:"User registered successfully"});
         });
-
-    res.redirect('/login');
  });
 
 
@@ -87,11 +92,14 @@ router.get('/logout', (req, res, next) => {
 });
 
 router.get('/login-success', (req, res, next) => {
-    res.send('<p>You successfully logged in. --> <a href="/protected-route">Go to protected route</a></p>');
+    console.log("login success");
+   res.status(200).json({message:"Successful"});
+    //res.send('<p>You successfully logged in. --> <a href="/protected-route">Go to protected route</a></p>');
 });
 
 router.get('/login-failure', (req, res, next) => {
-    res.send('You entered the wrong password.');
+    console.log("login failure");
+    res.status(400).json({message:"Login failure"});
 });
 
 module.exports = router;

@@ -5,13 +5,14 @@ const User = connection.models.User;
 const validPassword = require('../lib/passwordUtils').validPassword;
 
 const customFields = {
-    usernameField: 'uname',
-    passwordField: 'pw'
+    usernameField: 'email',
+    passwordField: 'password'
 };
 
-const verifyCallback = (username, password, done) => {
-
-    User.findOne({ username: username })
+const verifyCallback = (email, password, done) => {
+console.log(email);
+console.log(password);
+    User.findOne({ email })
         .then((user) => {
 
             if (!user) { return done(null, false) }
