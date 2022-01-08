@@ -74,7 +74,7 @@ function Login() {
                     By signing in you agree to Amazon condition of Use and sale. Please see our privacy notes,
                     our cookies notice and our internet based Ads notice.
                 </p>
-                <Link to="/Register">
+                <Link to="/signup">
                 <button className='registerbutton'> Create your Amazon Account</button>
                 </Link>
             </div>

@@ -13,7 +13,7 @@ function Routes() {
  <BrowserRouter>
         <div className="page-content">
           <Switch>
-            <Route path="/"
+            <Route path="/" 
               render={() => {
                 return (
                   isUserLoggedIn ?
