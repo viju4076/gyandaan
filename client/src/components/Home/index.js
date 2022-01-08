@@ -1,9 +1,16 @@
 import React from 'react'
-
+import Sidebar from '../Sidebar'
+import Post from '../Post'
+import './index.css'
 function index() {
     return (
-        <div>
-             <h1>home screen</h1> 
+        <div className="external">
+            
+                      
+             <Sidebar/>
+             <Post/>
+
+
         </div>
     )
 }
