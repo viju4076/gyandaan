@@ -5,14 +5,14 @@ import Home from "../components/Home";
 import Login from "../components/Login/Login";
 import Register from "../components/Register/Register";
 function Routes() {
-    // var isUserLoggedIn = useSelector(state => state.signup.is_user_logged_in);
-    // const dispatch = useDispatch();
+    var isUserLoggedIn = useSelector(state => state.signup.is_user_logged_in);
+     const dispatch = useDispatch();
  
     return (
         <div>
  <BrowserRouter>
         <div className="page-content">
-          {/* <Switch>
+          <Switch>
             <Route path="/"
               render={() => {
                 return (
@@ -24,8 +24,8 @@ function Routes() {
 
             />
 
-          </Switch> */}
-          <Route path="/" component={Home} exact />
+          </Switch>
+          <Route path="/home" component={Home} exact/>
           <Route path="/login" component={Login} exact />
           {/* <Route path="/check" component={CheckPage} exact /> */}
           <Route path="/signup" component={Register} exact /> 

@@ -101,5 +101,8 @@ router.get('/login-failure', (req, res, next) => {
     console.log("login failure");
     res.status(400).json({message:"Login failure"});
 });
+router.get('/auth', isAuth, (req, res, next) => {
+    res.status(200).json({status:200, msg: 'You made it to the route.', Authenticated: true, userId: req.user._id});
+});
 
 module.exports = router;
