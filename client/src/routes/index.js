@@ -12,8 +12,8 @@ function Routes() {
         <div>
  <BrowserRouter>
         <div className="page-content">
-          <Switch>
-            <Route path="/"
+          {/* <Switch>
+            <Route path="/" exact
               render={() => {
                 return (
                   isUserLoggedIn ?
@@ -24,7 +24,7 @@ function Routes() {
 
             />
 
-          </Switch>
+          </Switch> */}
           <Route path="/home" component={Home} exact/>
           <Route path="/login" component={Login} exact />
           {/* <Route path="/check" component={CheckPage} exact /> */}
