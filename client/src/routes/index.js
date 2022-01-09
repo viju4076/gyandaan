@@ -12,8 +12,13 @@ function Routes() {
         <div>
  <BrowserRouter>
         <div className="page-content">
+<<<<<<< HEAD
           {/* <Switch>
             <Route path="/" exact
+=======
+          <Switch>
+            <Route path="/" 
+>>>>>>> 857adbc141ad354ee82813381ea54ff000448128
               render={() => {
                 return (
                   isUserLoggedIn ?

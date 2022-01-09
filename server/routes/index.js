@@ -34,7 +34,7 @@ const isAdmin = require('./authMiddleware').isAdmin;
     newUser.save()
         .then((user) => {
             console.log(user);
-            res.status(201).json({message:"User registered successfully"});
+            res.status(201).json({message:"User registered successfully", user: user});
         });
  });
 
@@ -77,22 +77,12 @@ router.get('/register', (req, res, next) => {
  * 
  * Also, look up what behaviour express session has without a maxage set
  */
-router.get('/protected-route', isAuth, (req, res, next) => {
-    res.send('You made it to the route.');
-});
 
-router.get('/admin-route', isAdmin, (req, res, next) => {
-    res.send('You made it to the admin route.');
-});
-
-// Visiting this route logs the user out
-router.get('/logout', (req, res, next) => {
-    req.logout();
-    res.redirect('/protected-route');
-});
 
 router.get('/login-success', (req, res, next) => {
     console.log("login success");
+    console.log(req.body);
+
    res.status(200).json({message:"Successful"});
     //res.send('<p>You successfully logged in. --> <a href="/protected-route">Go to protected route</a></p>');
 });
@@ -104,5 +94,20 @@ router.get('/login-failure', (req, res, next) => {
 router.get('/auth', isAuth, (req, res, next) => {
     res.status(200).json({status:200, msg: 'You made it to the route.', Authenticated: true, userId: req.user._id});
 });
+
+router.get('/profile',(req,res,next)=>{
+    if(req.user)
+    res.status(200).json({status:200, msg: 'current user profile', user: req.user});
+    else
+    res.status(400).json({message:"Can't get current user"});
+ 
+});
+router.get('/logout',(req,res,next)=>{
+    console.log("Logged out");
+     req.logout();
+     res.status(200).json({status:200, msg: 'current user logged out'});
+    
+    
+})
 
 module.exports = router;

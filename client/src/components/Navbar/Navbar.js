@@ -1,9 +1,16 @@
 import React, { useState  } from "react";
 import "./Navbar.css";
-import { DropdownButton, Dropdown } from 'react-bootstrap';
+import { GET_PROFILE } from '../../actions/types';
+import {
+  IS_USER_LOGGED_IN,
+  SET_USER_ID
+} from '../../actions/types';
+import { useSelector, useDispatch } from "react-redux";
+import { DropdownButton, Dropdown, Button } from 'react-bootstrap';
 import SearchIcon from "@material-ui/icons/Search";
 import { FaFacebookSquare, FaInstagramSquare, FaYoutubeSquare } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
+import {Link,useHistory} from "react-router-dom";
 //import { BrowserRouter as router , Route, Link, NavLink, Switch} from "react-router-dom";
 //import { NavLink } from "react-router-dom";
 import { NavLink, Router } from "react-router-dom";
@@ -12,11 +19,29 @@ const Navbar = () => {
     const [showMediaIcons, setShowMediaIcons] = useState(false);
     const [open,setOpen] = useState(false);
     const [show, setShow] = useState(false);
+    const History = useHistory();
+    const dispatch = useDispatch();
+    const isUserLoggedIn = useSelector(state => state.signup.is_user_logged_in);
 const showDropdown = (e)=>{
     setShow(!show);
 }
 const hideDropdown = e => {
     setShow(false);
+}
+const handleLogout = e =>{
+  console.log("Button clicked");
+  fetch("/logout")
+  .then(data=> {
+    console.log(data.status);
+      if (data.status == 200) {
+        console.log("Logged out");
+           dispatch({ type: IS_USER_LOGGED_IN, payload: false });
+           dispatch({type: GET_PROFILE, payload: false});
+          // dispatch({type:SET_USER_ID,payload: data.userId});
+         
+         
+      }
+  });
 }
     return (
       <>
@@ -78,6 +103,9 @@ const hideDropdown = e => {
                   target="_thapa">
                   <FaYoutubeSquare className="youtube" />
                 </a>
+              </li>
+              <li>
+                <Button onClick = {handleLogout}> Logout </Button>
               </li>
             </ul>
   
