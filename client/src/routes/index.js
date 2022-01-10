@@ -27,7 +27,7 @@ function Routes() {
           </Switch>
           <Route path="/home" component={Home} exact/>
           <Route path="/login" component={Login} exact />
-          {/* <Route path="/check" component={CheckPage} exact /> */}
+          
           <Route path="/signup" component={Register} exact /> 
         </div>
       </BrowserRouter>

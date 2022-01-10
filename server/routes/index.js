@@ -5,12 +5,27 @@ const connection = require('../config/database');
 const User = require('../models/user/model');
 const isAuth = require('./authMiddleware').isAuth;
 const isAdmin = require('./authMiddleware').isAdmin;
+const Teacher = require('../models/teacher/model');
 
 /**
  * -------------- POST ROUTES ----------------
  */
 
 router.post('/login', passport.authenticate('local', { failureRedirect: '/login-failure', successRedirect: '/login-success' }));
+router.post('/addteacher',(req,res,next) => {  
+    console.log("Hiii");
+    const newteacher = new Teacher({
+        Rating: 0,
+        AreasOfInterest: [],
+        Posts: [],
+        Messages: []
+    })
+    
+    newteacher.save().then((teacher) => {
+        console.log(teacher);
+        res.status(201).json({ message: "New teacher registered successfully", teacher: teacher });
+    });
+});
 
 router.post('/register', (req, res, next) => {
     console.log("Hii");

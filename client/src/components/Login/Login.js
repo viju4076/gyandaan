@@ -10,7 +10,6 @@ function Login() {
     const History = useHistory();
     const [email, setEmail]=useState('');
     const[password,setPassword]=useState('');
-   
     const dispatch = useDispatch();
     const isUserLoggedIn = useSelector(state => state.signup.is_user_logged_in);
 
@@ -50,7 +49,7 @@ function Login() {
             dispatch({ type: IS_USER_LOGGED_IN, payload: true });
             
 
-            History.push("/");
+            History.push("/home");
         }
     }
     return (

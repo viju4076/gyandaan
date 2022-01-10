@@ -15,14 +15,41 @@ import {Link,useHistory} from "react-router-dom";
 //import { NavLink } from "react-router-dom";
 import { NavLink, Router } from "react-router-dom";
 import { propTypes } from "react-bootstrap/esm/Image";
+
 const Navbar = () => {
     const [showMediaIcons, setShowMediaIcons] = useState(false);
     const [open,setOpen] = useState(false);
     const [show, setShow] = useState(false);
     const History = useHistory();
     const dispatch = useDispatch();
+    const [teacherData,setTeacherData]=useState();
     const isUserLoggedIn = useSelector(state => state.signup.is_user_logged_in);
-const showDropdown = (e)=>{
+    function Addteacher() {
+      {
+        const res = fetch('/addteacher',{
+          method:"POST",
+          headers:{
+              "Content-Type":"application/json"
+          },
+          body:JSON.stringify({
+             teacherData
+          })
+      });
+      setTeacherData(res.json());
+      console.log(res.status);
+      if(res.status === 400 || !teacherData){
+          window.alert("Invalid Credentials");
+      }
+      else{
+          window.alert("User logged in Successfully");
+          //dispatch({ type: IS_USER_LOGGED_IN, payload: true });
+          
+    
+          //History.push("/home");
+      }
+    }
+    }
+    const showDropdown = (e)=>{
     setShow(!show);
 }
 const hideDropdown = e => {
@@ -70,7 +97,7 @@ const handleLogout = e =>{
                 </NavLink>  
                 </li>
                 <li>
-                <NavLink to="/addasteacher" className="main-navbar" activeClassName="main-nav-active">Add as teacher
+                <NavLink to="/home" className="main-navbar" activeClassName="main-nav-active" onClick={Addteacher}>Add as teacher
                 </NavLink>  
                 </li>
               <li>

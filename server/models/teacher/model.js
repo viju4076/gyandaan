@@ -5,7 +5,7 @@ const { ObjectId } = mongoose.Schema;
 const Post = require('../post/model').schema;
 const StudentText = require('../studentText/model').schema;
 const TeacherSchema = new Schema({
-    Rating: String,
+    Rating: Number,
     AreasOfInterest: [String],
     Posts: [{ type: ObjectId, ref: 'Post' }],
     Messages: [StudentText]
