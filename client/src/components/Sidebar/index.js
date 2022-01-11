@@ -1,19 +1,23 @@
 
 import { Avatar } from '@material-ui/core';
 import React, {useEffect, useState} from 'react'
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from "react-redux";
 import "./index.css";
 
 
 function Sidebar(props) {
   //const user=useSelector(selectUser);
- 
+  const dispatch = useDispatch();
+  
+  let user=useSelector(state=>state.user.update_user);
+  
+  useEffect(()=>{
+         
+  }
+        
 
+  ,[user]); 
    
-   const user={
-       email:"abc",
-       displayName:"v"
-   };
 
   const recentItem= (topic)=>{
       return (<div className="sidebar_recentItem">
@@ -28,14 +32,17 @@ function Sidebar(props) {
         <div className="sidebar">
             <div className="sidebar_top">
                 <img src="https://analyticsindiamag.com/wp-content/uploads/2020/10/7d744a684fe03ebc7e8de545f97739dd.jpg" alt=""/>
-                <Avatar >{props.user.email.charAt(0)} </Avatar>
-                <h2>{props.user.username}</h2>
-                <h4>{props.user.email}</h4>
+                { <Avatar >{user.email&&user.email.charAt(0)} </Avatar> }
+                <h2>{user.username}</h2>
+                <h4>{user.email}</h4>
             </div>
             <div className="sidebar_stats">
               <div className="sidebar_stat">
-                <p>Who viewed you</p>
-                <p className="sidebar_statNumber">2,564</p>
+               {user.isTeacher&&
+                <p><span class="label label-primary">Teacher</span></p>
+              
+               }
+                
               </div>
               <div className="sidebar_stat">
               <p>Views on post</p>

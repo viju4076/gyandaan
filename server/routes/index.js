@@ -5,7 +5,6 @@ const connection = require('../config/database');
 const User = require('../models/user/model');
 const isAuth = require('./authMiddleware').isAuth;
 const isAdmin = require('./authMiddleware').isAdmin;
-const Teacher = require('../models/teacher/model');
 
 /**
  * -------------- POST ROUTES ----------------
@@ -14,17 +13,33 @@ const Teacher = require('../models/teacher/model');
 router.post('/login', passport.authenticate('local', { failureRedirect: '/login-failure', successRedirect: '/login-success' }));
 router.post('/addteacher',(req,res,next) => {  
     console.log("Hiii");
-    const newteacher = new Teacher({
-        Rating: 0,
-        AreasOfInterest: [],
-        Posts: [],
-        Messages: []
-    })
     
-    newteacher.save().then((teacher) => {
-        console.log(teacher);
-        res.status(201).json({ message: "New teacher registered successfully", teacher: teacher });
-    });
+       User.findOneAndUpdate({ _id: req.user._id },
+         {isTeacher: true,  Rating: 0,
+            AreasOfInterest: [],
+            Posts:[],
+            Messages: []
+        
+        
+        }, {new: true}, (err, updatedUser) => {
+        if(err) {
+            res.status(200).json({status:"400",msg:"Cannot add as a teacher "});
+            
+        
+        }
+        else
+        {
+           
+            console.log(updatedUser);
+            res.status(200).json({status:"200",msg:"Added as a teacher",updatedUser:updatedUser });
+        }
+        
+      })
+    
+    
+    
+    
+    
 });
 
 router.post('/register', (req, res, next) => {

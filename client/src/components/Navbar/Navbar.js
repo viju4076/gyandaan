@@ -1,6 +1,7 @@
+/* eslint-disable no-lone-blocks */
 import React, { useState  } from "react";
 import "./Navbar.css";
-import { GET_PROFILE } from '../../actions/types';
+import { GET_PROFILE, UPDATE_USER } from '../../actions/types';
 import {
   IS_USER_LOGGED_IN,
   SET_USER_ID
@@ -22,27 +23,33 @@ const Navbar = () => {
     const [show, setShow] = useState(false);
     const History = useHistory();
     const dispatch = useDispatch();
-    const [teacherData,setTeacherData]=useState();
+    const [updatedUser,setUpdatedUser]=useState(useSelector(state => state.user.update_user));
     const isUserLoggedIn = useSelector(state => state.signup.is_user_logged_in);
-    function Addteacher() {
+   
+    async function  Addteacher()  {
       {
-        const res = fetch('/addteacher',{
+        var res =  await fetch ('/addteacher',{
           method:"POST",
           headers:{
               "Content-Type":"application/json"
           },
           body:JSON.stringify({
-             teacherData
+            
           })
       });
-      setTeacherData(res.json());
-      console.log(res.status);
-      if(res.status === 400 || !teacherData){
-          window.alert("Invalid Credentials");
+      res= await res.json();
+     setUpdatedUser(res.updatedUser);
+     console.log(res.status);
+      console.log("New user data ",res.updatedUser);
+      if(res.status === "400"||!res.updatedUser){
+          window.alert("Cannot be added as a teacher");
       }
       else{
-          window.alert("User logged in Successfully");
-          //dispatch({ type: IS_USER_LOGGED_IN, payload: true });
+          window.alert("Added teacher successfully");
+          dispatch({ type: UPDATE_USER, payload: {
+            update_user:
+               res.updatedUser
+          } });
           
     
           //History.push("/home");

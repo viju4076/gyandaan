@@ -3,6 +3,7 @@ const connection = require('../../config/database');
 const { Schema } = mongoose;
 const { ObjectId } = mongoose.Schema;
 //const Post = require('../post/model').schema;
+const StudentText = require('../studentText/model').schema;
 const Teacher = require('../teacher/model').schema;
 const userSchema = new Schema({
     username: String,
@@ -13,7 +14,11 @@ const userSchema = new Schema({
     followers: [ObjectId],
     following: [ObjectId],
     isTeacher: Boolean,
-    teacher: { type: ObjectId, ref: 'Teacher', default: null }
+    Rating: Number,
+    AreasOfInterest: [String],
+    Posts: [{ type: ObjectId, ref: 'Post' }],
+    Messages: [StudentText]
+
 })
 
 const User = connection.model('User', userSchema);

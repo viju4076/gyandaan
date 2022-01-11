@@ -3,6 +3,7 @@ import { combineReducers } from "redux";
 // import postReducer from './postReducer'
  import signupReducer from "./signupReducer";
  import getProfileReducer from "./getProfileReducer"
+ import userReducer from "./userReducer"
 // import socketReducer from "./socketReducer";
 // import authReducer from "./authReducer";
 // import signupFormReducer from './signupFormReducer';
@@ -14,6 +15,6 @@ import { combineReducers } from "redux";
 
 export default combineReducers({
      signup: signupReducer,
-     getProfile: getProfileReducer
+      user:userReducer
     // socket: socketReducer
 })
