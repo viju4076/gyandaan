@@ -12,13 +12,15 @@ const isAdmin = require('./authMiddleware').isAdmin;
 
 router.post('/login', passport.authenticate('local', { failureRedirect: '/login-failure', successRedirect: '/login-success' }));
 router.post('/addteacher',(req,res,next) => {  
-    console.log("Hiii");
+    console.log(req.body);
     
        User.findOneAndUpdate({ _id: req.user._id },
          {isTeacher: true,  Rating: 0,
-            AreasOfInterest: [],
+            areasOfInterest: req.body.areasOfInterest,
             Posts:[],
-            Messages: []
+            Messages: [],
+            qualifications: req.body.qualifications
+
         
         
         }, {new: true}, (err, updatedUser) => {
@@ -61,6 +63,11 @@ router.post('/register', (req, res, next) => {
         isTeacher: false,
         followers: [],
         following: [],
+        qualifications: "",
+        areasOfInterest: []
+
+
+
     });
 
     newUser.save()
@@ -140,6 +147,7 @@ router.get('/logout', (req, res, next) => {
     res.status(200).json({ status: 200, msg: 'current user logged out' });
 
 
-})
+});
+
 
 module.exports = router;

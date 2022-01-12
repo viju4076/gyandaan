@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import "./index.css";
 
 
-function Sidebar(props) {
+function Sidebar() {
   //const user=useSelector(selectUser);
   const dispatch = useDispatch();
   
@@ -52,11 +52,18 @@ function Sidebar(props) {
             </div>
         <div className="sidebar_bottom">
             <p>Recent</p>
-            {recentItem('reactjs')}
+            {
+              user&&user.areasOfInterest&&user.areasOfInterest.length>0&&user.areasOfInterest.map(interest=> (interest.isSelected&&recentItem(interest.skill)))
+
+            }
+            {
+              recentItem(user.qualifications)
+            }
+            {/* {recentItem('reactjs')}
             {recentItem('programming')}
             {recentItem('design')}
             {recentItem('developer')}
-           
+            */}
             
         </div>
 

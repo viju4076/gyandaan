@@ -3,7 +3,13 @@ const connection = require('../../config/database');
 const { Schema } = mongoose;
 const { ObjectId } = mongoose.Schema;
 //const Post = require('../post/model').schema;
+const AreasOfInterest = new Schema({
+   
+    id: Number,
+    skill: String,
+    isSelected: Boolean
 
+})
 const userSchema = new Schema({
     username: String,
     email: String,
@@ -14,8 +20,9 @@ const userSchema = new Schema({
     following: [ObjectId],
     isTeacher: Boolean,
     Rating: Number,
-    AreasOfInterest: [String],
+    areasOfInterest: [AreasOfInterest],
     Posts: [{ type: ObjectId, ref: 'Post' }],
+    qualifications: String
     
 })
 
