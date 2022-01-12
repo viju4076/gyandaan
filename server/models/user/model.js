@@ -3,8 +3,7 @@ const connection = require('../../config/database');
 const { Schema } = mongoose;
 const { ObjectId } = mongoose.Schema;
 //const Post = require('../post/model').schema;
-const StudentText = require('../studentText/model').schema;
-const Teacher = require('../teacher/model').schema;
+
 const userSchema = new Schema({
     username: String,
     email: String,
@@ -17,8 +16,7 @@ const userSchema = new Schema({
     Rating: Number,
     AreasOfInterest: [String],
     Posts: [{ type: ObjectId, ref: 'Post' }],
-    Messages: [StudentText]
-
+    
 })
 
 const User = connection.model('User', userSchema);
