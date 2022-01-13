@@ -20,13 +20,8 @@ function Modal() {
     const dispatch = useDispatch();
    
 
-    const [show, setShow] = useState(false);
-    const showDropdown = (e) => {
-        setShow(!show);
-    }
-    const hideDropdown = e => {
-        setShow(false);
-    }
+    
+    
     const handleSubmit = async (e) => {
         
         e.preventDefault();

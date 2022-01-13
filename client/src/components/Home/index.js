@@ -3,6 +3,7 @@ import { UPDATE_USER } from '../../actions/types';
 import { useSelector, useDispatch } from "react-redux";
 import Navbar from '../Navbar/Navbar';
 import Sidebar from "../Sidebar";
+import Post from "../Post";
 import "./index.css";
 function Home() {
     const [user, setUser]= useState({email: 'xyz'});
@@ -28,7 +29,7 @@ function Home() {
              <Navbar/>
              <div className="external">
                 <Sidebar  />
-                <h1>home screen</h1> 
+                <Post/>
              </div>
         </div>
     )
