@@ -12,9 +12,10 @@ const comments = new Schema({
 
 const PostSchema = new Schema({
     senderId: ObjectId,
+    heading:String,
     link: String,
     description: String,
-    dateTime: String,
+    dateTime: Date,
     comments:[comments]
 })
 
