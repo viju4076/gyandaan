@@ -1,17 +1,19 @@
 /* eslint-disable no-lone-blocks */
 import React, { useState } from "react";
 import "./Navbar.css";
-import { GET_PROFILE, UPDATE_USER } from '../../actions/types';
-import {
-  IS_USER_LOGGED_IN,
-  SET_USER_ID
-} from '../../actions/types';
+import { GET_PROFILE, UPDATE_USER } from "../../actions/types";
+import { IS_USER_LOGGED_IN, SET_USER_ID } from "../../actions/types";
 import { useSelector, useDispatch } from "react-redux";
-import { DropdownButton, Dropdown, Button } from 'react-bootstrap';
+import { DropdownButton, Dropdown, Button } from "react-bootstrap";
 import SearchIcon from "@material-ui/icons/Search";
-import { FaFacebookSquare, FaInstagramSquare, FaYoutubeSquare } from "react-icons/fa";
+import {
+  FaFacebookSquare,
+  FaInstagramSquare,
+  FaYoutubeSquare,
+} from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { Link, useHistory } from "react-router-dom";
+import Searchbar from "./Searchbar";
 //import { BrowserRouter as router , Route, Link, NavLink, Switch} from "react-router-dom";
 //import { NavLink } from "react-router-dom";
 import { NavLink, Router } from "react-router-dom";
@@ -25,19 +27,19 @@ const Navbar = () => {
   const [show, setShow] = useState(false);
   const History = useHistory();
   const dispatch = useDispatch();
-  const [updatedUser, setUpdatedUser] = useState(useSelector(state => state.user.update_user));
-  const isUserLoggedIn = useSelector(state => state.signup.is_user_logged_in);
+  const [updatedUser, setUpdatedUser] = useState(
+    useSelector((state) => state.user.update_user)
+  );
+  const isUserLoggedIn = useSelector((state) => state.signup.is_user_logged_in);
 
   async function Addteacher() {
     {
-      var res = await fetch('/addteacher', {
+      var res = await fetch("/addteacher", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-
-        })
+        body: JSON.stringify({}),
       });
       res = await res.json();
       setUpdatedUser(res.updatedUser);
@@ -45,16 +47,14 @@ const Navbar = () => {
       console.log("New user data ", res.updatedUser);
       if (res.status === "400" || !res.updatedUser) {
         window.alert("Cannot be added as a teacher");
-      }
-      else {
+      } else {
         window.alert("Added teacher successfully");
         dispatch({
-          type: UPDATE_USER, payload: {
-            update_user:
-              res.updatedUser
-          }
+          type: UPDATE_USER,
+          payload: {
+            update_user: res.updatedUser,
+          },
         });
-
 
         //History.push("/home");
       }
@@ -62,32 +62,26 @@ const Navbar = () => {
   }
   const showDropdown = (e) => {
     setShow(!show);
-  }
-  const hideDropdown = e => {
+  };
+  const hideDropdown = (e) => {
     setShow(false);
-  }
-  const handleLogout = e => {
+  };
+  const handleLogout = (e) => {
     console.log("Button clicked");
-    fetch("/logout")
-      .then(data => {
-        console.log(data.status);
-        if (data.status == 200) {
-          console.log("Logged out");
-          dispatch({ type: IS_USER_LOGGED_IN, payload: false });
-          dispatch({ type: GET_PROFILE, payload: false });
-          // dispatch({type:SET_USER_ID,payload: data.userId});
-
-
-        }
-      });
-  }
+    fetch("/logout").then((data) => {
+      console.log(data.status);
+      if (data.status == 200) {
+        console.log("Logged out");
+        dispatch({ type: IS_USER_LOGGED_IN, payload: false });
+        dispatch({ type: GET_PROFILE, payload: false });
+        // dispatch({type:SET_USER_ID,payload: data.userId});
+      }
+    });
+  };
   return (
-
     <div>
-    
-
       <nav className="main-nav">
-        { }
+        {}
 
         <div className="logo">
           <h2>
@@ -100,27 +94,34 @@ const Navbar = () => {
         <div
           className={
             showMediaIcons ? "menu-link mobile-menu-link" : "menu-link"
-          }>
+          }
+        >
           <ul>
             <li>
-              <input className="header__searchInput" type="text" />
-              <SearchIcon className="header__searchIcon" />
+              <div className="external">
+                <Searchbar />
+              </div>
             </li>
             <li>
-              <NavLink to="/contact" className="main-navbar" activeClassName="main-nav-active">Categories
+              <NavLink
+                to="/contact"
+                className="main-navbar"
+                activeClassName="main-nav-active"
+              >
+                Categories
               </NavLink>
             </li>
             <li>
-
-            <Modal/>
-
+              <Modal />
             </li>
+            <li></li>
             <li>
-             
-              
-            </li>
-            <li>
-              <NavLink to="/contact" className="main-navbar" activeClassName="main-nav-active">Contact us
+              <NavLink
+                to="/contact"
+                className="main-navbar"
+                activeClassName="main-nav-active"
+              >
+                Contact us
               </NavLink>
             </li>
           </ul>
@@ -132,21 +133,24 @@ const Navbar = () => {
             <li>
               <a
                 href="https://www.facebook.com/profile.php?id=100075450080489"
-                target="_thapa">
+                target="_thapa"
+              >
                 <FaFacebookSquare className="facebook" />
               </a>
             </li>
             <li>
               <a
                 href="https://www.instagram.com/ngochanakyapahal/"
-                target="_thapa">
+                target="_thapa"
+              >
                 <FaInstagramSquare className="instagram" />
               </a>
             </li>
             <li>
               <a
                 href="https://www.youtube.com/channel/UCwfaAHy4zQUb2APNOGXUCCA"
-                target="_thapa">
+                target="_thapa"
+              >
                 <FaYoutubeSquare className="youtube" />
               </a>
             </li>
@@ -163,7 +167,6 @@ const Navbar = () => {
           </div>
         </div>
       </nav>
-
     </div>
   );
 };

@@ -9,7 +9,6 @@ const Post = require("../models/post/model");
 /**
  * -------------- POST ROUTES ----------------
  */
-
 router.post(
   "/login",
   passport.authenticate("local", {
@@ -17,6 +16,21 @@ router.post(
     successRedirect: "/login-success",
   })
 );
+
+router.post("/search", (req, res, next) => {
+  console.log(req.body);
+
+  User.find({ $text: { $search: req.body.name } }).then((user) => {
+    console.log("user", user);
+    // if (err) {
+    //   console.log(err);
+    //   res.status(210).json({ message: "Failed to add post" });
+    // } else {
+    //   res.status(201).json({ message: "Post registered successfully" });
+    // }
+  });
+});
+
 router.post("/addteacher", (req, res, next) => {
   console.log(req.body);
 
@@ -38,13 +52,11 @@ router.post("/addteacher", (req, res, next) => {
           .json({ status: "400", msg: "Cannot add as a teacher " });
       } else {
         console.log(updatedUser);
-        res
-          .status(200)
-          .json({
-            status: "200",
-            msg: "Added as a teacher",
-            updatedUser: updatedUser,
-          });
+        res.status(200).json({
+          status: "200",
+          msg: "Added as a teacher",
+          updatedUser: updatedUser,
+        });
       }
     }
   );
@@ -152,14 +164,12 @@ router.get("/login-failure", (req, res, next) => {
   res.status(400).json({ message: "Login failure" });
 });
 router.get("/auth", isAuth, (req, res, next) => {
-  res
-    .status(200)
-    .json({
-      status: 200,
-      msg: "You made it to the route.",
-      Authenticated: true,
-      userId: req.user._id,
-    });
+  res.status(200).json({
+    status: 200,
+    msg: "You made it to the route.",
+    Authenticated: true,
+    userId: req.user._id,
+  });
 });
 
 router.get("/profile", (req, res, next) => {
@@ -174,19 +184,22 @@ router.get("/logout", (req, res, next) => {
   req.logout();
   res.status(200).json({ status: 200, msg: "current user logged out" });
 });
-router.get("/getpost",(req,res,next)=>{
+router.get("/getpost", (req, res, next) => {
   console.log("Getting feeds");
-  Post.find({},function(err,allPost){
+  Post.find({}, function (err, allPost) {
     if (err) {
       console.log(err);
-      res.status(400).json({message:"can't get feeds"});
-  } else {
+      res.status(400).json({ message: "can't get feeds" });
+    } else {
       console.log(allPost);
-      res.status(200).json({status: 200, post: allPost.sort((p1,p2)=>(p1.dateTime>p2.dateTime?-1:1))});
-  }
-  })
-  
+      res.status(200).json({
+        status: 200,
+        post: allPost.sort((p1, p2) => (p1.dateTime > p2.dateTime ? -1 : 1)),
+      });
+    }
+  });
+
   //res.status(200).json({status:200, post: posts});
-})
+});
 
 module.exports = router;
