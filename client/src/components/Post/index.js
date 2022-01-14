@@ -1,5 +1,6 @@
 import CreateIcon from "@material-ui/icons/Create";
 import React, { useEffect, useState, useRef } from "react";
+
 import "./index.css";
 import ImageIcon from "@material-ui/icons/Image";
 import {
@@ -13,6 +14,9 @@ import ClassPost from "./ClassPost";
 //import { selectUser } from './features/userSlice';
 import FlipMove from "react-flip-move";
 function Index() {
+
+  
+
   let post;
   const form = useRef(null);
   const handleSubmit = async (e) => {
@@ -41,6 +45,8 @@ function Index() {
       form.current.reset();
     }
   };
+
+
   return (
     <div className="feed">
       <div className="feed_inputContainer">
@@ -89,15 +95,9 @@ function Index() {
                */}
         </div>
       </div>
-      <div className="xyz">
-        {" "}
-        <ClassPost
-          key="5120"
-          name="ghsjf"
-          description="gktye,gk"
-          message="sagtjfjdgfjfhfb"
-        />
-      </div>
+      
+       
+      
       {/* <Post name="vijay" description="this is a test" 
             message="This worked"
         /> */}

@@ -52,6 +52,7 @@ router.post("/addteacher", (req, res, next) => {
 router.post("/addpost", (req, res, next) => {
   console.log(req.body);
   const newPost = new Post({
+    name: req.user.username,
     senderId: req.user._id,
     heading: req.body.post.heading,
     link: req.body.post.link,
@@ -173,5 +174,19 @@ router.get("/logout", (req, res, next) => {
   req.logout();
   res.status(200).json({ status: 200, msg: "current user logged out" });
 });
+router.get("/getpost",(req,res,next)=>{
+  console.log("Getting feeds");
+  Post.find({},function(err,allPost){
+    if (err) {
+      console.log(err);
+      res.status(400).json({message:"can't get feeds"});
+  } else {
+      console.log(allPost);
+      res.status(200).json({status: 200, post: allPost.sort((p1,p2)=>(p1.dateTime>p2.dateTime?-1:1))});
+  }
+  })
+  
+  //res.status(200).json({status:200, post: posts});
+})
 
 module.exports = router;

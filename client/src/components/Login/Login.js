@@ -47,6 +47,7 @@ function Login() {
         else{
             window.alert("User logged in Successfully");
             dispatch({ type: IS_USER_LOGGED_IN, payload: true });
+          //  dispatch({})
             
 
             History.push("/home");

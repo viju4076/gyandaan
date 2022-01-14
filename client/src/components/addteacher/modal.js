@@ -51,7 +51,10 @@ function Modal() {
                   res.updatedUser
               }
             });
-        }    
+        }
+       
+            window.location.reload();
+          
         console.log(Categories);
         console.log(qualifications);
     }
@@ -73,7 +76,7 @@ function Modal() {
 
         <div>
             
-              <NavLink to="/home" className="main-navbar" activeClassName="main-nav-active" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">{updatedUser.isTeacher?"Edit skills":"Add as Teacher"}</NavLink>
+              <NavLink to="/home" className="main-navbar" activeClassName="main-nav-active" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">{(updatedUser&&updatedUser.isTeacher)?"Edit skills":"Add as Teacher"}</NavLink>
 
             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">

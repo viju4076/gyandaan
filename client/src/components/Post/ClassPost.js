@@ -11,18 +11,18 @@ const ClassPost = (props) => {
                 <Avatar>{props.name[0]}</Avatar>
                 <div className="post_info">
                     <h2>{props.name}</h2>
-                    <p>{props.description}</p>
+                    <a href ={props.link} target="_blank">Join Class</a>
                 </div>   
             </div>
             <div className="post_body">
-                <p>{props.message}</p>
+                <p>{props.description}</p>
             </div>
             <div className="post_buttons">
                 <InputOption Icon={ThumbUpSharp} title="Like" color="gray"></InputOption>
                 <InputOption Icon={ChatOutlined} title="Comment" color="gray"></InputOption>
-                <InputOption Icon={ShareOutlined} title="Share" color="gray"></InputOption>
+                {/* <InputOption Icon={ShareOutlined} title="Share" color="gray"></InputOption>
                 <InputOption Icon={SendOutlined} title="Send" color="gray"></InputOption>
-           
+            */}
             </div>
         </div>
     )

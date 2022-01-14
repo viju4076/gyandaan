@@ -1,6 +1,13 @@
 .external{
   display: flex;
   
+  
 
 
+}
+.internal1{
+  flex: .2;
+}
+.internal2{
+  flex: .6;
 }

@@ -4,6 +4,7 @@ const { Schema } = mongoose;
 const { ObjectId } = mongoose.Schema
 
 const comments = new Schema({
+    senderName: String,
     senderId: ObjectId,
      description: String,
     dateTime: String
@@ -11,6 +12,7 @@ const comments = new Schema({
 
 
 const PostSchema = new Schema({
+    name: String,
     senderId: ObjectId,
     heading:String,
     link: String,
