@@ -1,3 +1,6 @@
+::-webkit-scrollbar {
+  display: none;
+}
 .externallist{
   display: flex;
   flex-direction: column
@@ -7,5 +10,14 @@
   position: sticky;
 
 }
-.internallist{
+.list-group{
+  overflow-y: scroll;
+  height: 250px;
+  opacity: 0;
+}
+
+
+.list-group:hover {
+  color: #000;
+  opacity: 1;
 }

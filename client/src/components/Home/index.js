@@ -43,8 +43,14 @@ function Home() {
                 
                     
                 <div className='internal2'>
+                    <div className='postGenerator'>
                     {user.isTeacher && <Post />}
+                    </div>
+                    
+                    <div className='feeds'>
                     <RenderPost />
+                    </div>
+                    
                 </div>
 
 
