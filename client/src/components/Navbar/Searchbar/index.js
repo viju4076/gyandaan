@@ -1,11 +1,14 @@
 import React, { useState } from "react";
+import { useHistory } from 'react-router-dom';
 import './index.css';
 // import $ from "jquery";
 import SearchIcon from "@material-ui/icons/Search";
 function Index() {
   const [searchUser, setSearchUser] = useState([{ username: '', _id: '' }]);
-  const profileShow = () => {
-
+  const History = useHistory();
+  const profileShow = (e) => {
+    console.log('gupta', e.target.name);
+    History.push('/profile/' + e.target.name);
   }
   const handleChange = async (e) => {
     e.preventDefault();
@@ -47,7 +50,7 @@ function Index() {
           <div class="list-group " >
             {
 
-              searchUser.map(user => <button type="button" class="list-group-item list-group-item-action active" onclick={profileShow}>
+              searchUser.map(user => <button type="button" name={user._id} class="list-group-item list-group-item-action active" onClick={profileShow}>
                 {user.username}
               </button>)
             }

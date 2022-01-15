@@ -25,7 +25,7 @@ router.post(
 //       {"username":{$regex:req.params.key}},
 //       {"email":{$regex:req.params.key}},
 //       // {"phone":{$regex:req.params.key}},
-//       // {"areasOfInterest":{$regex:req.params.key}}
+//       // {"areasOfInterest":{it$regex:req.params.key}}
 //       {"qualifications":{$regex:req.params.key}}
 //     ]
 // });
@@ -53,12 +53,12 @@ router.post("/search", async (req, res, next) => {
       ],
     },
     (err, search) => {
-       console.log("search ",search);
+      console.log("search ", search);
       if (err) {
         console.log(err);
         res.status(200).json({ status: "400", msg: "Cannot search icon " });
       } else {
-        res.status(200).json({ status: "201", msg: "Search successful",users:search });
+        res.status(200).json({ status: "201", msg: "Search successful", users: search });
       }
     }
   );
@@ -204,12 +204,26 @@ router.get("/auth", isAuth, (req, res, next) => {
   });
 });
 
-router.get("/profile", (req, res, next) => {
-  if (req.user)
+router.get("/profile/:userId", async (req, res, next) => {
+  const userId = req.params.userId;
+  console.log('userId', userId);
+  if (userId === "userkiprofile") {
+    console.log('in if part ');
     res
       .status(200)
       .json({ status: 200, msg: "current user profile", user: req.user });
-  else res.status(400).json({ message: "Can't get current user" });
+  }
+  else if (userId != null) {
+    let data = await User.find({ _id: userId }, (err, User) => {
+      if (!err)
+        res
+          .status(200)
+          .json({ status: 200, msg: "current user profile", user: User });
+    });
+  }
+  else
+    res.status(210).json({ message: "Can't get current user" });
+
 });
 router.get("/logout", (req, res, next) => {
   console.log("Logged out");

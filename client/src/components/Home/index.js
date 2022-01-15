@@ -12,7 +12,7 @@ function Home() {
     const [user, setUser] = useState(useSelector(state => state.user.update_user));
     const dispatch = useDispatch();
     useEffect(() => {
-        fetch('/profile')
+        fetch('/profile/userkiprofile')
             .then(data => data.json())
             .then(data => {
                 console.log('above if statement', data);
@@ -34,23 +34,23 @@ function Home() {
         <div>
             <Navbar />
             <div className='searchcomponent'>
-                <Searchbar/>
+                <Searchbar />
             </div>
             <div className="external">
                 <div className='internal1'>
                     <Sidebar />
                 </div>
-                
-                    
+
+
                 <div className='internal2'>
                     <div className='postGenerator'>
-                    {user.isTeacher && <Post />}
+                        {user.isTeacher && <Post />}
                     </div>
-                    
+
                     <div className='feeds'>
-                    <RenderPost />
+                        <RenderPost />
                     </div>
-                    
+
                 </div>
 
 
