@@ -6,7 +6,7 @@ export default function RenderPost() {
     const [feeds, setFeeds] = useState([]);
   useEffect(() => {
     fetch('/getpost')
-      .then(data => data.json())
+      .then(data => data.json())                                                                                        
       .then(data => {
         console.log('in get post', data.post);
         if (data.status == 200) {

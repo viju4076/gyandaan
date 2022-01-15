@@ -1,9 +1,11 @@
 .external{
   display: flex;
-  
-  
-
-
+}
+.searchcomponent{
+  position: fixed;
+  margin-left:300px;
+  margin-top: -66px;
+  z-index:100;  
 }
 .internal1{
   flex: .2;
