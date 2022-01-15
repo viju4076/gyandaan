@@ -17,29 +17,52 @@ router.post(
   })
 );
 
-router.post("/search", (req, res, next) => {
-  console.log(req.body);
-
-  // User.find({ $text: { $search: req.body.name } }).then((user) => {
-  //   console.log("user", user);
-  //   // if (err) {
-  //   //   console.log(err);
-  //   //   res.status(210).json({ message: "Failed to add post" });
-  //   // } else {
-  //   //   res.status(201).json({ message: "Post registered successfully" });
-  //   // }
-  // });
-  User.find({ username: { $regex: "/^vi/" } }).then((user) => {
-    console.log("user", user);
-    // if (err) {
-    //   console.log(err);
-    //   res.status(210).json({ message: "Failed to add post" });
-    // } else {
-    //   res.status(201).json({ message: "Post registered successfully" });
-    // }
-  });
+// router.get("/search/:key", async(req, res) => {
+//   // console.log(req.body);
+// let data=await User.find(
+//   {
+//   "$or" : [
+//       {"username":{$regex:req.params.key}},
+//       {"email":{$regex:req.params.key}},
+//       // {"phone":{$regex:req.params.key}},
+//       // {"areasOfInterest":{$regex:req.params.key}}
+//       {"qualifications":{$regex:req.params.key}}
+//     ]
+// });
+// res.send(data);
+//   // User.find({ $text: { $regex: /s/ } }).then((user) => {
+//   //   console.log("user", user);
+//     // if (err) {
+//     //   console.log(err);
+//     //   res.status(210).json({ message: "Failed to add post" });
+//     // } else {
+//     //   res.status(201).json({ message: "Post registered successfully" });
+//     // }
+//   // });
+// });
+router.post("/search", async (req, res, next) => {
+  console.log(req.body.name);
+  await User.find(
+    {
+      $or: [
+        { username: { $regex: req.body.name } },
+        { email: { $regex: req.body.name } },
+        // // {"phone":{$regex:req.params.key}},
+        // // {"areasOfInterest":{$regex:req.params.key}}
+        { qualifications: { $regex: req.body.name } },
+      ],
+    },
+    (err, search) => {
+       console.log("search ",search);
+      if (err) {
+        console.log(err);
+        res.status(200).json({ status: "400", msg: "Cannot search icon " });
+      } else {
+        res.status(200).json({ status: "201", msg: "Search successful",users:search });
+      }
+    }
+  );
 });
-
 router.post("/addteacher", (req, res, next) => {
   console.log(req.body);
 

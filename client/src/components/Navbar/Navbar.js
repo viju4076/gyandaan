@@ -99,7 +99,6 @@ const Navbar = () => {
           <ul>
             <li>
               <div className="external">
-                <Searchbar />
               </div>
             </li>
             <li>

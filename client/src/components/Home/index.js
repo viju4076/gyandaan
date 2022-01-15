@@ -6,6 +6,7 @@ import Sidebar from "../Sidebar";
 import Post from "../Post";
 import RenderPost from '../Post/RenderPost';
 import "./index.css";
+import Searchbar from "../Navbar/Searchbar";
 function Home() {
     // const [user, setUser]= useState({email: 'xyz'});
     const [user, setUser] = useState(useSelector(state => state.user.update_user));
@@ -32,11 +33,15 @@ function Home() {
     return (
         <div>
             <Navbar />
+            <div className='searchcomponent'>
+                <Searchbar/>
+            </div>
             <div className="external">
                 <div className='internal1'>
                     <Sidebar />
                 </div>
-
+                
+                    
                 <div className='internal2'>
                     {user.isTeacher && <Post />}
                     <RenderPost />
