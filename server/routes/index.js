@@ -20,7 +20,16 @@ router.post(
 router.post("/search", (req, res, next) => {
   console.log(req.body);
 
-  User.find({ $text: { $search: req.body.name } }).then((user) => {
+  // User.find({ $text: { $search: req.body.name } }).then((user) => {
+  //   console.log("user", user);
+  //   // if (err) {
+  //   //   console.log(err);
+  //   //   res.status(210).json({ message: "Failed to add post" });
+  //   // } else {
+  //   //   res.status(201).json({ message: "Post registered successfully" });
+  //   // }
+  // });
+  User.find({ username: { $regex: "/^vi/" } }).then((user) => {
     console.log("user", user);
     // if (err) {
     //   console.log(err);
