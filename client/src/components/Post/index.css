@@ -5,10 +5,20 @@
 }
 
 .feed {
-  flex: 0.6;
+
+  /*flex: 0.6 1; */
   margin: 0 20px;
+  height: -moz-fit-content;
   height: fit-content;
-  width: 100%
+  width: 100%;
+  
+   display: flex;
+   flex-direction: column;
+  /* width: 100%; */
+  /* flex-basis: 500px;*/
+  padding:5px;
+
+
 }
 h3{
     margin-right: 10px;
@@ -36,9 +46,13 @@ textarea{
 .feed_inputContainer {
   background-color: white;
   padding: 10px;
-  padding-bottom: 20px;
+  /* padding-bottom: 20px; */
   border-radius: 10px;
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
+  align-self: center;
+  justify-content: center;
+  width: 100%;
+
 }
 
 .feed_input {
@@ -48,6 +62,8 @@ textarea{
   padding: 10px;
   color: gray;
   padding-left: 15px;
+
+
 }
 .feed_input > form {
   display: flex;

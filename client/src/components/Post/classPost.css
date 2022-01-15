@@ -1,9 +1,17 @@
 .post{
     background-color: white;
-    padding:15px;
-    margin-bottom: 10px;
-    border-radius: 10px;
-    margin-left: 20px;
+    padding: 15px;
+    /* margin-bottom: 10px; */
+    /* border-radius: 10px; */
+    /* margin-left: 20px; */
+    /* display: flex; */
+    width: 100%;
+    padding-bottom: 0;
+    border: 1px solid blue;
+    border-radius: 5px;    
+    margin: 2px;
+
+
 }
 .post_header{
     display: flex;
@@ -28,4 +36,16 @@
 .post_buttons{
     display: flex;
     justify-content: space-evenly;
+    background-color: mediumblue;
+    border-radius: 15px
+}
+
+.inputOption{
+    display: flex;
+    align-items: center;
+    /* margin-top: 15px; */
+    color: gray;
+    padding: 5px;
+    cursor: pointer;
+    margin:0;
 }

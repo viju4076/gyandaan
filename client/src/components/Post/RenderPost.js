@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 
 import ClassPost from './ClassPost';
-
+import "./RenderPost.css";
 export default function RenderPost() {
     const [feeds, setFeeds] = useState([]);
   useEffect(() => {
@@ -19,7 +19,7 @@ export default function RenderPost() {
   }, [])
 
   return (
-    <div>
+    
        <div className="xyz">
           {feeds.map(feed => <ClassPost
             key={feed._id}
@@ -29,6 +29,5 @@ export default function RenderPost() {
           />)}
 
         </div>
-    </div>
   );
 }
