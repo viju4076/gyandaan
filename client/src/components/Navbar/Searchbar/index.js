@@ -1,9 +1,12 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import './index.css';
 // import $ from "jquery";
 import SearchIcon from "@material-ui/icons/Search";
 function Index() {
-  const [searchUser,setSearchUser]=useState();
+  const [searchUser, setSearchUser] = useState([{ username: '', _id: '' }]);
+  const profileShow = () => {
+
+  }
   const handleChange = async (e) => {
     e.preventDefault();
     console.log(e.target.value);
@@ -21,36 +24,35 @@ function Index() {
     if (res.status === "400") {
       window.alert("cannot search");
     } else {
-      var result = res.users.map(function(a) {return {_id:a._id,username:a.username}});
-        setSearchUser(result);
+      var result = res.users.map(function (a) { return { _id: a._id, username: a.username } });
+      setSearchUser(result);
     }
   };
   return (
     <>
-    <div className="externallist">
-      <div className="internallist">
-      <form class="form-inline d-flex justify-content-center md-form form-sm ">
-        <input
-          class="searchbar"
-          type="text"
-          placeholder="Search"
-          aria-label="Search"
-          onChange={handleChange}
-        />
-        <SearchIcon className="header__searchIcon" />
-      </form>
-      </div>
-      <div className="internallist">
-      <div class="list-group">
-        <button type="button" class="list-group-item list-group-item-action active">
-    Cras justo odio
-  </button>
-  <button type="button" class="list-group-item list-group-item-action">Dapibus ac facilisis in</button>
-  <button type="button" class="list-group-item list-group-item-action">Morbi leo risus</button>
-  <button type="button" class="list-group-item list-group-item-action">Porta ac consectetur ac</button>
-  <button type="button" class="list-group-item list-group-item-action" disabled>Vestibulum at eros</button>
-</div>
-      </div>
+      <div className="externallist">
+        <div className="internallist">
+          <form class="form-inline d-flex justify-content-center md-form form-sm ">
+            <input
+              class="searchbar"
+              type="text"
+              placeholder="Search"
+              aria-label="Search"
+              onChange={handleChange}
+            />
+            <SearchIcon className="header__searchIcon" />
+          </form>
+        </div>
+        <div className="internallist">
+          <div class="list-group " >
+            {
+
+              searchUser.map(user => <button type="button" class="list-group-item list-group-item-action active" onclick={profileShow}>
+                {user.username}
+              </button>)
+            }
+          </div>
+        </div>
       </div>
       {/*  */}
     </>
