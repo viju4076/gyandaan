@@ -145,15 +145,21 @@ router.post("/register", (req, res, next) => {
       .json({ message: "User registered successfully", user: user });
   });
 });
-router.post("/addFollowers", (req, res, next) => {
+router.post("/changeFollower", (req, res, next) => {
   console.log(req.body);
   const userId = req.body.userId;
+  const isFollowing = req.body.isFollowing;
+  console.log("Is following",isFollowing)
+  let searchFollowers ={ $push:{"followers":userId}};
+  let searchFollowing ={$push:{"following":req.user._id}}
+  if(!isFollowing){
+    searchFollowers={$pull:{"followers":userId}}
+    searchFollowing ={$pull:{"following":req.user._id}}
+  }
   
   User.findOneAndUpdate(
     { _id: req.user._id },
-    {
-      $push:{"followers":userId}
-    },
+    searchFollowing,
     { new: true },
     (err, loggedInUser) => {
       if (err) {
@@ -163,9 +169,7 @@ router.post("/addFollowers", (req, res, next) => {
       } else {
         User.findOneAndUpdate(
           { _id: userId },
-          {
-            $push:{"following":req.user._id}
-          },
+         searchFollowers,
           { new: true },
           (err, profileUser) => {
             if (err) {
@@ -173,7 +177,7 @@ router.post("/addFollowers", (req, res, next) => {
                 .status(200)
                 .json({ status: "400", msg: "Cannot add as a teacher " });
             } else {
-              console.log(profileUser);
+              console.log("follow wale part",profileUser);
               res.status(200).json({
                 status: "200",
                 msg: "Follow and following done",
@@ -284,7 +288,11 @@ router.get("/getpost/:userId", (req, res, next) => {
   console.log("in post",userId);
 
   if(userId!=="userkiprofile"){
-  search={senderId: userId};
+  search={senderId: userId };
+  }else{
+    console.log("post mai aa gaye", req.user);
+   // search ={ following:{$elemMatch:  } }
+   search={senderId: req.user.following}
   }
     
 
@@ -293,10 +301,11 @@ router.get("/getpost/:userId", (req, res, next) => {
       console.log(err);
       res.status(400).json({ message: "can't get feeds" });
     } else {
-      console.log(allPost);
+      console.log("sare post",allPost);
       res.status(200).json({
         status: 200,
         post: allPost.sort((p1, p2) => (p1.dateTime > p2.dateTime ? -1 : 1)),
+        user: req.user 
       });
     }
   });

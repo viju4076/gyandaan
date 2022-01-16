@@ -8,8 +8,13 @@ function Intro({profileUser}) {
     console.log('props', profileUser);
     const [feeds, setFeeds] = useState([]);
     const [user, setUser]= useState(useSelector(state => state.user.update_user));
+   
+    const [isFollowing, setIsFollowing ] = useState(false);
+
     const dispatch = useDispatch();
     useEffect(() => {
+       
+        // fetch(`/isfollowing/`)
        
       fetch(`/getpost/${profileUser._id}`)
         .then(data => data.json())                                                                                        
@@ -18,29 +23,43 @@ function Intro({profileUser}) {
           if (data.status == 200) {
   
             setFeeds(data.post);
+            setUser(data.user);
+            console.log(data.user);
+            if(data.user&&data.user.following&&data.user.following.includes(profileUser._id)){
+                setIsFollowing(true);
+            }
+           
   
   
           }
         })
+       
+      
+        
     }, [])
     const handleClick = async (e)=>{
-        var res = await fetch("/addFollowers", {
+
+        var res = await fetch("/changeFollower", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                userId: profileUser._id
+                userId: profileUser._id,
+                isFollowing: isFollowing
             }),
           });
           res = await res.json();
-         setUser(res.loggedInUser);
+        
           console.log(res.status);
           console.log("New user data ", res.loggedInUser);
           if (res.status === "400" || !res.loggedInUser) {
             window.alert("Cannot follow");
           } else {
-            window.alert("followed");
+            setUser(res.loggedInUser);
+            setIsFollowing(!isFollowing);
+            console.log("profileUser",res.profileUser);
+            window.alert("Button clicked");
             dispatch({
               type: UPDATE_USER,
               payload: {
@@ -73,7 +92,7 @@ function Intro({profileUser}) {
                                     <li><i class="fa fa-linkedin"></i></li>
                                     <li><i class="fa fa-google"></i></li>
                                 </ul> */}
-                                <div class="buttons"> <button class="btn btn-outline-primary px-4" onClick={handleClick}>Follow</button> <button class="btn btn-primary px-4 ms-3">Contact</button> </div>
+                                <div class="buttons"> <button class="btn btn-outline-primary px-4" onClick={handleClick} >{!isFollowing?"Follow":"Unfollow"}</button> <button class="btn btn-primary px-4 ms-3">Contact</button> </div>
                             </div>
                         </div>
                     </div>
