@@ -44,7 +44,7 @@ function Home() {
 
                 <div className='internal2'>
                     <div className='postGenerator'>
-                        {user.isTeacher && <Post />}
+                        {user&&user.isTeacher && <Post />}
                     </div>
 
                     <div className='feeds'>

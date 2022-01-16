@@ -75,6 +75,7 @@ const Navbar = () => {
         dispatch({ type: IS_USER_LOGGED_IN, payload: false });
         dispatch({ type: GET_PROFILE, payload: false });
         // dispatch({type:SET_USER_ID,payload: data.userId});
+        History.push("/");
       }
     });
   };

@@ -5,7 +5,7 @@ import "./RenderPost.css";
 export default function RenderPost() {
     const [feeds, setFeeds] = useState([]);
   useEffect(() => {
-    fetch('/getpost')
+    fetch('/getpost/userkiprofile')
       .then(data => data.json())                                                                                        
       .then(data => {
         console.log('in get post', data.post);

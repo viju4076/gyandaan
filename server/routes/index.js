@@ -207,18 +207,21 @@ router.get("/auth", isAuth, (req, res, next) => {
 router.get("/profile/:userId", async (req, res, next) => {
   const userId = req.params.userId;
   console.log('userId', userId);
+ 
   if (userId === "userkiprofile") {
-    console.log('in if part ');
+    
+    console.log('in if part ',req.user);
     res
       .status(200)
       .json({ status: 200, msg: "current user profile", user: req.user });
   }
   else if (userId != null) {
     let data = await User.find({ _id: userId }, (err, User) => {
+      console.log("in profile",User);
       if (!err)
         res
           .status(200)
-          .json({ status: 200, msg: "current user profile", user: User });
+          .json({ status: 200, msg: "current user profile", user: User[0] });
     });
   }
   else
@@ -230,9 +233,18 @@ router.get("/logout", (req, res, next) => {
   req.logout();
   res.status(200).json({ status: 200, msg: "current user logged out" });
 });
-router.get("/getpost", (req, res, next) => {
+router.get("/getpost/:userId", (req, res, next) => {
   console.log("Getting feeds");
-  Post.find({}, function (err, allPost) {
+  const userId = req.params.userId;
+  let search= {};
+  console.log("in post",userId);
+
+  if(userId!=="userkiprofile"){
+  search={senderId: userId};
+  }
+    
+
+  Post.find(search, function (err, allPost) {
     if (err) {
       console.log(err);
       res.status(400).json({ message: "can't get feeds" });
@@ -244,6 +256,7 @@ router.get("/getpost", (req, res, next) => {
       });
     }
   });
+
 
   //res.status(200).json({status:200, post: posts});
 });
