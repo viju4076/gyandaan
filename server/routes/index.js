@@ -145,6 +145,50 @@ router.post("/register", (req, res, next) => {
       .json({ message: "User registered successfully", user: user });
   });
 });
+router.post("/addFollowers", (req, res, next) => {
+  console.log(req.body);
+  const userId = req.body.userId;
+  
+  User.findOneAndUpdate(
+    { _id: req.user._id },
+    {
+      $push:{"followers":userId}
+    },
+    { new: true },
+    (err, loggedInUser) => {
+      if (err) {
+        res
+          .status(200)
+          .json({ status: "400", msg: "Cannot follow " });
+      } else {
+        User.findOneAndUpdate(
+          { _id: userId },
+          {
+            $push:{"following":req.user._id}
+          },
+          { new: true },
+          (err, profileUser) => {
+            if (err) {
+              res
+                .status(200)
+                .json({ status: "400", msg: "Cannot add as a teacher " });
+            } else {
+              console.log(profileUser);
+              res.status(200).json({
+                status: "200",
+                msg: "Follow and following done",
+               profileUser: profileUser,
+               loggedInUser: loggedInUser
+              });
+            }
+          }
+        );
+       
+      }
+    }
+  );
+  
+});
 
 /**
  * -------------- GET ROUTES ----------------
