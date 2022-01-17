@@ -99,3 +99,7 @@ body {
     margin: 10px;
 }
 
+
+.shortprofile:hover{
+    cursor: pointer;
+}

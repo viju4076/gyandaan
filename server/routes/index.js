@@ -364,15 +364,6 @@ router.get("/getpost/:userId", (req, res, next) => {
   let loggedInUser=req.user;
  
   let isFollowing=loggedInUser.following.includes(userId);
-
-  
-
-
-
-
-  
-
-
   if (userId !== "userkiprofile") {
     search = {
       senderId: userId
@@ -405,5 +396,27 @@ router.get("/getpost/:userId", (req, res, next) => {
 
   //res.status(200).json({status:200, post: posts});
 });
+
+
+router.get("/getfollowing",(req,res,next)=>{
+  console.log("get following praya");
+  User.find({_id:req.user.following},(err,followingList)=>{
+    if(err){
+      res.json({status:200,following:[]});
+    }
+    else{
+      followingList = followingList.map(element=>{
+        return {
+          username: element.username,
+          _id : element._id
+        }
+      });
+      console.log("following list",followingList);
+      res.json({status:200,following:followingList});
+    }
+  })
+
+})
+
 
 module.exports = router;
