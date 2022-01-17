@@ -48,12 +48,15 @@ function Intro({ user }) {
                     </div>
                 </div>
             </div>
-            {feeds.map(feed => <ClassPost
-            key={feed._id}
-            name={feed.name}
-            link={feed.link}
-            description={feed.description}
+            <div className='xyz mt-5'>
+                {feeds.map(feed => <ClassPost
+                key={feed._id}
+                name={feed.name}
+                link={feed.link}
+                description={feed.description}
           />)}
+            </div>
+            
         </div>
     )
 }
