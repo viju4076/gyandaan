@@ -4,11 +4,12 @@ import RenderPost from '../Post/RenderPost';
 import ClassPost from '../Post/ClassPost';
 import { useDispatch, useSelector } from 'react-redux';
 import { UPDATE_USER } from '../../actions/types';
-function Intro({profileUser}) {
-    console.log('props', profileUser);
+import './index.css';
+function Intro(props) {
+    //console.log('props', profileUser);
     const [feeds, setFeeds] = useState([]);
     const [user, setUser]= useState(useSelector(state => state.user.update_user));
-   
+    const [profileUser,setProfileUser]=useState(props.profileUser);
     const [isFollowing, setIsFollowing ] = useState(false);
 
     const dispatch = useDispatch();
@@ -23,12 +24,11 @@ function Intro({profileUser}) {
           if (data.status == 200) {
   
             setFeeds(data.post);
-            setUser(data.user);
-            console.log(data.user);
-            if(data.user&&data.user.following&&data.user.following.includes(profileUser._id)){
-                setIsFollowing(true);
-            }
-           
+            
+      
+
+            console.log("follow dekhna hai ",data.isFollowing);
+            setIsFollowing(data.isFollowing);
   
   
           }
@@ -58,6 +58,7 @@ function Intro({profileUser}) {
           } else {
             setUser(res.loggedInUser);
             setIsFollowing(!isFollowing);
+            setProfileUser(res.profileUser);
             console.log("profileUser",res.profileUser);
             window.alert("Button clicked");
             dispatch({
@@ -84,14 +85,41 @@ function Intro({profileUser}) {
                                     <p class="fonts">followers: {profileUser.followers.length} </p>
                                     <p class="fonts">followings: {profileUser.following.length} </p>
                                 </div>
-                                {/* <ul class="social-list">
-                                    <p>Hello</p>
-                                    <li><i class="fa fa-facebook"></i></li>
-                                    <li><i class="fa fa-dribbble"></i></li>
-                                    <li><i class="fa fa-instagram"></i></li>
-                                    <li><i class="fa fa-linkedin"></i></li>
-                                    <li><i class="fa fa-google"></i></li>
-                                </ul> */}
+                                <div className="gyandaanRating">
+                                      <div className="globalRating">
+                                         
+                                         <div className="internalRating">
+                                            Gyandaan Rating
+                                         </div>
+                                           <div className="internalRating">
+
+                                           <span class="fa fa-star checked"></span>
+                                         </div>
+                                         
+                                         
+
+                                      </div>
+                                      <div className="userRating">
+                                      <div className="internalRating">
+                                            Your Rating
+                                         </div>
+                                           <div className="internalRating">
+                                           <span class="fa fa-star checked"></span>
+                                             
+                                          
+                                         </div>
+                                         
+                                         
+                                      </div>
+
+                                </div>
+                                <ul class="social-list">
+                              
+                               
+                                <span class="fa fa-star checked"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                </ul>
                                 <div class="buttons"> <button class="btn btn-outline-primary px-4" onClick={handleClick} >{!isFollowing?"Follow":"Unfollow"}</button> <button class="btn btn-primary px-4 ms-3">Contact</button> </div>
                             </div>
                         </div>

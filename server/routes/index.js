@@ -42,23 +42,40 @@ router.post(
 // });
 router.post("/search", async (req, res, next) => {
   console.log(req.body.name);
-  await User.find(
-    {
-      $or: [
-        { username: { $regex: req.body.name } },
-        { email: { $regex: req.body.name } },
+  await User.find({
+      $or: [{
+          username: {
+            $regex: req.body.name
+          }
+        },
+        {
+          email: {
+            $regex: req.body.name
+          }
+        },
         // // {"phone":{$regex:req.params.key}},
         // // {"areasOfInterest":{$regex:req.params.key}}
-        { qualifications: { $regex: req.body.name } },
+        {
+          qualifications: {
+            $regex: req.body.name
+          }
+        },
       ],
     },
     (err, search) => {
       console.log("search ", search);
       if (err) {
         console.log(err);
-        res.status(200).json({ status: "400", msg: "Cannot search icon " });
+        res.status(200).json({
+          status: "400",
+          msg: "Cannot search icon "
+        });
       } else {
-        res.status(200).json({ status: "201", msg: "Search successful", users: search });
+        res.status(200).json({
+          status: "201",
+          msg: "Search successful",
+          users: search
+        });
       }
     }
   );
@@ -66,22 +83,26 @@ router.post("/search", async (req, res, next) => {
 router.post("/addteacher", (req, res, next) => {
   console.log(req.body);
 
-  User.findOneAndUpdate(
-    { _id: req.user._id },
-    {
+  User.findOneAndUpdate({
+      _id: req.user._id
+    }, {
       isTeacher: true,
       Rating: 0,
       areasOfInterest: req.body.areasOfInterest,
       Posts: [],
       Messages: [],
       qualifications: req.body.qualifications,
+    }, {
+      new: true
     },
-    { new: true },
     (err, updatedUser) => {
       if (err) {
         res
           .status(200)
-          .json({ status: "400", msg: "Cannot add as a teacher " });
+          .json({
+            status: "400",
+            msg: "Cannot add as a teacher "
+          });
       } else {
         console.log(updatedUser);
         res.status(200).json({
@@ -109,9 +130,13 @@ router.post("/addpost", (req, res, next) => {
     console.log(post);
     if (err) {
       console.log(err);
-      res.status(210).json({ message: "Failed to add post" });
+      res.status(210).json({
+        message: "Failed to add post"
+      });
     } else {
-      res.status(201).json({ message: "Post registered successfully" });
+      res.status(201).json({
+        message: "Post registered successfully"
+      });
     }
   });
 });
@@ -142,56 +167,89 @@ router.post("/register", (req, res, next) => {
     console.log(user);
     res
       .status(201)
-      .json({ message: "User registered successfully", user: user });
+      .json({
+        message: "User registered successfully",
+        user: user
+      });
   });
 });
 router.post("/changeFollower", (req, res, next) => {
   console.log(req.body);
-  const userId = req.body.userId;
+  const loggedInUserId=req.user._id;
+  const profileUserId=req.body.userId;
+  const userId = req.body.userId; //profile
   const isFollowing = req.body.isFollowing;
-  console.log("Is following",isFollowing)
-  let searchFollowers ={ $push:{"followers":userId}};
-  let searchFollowing ={$push:{"following":req.user._id}}
-  if(!isFollowing){
-    searchFollowers={$pull:{"followers":userId}}
-    searchFollowing ={$pull:{"following":req.user._id}}
-  }
   
-  User.findOneAndUpdate(
-    { _id: req.user._id },
-    searchFollowing,
-    { new: true },
+
+  console.log("Is following", isFollowing)
+  let searchFollowersOfProfile = {
+    $push: {
+      "followers": loggedInUserId
+    }
+  };
+  let searchFollowingOfLoggedIn = {
+    $push: {
+      "following": profileUserId
+    }
+  }
+  if (isFollowing) {
+    searchFollowersOfProfile = {
+      $pull: {
+        "followers": loggedInUserId
+      }
+    }
+    searchFollowingOfLoggedIn = {
+      $pull: {
+        "following": profileUserId
+      }
+    }
+  }
+
+  User.findOneAndUpdate({
+      _id: loggedInUserId
+    },
+    searchFollowingOfLoggedIn, {
+      new: true
+    },
     (err, loggedInUser) => {
       if (err) {
         res
           .status(200)
-          .json({ status: "400", msg: "Cannot follow " });
+          .json({
+            status: "400",
+            msg: "Cannot follow "
+          });
       } else {
-        User.findOneAndUpdate(
-          { _id: userId },
-         searchFollowers,
-          { new: true },
+        User.findOneAndUpdate({
+            _id: profileUserId
+          },
+          searchFollowersOfProfile, {
+            new: true
+          },
           (err, profileUser) => {
             if (err) {
               res
                 .status(200)
-                .json({ status: "400", msg: "Cannot add as a teacher " });
+                .json({
+                  status: "400",
+                  msg: "Cannot add as a teacher "
+                });
             } else {
-              console.log("follow wale part",profileUser);
+              console.log("follow wale part", profileUser);
               res.status(200).json({
                 status: "200",
                 msg: "Follow and following done",
-               profileUser: profileUser,
-               loggedInUser: loggedInUser
+                profileUser: profileUser,
+                loggedInUser: loggedInUser
               });
             }
           }
         );
-       
+
       }
     }
   );
-  
+
 });
 
 /**
@@ -235,13 +293,17 @@ router.get("/login-success", (req, res, next) => {
   console.log("login success");
   console.log(req.body);
 
-  res.status(200).json({ message: "Successful" });
+  res.status(200).json({
+    message: "Successful"
+  });
   //res.send('<p>You successfully logged in. --> <a href="/protected-route">Go to protected route</a></p>');
 });
 
 router.get("/login-failure", (req, res, next) => {
   console.log("login failure");
-  res.status(400).json({ message: "Login failure" });
+  res.status(400).json({
+    message: "Login failure"
+  });
 });
 router.get("/auth", isAuth, (req, res, next) => {
   res.status(200).json({
@@ -255,57 +317,87 @@ router.get("/auth", isAuth, (req, res, next) => {
 router.get("/profile/:userId", async (req, res, next) => {
   const userId = req.params.userId;
   console.log('userId', userId);
- 
+
   if (userId === "userkiprofile") {
-    
-    console.log('in if part ',req.user);
+
+    console.log('in if part ', req.user);
     res
       .status(200)
-      .json({ status: 200, msg: "current user profile", user: req.user });
-  }
-  else if (userId != null) {
-    let data = await User.find({ _id: userId }, (err, User) => {
-      console.log("in profile",User);
+      .json({
+        status: 200,
+        msg: "current user profile",
+        user: req.user
+      });
+  } else if (userId != null) {
+    let data = await User.find({
+      _id: userId
+    }, (err, User) => {
+      console.log("in profile", User);
       if (!err)
         res
-          .status(200)
-          .json({ status: 200, msg: "current user profile", user: User[0] });
+        .status(200)
+        .json({
+          status: 200,
+          msg: "current user profile",
+          user: User[0]
+        });
     });
-  }
-  else
-    res.status(210).json({ message: "Can't get current user" });
+  } else
+    res.status(210).json({
+      message: "Can't get current user"
+    });
 
 });
 router.get("/logout", (req, res, next) => {
   console.log("Logged out");
   req.logout();
-  res.status(200).json({ status: 200, msg: "current user logged out" });
+  res.status(200).json({
+    status: 200,
+    msg: "current user logged out"
+  });
 });
 router.get("/getpost/:userId", (req, res, next) => {
   console.log("Getting feeds");
   const userId = req.params.userId;
-  let search= {};
-  console.log("in post",userId);
+  let search = {};
+  console.log("in post", userId);
+  let loggedInUser=req.user;
+ 
+  let isFollowing=loggedInUser.following.includes(userId);
 
-  if(userId!=="userkiprofile"){
-  search={senderId: userId };
-  }else{
+  
+
+
+
+
+  
+
+
+  if (userId !== "userkiprofile") {
+    search = {
+      senderId: userId
+    };
+  } else {
     console.log("post mai aa gaye", req.user);
-   // search ={ following:{$elemMatch:  } }
-   search={senderId: req.user.following}
+    // search ={ following:{$elemMatch:  } }
+    search = {
+      senderId: req.user.following
+    }
   }
-    
+
 
   Post.find(search, function (err, allPost) {
     if (err) {
       console.log(err);
-      res.status(400).json({ message: "can't get feeds" });
+      res.status(400).json({
+        message: "can't get feeds"
+      });
     } else {
-      console.log("sare post",allPost);
+      console.log("sare post", allPost);
       res.status(200).json({
         status: 200,
         post: allPost.sort((p1, p2) => (p1.dateTime > p2.dateTime ? -1 : 1)),
-        user: req.user 
+        isFollowing:isFollowing
       });
     }
   });

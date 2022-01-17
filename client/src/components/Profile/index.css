@@ -76,3 +76,26 @@ body {
     color: #fff;
     height: 40px
 }
+
+
+.gyandaanRating{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+   
+    
+    
+}
+.userRating{
+    
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+}
+
+.globalRating{
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+}
+
