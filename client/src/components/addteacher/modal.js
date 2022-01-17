@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { categories } from "../../categories/index.js";
 import { useSelector, useDispatch } from "react-redux";
 import { GET_PROFILE, UPDATE_USER } from '../../actions/types';
@@ -12,14 +12,32 @@ function Modal() {
         skills.push({ id: categories[i].id, skill: categories[i].skill, isSelected: false });
     }
     const [updatedUser, setUpdatedUser] = useState(useSelector(state => state.user.update_user));
-    
+    const dispatch = useDispatch();
+   
+    useEffect(() => {
+        fetch('/profile/userkiprofile')
+            .then(data => data.json())
+            .then(data => {
+                console.log('above if statement', data);
+                if (data.status == 200) {
+                    setUpdatedUser(data.user);
+                    console.log("inside profile", data.user);
+                   
+                }
+            })
+
+
+    }, []);
+    console.log("Inside modal",updatedUser);
     const [Categories, setCategories] = useState((updatedUser&&updatedUser.areasOfInterest&&updatedUser.areasOfInterest.length)?updatedUser.areasOfInterest:skills);
 
     console.log(Categories);
     const [qualifications, setQualifications] = useState(updatedUser.qualifications?updatedUser.qualifications:"");
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
    
-
+    // //const [user, setUser] = useState(useSelector(state => state.user.update_user));
+    // const dispatch = useDispatch();
+    
     
     
     const handleSubmit = async (e) => {

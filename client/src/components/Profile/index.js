@@ -11,7 +11,7 @@ function Index() {
         fetch(`/profile/${objectId}`)
             .then(data => data.json())
             .then(data => {
-                console.log('above if statement', data);
+                console.log('above if statement', data.user);
                 if (data.status == 200) {
                     setUser(data.user);
                     console.log("user ki profile", data.user);
@@ -21,7 +21,7 @@ function Index() {
     }, []);
     return (
         <div>
-            {user && <Intro user={user} />}
+            {user && <Intro profileUser={user} />}
         </div>
     )
 }

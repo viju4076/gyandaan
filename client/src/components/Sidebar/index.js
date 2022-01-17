@@ -32,13 +32,13 @@ function Sidebar() {
         <div className="sidebar">
             <div className="sidebar_top">
                 <img src="https://analyticsindiamag.com/wp-content/uploads/2020/10/7d744a684fe03ebc7e8de545f97739dd.jpg" alt=""/>
-                { <Avatar >{user.email&&user.email.charAt(0)} </Avatar> }
-                <h2>{user.username}</h2>
-                <h4>{user.email}</h4>
+                { <Avatar >{user&&user.email&&user.email.charAt(0)} </Avatar> }
+                <h2>{user&&user.username}</h2>
+                <h4>{user&&user.email}</h4>
             </div>
             <div className="sidebar_stats">
               <div className="sidebar_stat">
-               {user.isTeacher&&
+               {user&&user.isTeacher&&
                 <p><span class="label label-primary">Teacher</span></p>
               
                }
@@ -57,7 +57,7 @@ function Sidebar() {
 
             }
             {
-              recentItem(user.qualifications)
+              recentItem(user&&user.qualifications)
             }
             {/* {recentItem('reactjs')}
             {recentItem('programming')}
