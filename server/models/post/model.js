@@ -6,7 +6,7 @@ const { ObjectId } = mongoose.Schema
 const comments = new Schema({
     senderName: String,
     senderId: ObjectId,
-     description: String,
+    description: String,
     dateTime: String
 })
 
@@ -14,11 +14,12 @@ const comments = new Schema({
 const PostSchema = new Schema({
     name: String,
     senderId: ObjectId,
-    heading:String,
+    heading: String,
     link: String,
     description: String,
     dateTime: Date,
-    comments:[comments]
+    formattedDateTime: String,
+    comments: [comments]
 })
 
 const Post = connection.model('Post', PostSchema);

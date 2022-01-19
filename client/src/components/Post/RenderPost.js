@@ -1,12 +1,12 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 
 import ClassPost from './ClassPost';
 import "./RenderPost.css";
 export default function RenderPost() {
-    const [feeds, setFeeds] = useState([]);
+  const [feeds, setFeeds] = useState([]);
   useEffect(() => {
     fetch('/getpost/userkiprofile')
-      .then(data => data.json())                                                                                        
+      .then(data => data.json())
       .then(data => {
         console.log('in get post', data.post);
         if (data.status == 200) {
@@ -19,15 +19,17 @@ export default function RenderPost() {
   }, [])
 
   return (
-    
-       <div className="xyz">
-          {feeds.map(feed => <ClassPost
-            key={feed._id}
-            name={feed.name}
-            link={feed.link}
-            description={feed.description}
-          />)}
 
-        </div>
+    <div className="xyz">
+      {feeds.map(feed => <ClassPost
+        key={feed._id}
+        name={feed.name}
+        link={feed.link}
+        description={feed.description}
+        dateTime={feed.formattedDateTime}
+        heading={feed.heading}
+      />)}
+
+    </div>
   );
 }
