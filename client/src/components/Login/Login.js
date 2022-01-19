@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import './Login.css';
 import {
     IS_USER_LOGGED_IN,
-    SET_USER_ID
+    SET_USER_ID,
+    LOGGED_IN_USER
 } from '../../actions/types';
 import {Link,useHistory} from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -20,7 +21,9 @@ function Login() {
                 if (data.status == 200) {
                     console.log("auth called",data);
                     dispatch({ type: IS_USER_LOGGED_IN, payload: true });
-                    dispatch({type:SET_USER_ID,payload: data.userId});
+                  //  dispatch({type:LOGGED_IN_USER,payload: {userId: data.userId}});
+                   
+
                 }
             });
             

@@ -131,13 +131,15 @@ function Intro(props) {
           </div>
         </div>
       </div>
-      {feeds.map(feed => <ClassPost
+      {feeds&&feeds.map(feed => <ClassPost
         key={feed._id}
+        id={feed._id}
         name={feed.name}
         link={feed.link}
         description={feed.description}
         dateTime={feed.formattedDateTime}
         heading={feed.heading}
+        attendees= {feed.attendees}
       />)}
     </div>
   )

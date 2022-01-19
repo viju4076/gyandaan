@@ -132,6 +132,7 @@ router.post("/addpost", (req, res, next) => {
     dateTime: currentdate,
     formattedDateTime: datetime,
     comments: [],
+    attendees: [],
   });
   console.log(newPost);
   newPost.save().then((err, post) => {
@@ -259,6 +260,50 @@ router.post("/changeFollower", (req, res, next) => {
   );
 
 });
+
+router.post("/changeattendee", (req, res, next) => {
+  console.log(req.body);
+  const isAttending= req.body.isAttending;
+  let searchAttendee = {
+    $push: {
+      "attendees": req.user._id
+    }
+  };
+  if(isAttending){
+    searchAttendee = {
+      $pull: {
+        "attendees": req.user._id
+      }
+    };
+  }
+  Post.findOneAndUpdate({
+    _id: req.body.postId
+  },
+    searchAttendee, {
+    new: true
+  },
+    (err, post) => {
+      if (err) {
+        res
+          .status(200)
+          .json({
+            status: "400",
+            msg: "Cannot follow "
+          });
+      } else {
+        console.log("attending ", post);
+         res.status(200)
+         .json({
+           status: "200",
+           post: post,
+           msg: "Attendees changed",
+           isAttending: !isAttending
+         })
+      } 
+    }
+  );
+})
+
 
 /**
  * -------------- GET ROUTES ----------------

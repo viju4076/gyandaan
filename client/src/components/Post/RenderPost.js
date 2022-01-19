@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react';
 
 import ClassPost from './ClassPost';
 import "./RenderPost.css";
-export default function RenderPost() {
+export default function RenderPost(props) {
+  
   const [feeds, setFeeds] = useState([]);
+  const [isAttending, setIsAttending]= useState();
+    
   useEffect(() => {
     fetch('/getpost/userkiprofile')
       .then(data => data.json())
@@ -12,6 +15,7 @@ export default function RenderPost() {
         if (data.status == 200) {
 
           setFeeds(data.post);
+          
 
 
         }
@@ -21,13 +25,18 @@ export default function RenderPost() {
   return (
 
     <div className="xyz">
-      {feeds.map(feed => <ClassPost
+      {feeds&&feeds.map(feed => <ClassPost
         key={feed._id}
+        id={feed._id}
         name={feed.name}
         link={feed.link}
         description={feed.description}
         dateTime={feed.formattedDateTime}
         heading={feed.heading}
+        attendees= {feed.attendees}
+        userId= {props.userId}
+        isAttending={feed.attendees.includes(props.userId)}
+        
       />)}
 
     </div>

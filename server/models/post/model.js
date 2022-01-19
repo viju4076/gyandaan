@@ -11,6 +11,7 @@ const comments = new Schema({
 })
 
 
+
 const PostSchema = new Schema({
     name: String,
     senderId: ObjectId,
@@ -19,7 +20,8 @@ const PostSchema = new Schema({
     description: String,
     dateTime: Date,
     formattedDateTime: String,
-    comments: [comments]
+    comments: [comments],
+    attendees: [ObjectId] 
 })
 
 const Post = connection.model('Post', PostSchema);
