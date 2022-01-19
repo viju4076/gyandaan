@@ -36,7 +36,7 @@ function Home() {
             <div className='searchcomponent'>
                 <Searchbar />
             </div>
-            <div className="external">
+            <div className="externalHome">
                 <div className='internal1'>
                     <Sidebar />
                 </div>

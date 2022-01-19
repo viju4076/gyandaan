@@ -4,6 +4,7 @@ import RenderPost from '../Post/RenderPost';
 import ClassPost from '../Post/ClassPost';
 import { useDispatch, useSelector } from 'react-redux';
 import { UPDATE_USER } from '../../actions/types';
+import Searchbar from "../Navbar/Searchbar"
 import './index.css';
 function Intro(props) {
     //console.log('props', profileUser);
@@ -73,7 +74,11 @@ function Intro(props) {
     }
     return (
         <div>
+            
             <Navbar/>
+            <div className='searchcomponent' style={{top:"0"}}>
+                <Searchbar />
+            </div>
             <div class="container mt-5">
                 <div class="row d-flex justify-content-center">
                     <div class="col-md-7">
