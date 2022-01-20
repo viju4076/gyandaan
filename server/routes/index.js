@@ -530,10 +530,7 @@ router.get("/getpost/:userId", (req, res, next) => {
         status: 200,
         post: allPost.sort((p1, p2) => (p1.dateTime > p2.dateTime ? -1 : 1)),
         isFollowing: isFollowing,
-<<<<<<< HEAD
-=======
         
->>>>>>> 951c5187a795649a9560a7aad64112c8fc4cc881
       });
     }
   });
@@ -543,6 +540,7 @@ router.get("/getpost/:userId", (req, res, next) => {
 
 router.get("/getfollowing", (req, res, next) => {
   console.log("get following praya");
+  
   User.find({ _id: req.user.following }, (err, followingList) => {
     if (err) {
       res.json({ status: 200, following: [] });
