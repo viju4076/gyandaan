@@ -140,6 +140,7 @@ function Intro(props) {
         dateTime={feed.formattedDateTime}
         heading={feed.heading}
         attendees= {feed.attendees}
+        isAttending={feed.attendees.includes(user._id)}
       />)}
     </div>
   )
