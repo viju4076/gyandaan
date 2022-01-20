@@ -13,6 +13,12 @@
 
 
 }
+.post_side{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
 .post_header{
     display: flex;
     margin-bottom: 10px;
@@ -36,7 +42,7 @@
 .post_buttons{
     display: flex;
     justify-content: space-evenly;
-    background-color: mediumblue;
+    background-color: #031d7d;
     border-radius: 15px
 }
 
@@ -48,4 +54,30 @@
     padding: 5px;
     cursor: pointer;
     margin:0;
+}
+.headingAndTiming{
+    display: flex;
+    background-color: lightblue;
+    width: fit-content;
+}
+.headingAndTiming:hover{
+    
+}
+.heading,.timing{
+    margin-right: 50px;
+    margin-left: 50px;
+    font-size: medium;
+    font-weight: 500;
+
+}
+.post_info > h2 {
+    font-size: medium;
+    font-weight: 500;
+}
+.description> p{
+    font-size: small;
+    font-weight: 400;
+    margin: 5px;
+    
+    
 }

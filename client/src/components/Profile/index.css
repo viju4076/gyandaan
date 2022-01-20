@@ -2,6 +2,10 @@ body {
     background: #eee
 }
 
+.row{
+    margin-top: 102px;
+}
+
 .card {
     border: none;
     position: relative;

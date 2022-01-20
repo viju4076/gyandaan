@@ -43,25 +43,25 @@ router.post(
 router.post("/search", async (req, res, next) => {
   console.log(req.body.name);
   await User.find({
-      $or: [{
-          username: {
-            $regex: req.body.name
-          }
-        },
-        {
-          email: {
-            $regex: req.body.name
-          }
-        },
-        // // {"phone":{$regex:req.params.key}},
-        // // {"areasOfInterest":{$regex:req.params.key}}
-        {
-          qualifications: {
-            $regex: req.body.name
-          }
-        },
-      ],
+    $or: [{
+      username: {
+        $regex: req.body.name
+      }
     },
+    {
+      email: {
+        $regex: req.body.name
+      }
+    },
+    // // {"phone":{$regex:req.params.key}},
+    // // {"areasOfInterest":{$regex:req.params.key}}
+    {
+      qualifications: {
+        $regex: req.body.name
+      }
+    },
+    ],
+  },
     (err, search) => {
       console.log("search ", search);
       if (err) {
@@ -84,17 +84,17 @@ router.post("/addteacher", (req, res, next) => {
   console.log(req.body);
 
   User.findOneAndUpdate({
-      _id: req.user._id
-    }, {
-      isTeacher: true,
-      Rating: 0,
-      areasOfInterest: req.body.areasOfInterest,
-      Posts: [],
-      Messages: [],
-      qualifications: req.body.qualifications,
-    }, {
-      new: true
-    },
+    _id: req.user._id
+  }, {
+    isTeacher: true,
+    Rating: 0,
+    areasOfInterest: req.body.areasOfInterest,
+    Posts: [],
+    Messages: [],
+    qualifications: req.body.qualifications,
+  }, {
+    new: true
+  },
     (err, updatedUser) => {
       if (err) {
         res
@@ -116,14 +116,23 @@ router.post("/addteacher", (req, res, next) => {
 });
 router.post("/addpost", (req, res, next) => {
   console.log(req.body);
+  var currentdate = new Date();
+  var datetime = currentdate.getDate() + "/"
+    + (currentdate.getMonth() + 1) + "/"
+    + currentdate.getFullYear() + " "
+    + currentdate.getHours() + ":"
+    + currentdate.getMinutes();
+
   const newPost = new Post({
     name: req.user.username,
     senderId: req.user._id,
     heading: req.body.post.heading,
     link: req.body.post.link,
     description: req.body.post.description,
-    dateTime: new Date(),
+    dateTime: currentdate,
+    formattedDateTime: datetime,
     comments: [],
+    attendees: [],
   });
   console.log(newPost);
   newPost.save().then((err, post) => {
@@ -175,11 +184,11 @@ router.post("/register", (req, res, next) => {
 });
 router.post("/changeFollower", (req, res, next) => {
   console.log(req.body);
-  const loggedInUserId=req.user._id;
-  const profileUserId=req.body.userId;
+  const loggedInUserId = req.user._id;
+  const profileUserId = req.body.userId;
   const userId = req.body.userId; //profile
   const isFollowing = req.body.isFollowing;
-  
+
 
   console.log("Is following", isFollowing)
   let searchFollowersOfProfile = {
@@ -206,11 +215,11 @@ router.post("/changeFollower", (req, res, next) => {
   }
 
   User.findOneAndUpdate({
-      _id: loggedInUserId
-    },
+    _id: loggedInUserId
+  },
     searchFollowingOfLoggedIn, {
-      new: true
-    },
+    new: true
+  },
     (err, loggedInUser) => {
       if (err) {
         res
@@ -221,11 +230,11 @@ router.post("/changeFollower", (req, res, next) => {
           });
       } else {
         User.findOneAndUpdate({
-            _id: profileUserId
-          },
+          _id: profileUserId
+        },
           searchFollowersOfProfile, {
-            new: true
-          },
+          new: true
+        },
           (err, profileUser) => {
             if (err) {
               res
@@ -251,6 +260,50 @@ router.post("/changeFollower", (req, res, next) => {
   );
 
 });
+
+router.post("/changeattendee", (req, res, next) => {
+  console.log(req.body);
+  const isAttending= req.body.isAttending;
+  let searchAttendee = {
+    $push: {
+      "attendees": req.user._id
+    }
+  };
+  if(isAttending){
+    searchAttendee = {
+      $pull: {
+        "attendees": req.user._id
+      }
+    };
+  }
+  Post.findOneAndUpdate({
+    _id: req.body.postId
+  },
+    searchAttendee, {
+    new: true
+  },
+    (err, post) => {
+      if (err) {
+        res
+          .status(200)
+          .json({
+            status: "400",
+            msg: "Cannot follow "
+          });
+      } else {
+        console.log("attending ", post);
+         res.status(200)
+         .json({
+           status: "200",
+           post: post,
+           msg: "Attendees changed",
+           isAttending: !isAttending
+         })
+      } 
+    }
+  );
+})
+
 
 /**
  * -------------- GET ROUTES ----------------
@@ -335,12 +388,12 @@ router.get("/profile/:userId", async (req, res, next) => {
       console.log("in profile", User);
       if (!err)
         res
-        .status(200)
-        .json({
-          status: 200,
-          msg: "current user profile",
-          user: User[0]
-        });
+          .status(200)
+          .json({
+            status: 200,
+            msg: "current user profile",
+            user: User[0]
+          });
     });
   } else
     res.status(210).json({
@@ -361,9 +414,9 @@ router.get("/getpost/:userId", (req, res, next) => {
   const userId = req.params.userId;
   let search = {};
   console.log("in post", userId);
-  let loggedInUser=req.user;
- 
-  let isFollowing=loggedInUser.following.includes(userId);
+  let loggedInUser = req.user;
+
+  let isFollowing = loggedInUser.following.includes(userId);
   if (userId !== "userkiprofile") {
     search = {
       senderId: userId
@@ -388,7 +441,7 @@ router.get("/getpost/:userId", (req, res, next) => {
       res.status(200).json({
         status: 200,
         post: allPost.sort((p1, p2) => (p1.dateTime > p2.dateTime ? -1 : 1)),
-        isFollowing:isFollowing
+        isFollowing: isFollowing
       });
     }
   });
@@ -398,21 +451,21 @@ router.get("/getpost/:userId", (req, res, next) => {
 });
 
 
-router.get("/getfollowing",(req,res,next)=>{
+router.get("/getfollowing", (req, res, next) => {
   console.log("get following praya");
-  User.find({_id:req.user.following},(err,followingList)=>{
-    if(err){
-      res.json({status:200,following:[]});
+  User.find({ _id: req.user.following }, (err, followingList) => {
+    if (err) {
+      res.json({ status: 200, following: [] });
     }
-    else{
-      followingList = followingList.map(element=>{
+    else {
+      followingList = followingList.map(element => {
         return {
           username: element.username,
-          _id : element._id
+          _id: element._id
         }
       });
-      console.log("following list",followingList);
-      res.json({status:200,following:followingList});
+      console.log("following list", followingList);
+      res.json({ status: 200, following: followingList });
     }
   })
 

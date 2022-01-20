@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { UPDATE_USER } from '../../actions/types';
+import { UPDATE_USER, LOGGED_IN_USER } from '../../actions/types';
 import { useSelector, useDispatch } from "react-redux";
 import Navbar from '../Navbar/Navbar';
 import Sidebar from "../Sidebar";
@@ -24,6 +24,12 @@ function Home() {
                             update_user: data.user
                         }
                     });
+                    dispatch({
+                        type: LOGGED_IN_USER, payload: {
+                            user_id: data.user._id
+                        }
+                    });
+                    
 
                 }
             })
@@ -36,7 +42,7 @@ function Home() {
             <div className='searchcomponent'>
                 <Searchbar />
             </div>
-            <div className="external">
+            <div className="externalHome">
                 <div className='internal1'>
                     <Sidebar />
                 </div>
@@ -48,7 +54,7 @@ function Home() {
                     </div>
 
                     <div className='feeds'>
-                        <RenderPost />
+                       {user&& <RenderPost userId= {user._id}/>}
                     </div>
 
                 </div>
