@@ -9,7 +9,10 @@ import './index.css';
 function Intro(props) {
   //console.log('props', profileUser);
   const [feeds, setFeeds] = useState([]);
+
   const [user, setUser] = useState(useSelector(state => state.user.update_user));
+  let userId = useSelector(state=>state.user.user_id);
+
   const [profileUser, setProfileUser] = useState(props.profileUser);
   const [isFollowing, setIsFollowing] = useState(false);
 
@@ -56,7 +59,8 @@ function Intro(props) {
     console.log("New user data ", res.loggedInUser);
     if (res.status === "400" || !res.loggedInUser) {
       window.alert("Cannot follow");
-    } else {
+    } 
+      else {
       setUser(res.loggedInUser);
       setIsFollowing(!isFollowing);
       setProfileUser(res.profileUser);
@@ -131,7 +135,21 @@ function Intro(props) {
           </div>
         </div>
       </div>
-      {feeds&&feeds.map(feed => <ClassPost
+      
+      {userId&&<div className='xyz mt-5'>
+          {feeds&&feeds.map(feed => <ClassPost
+            key={feed._id}
+            id={feed._id}
+            name={feed.name}
+            link={feed.link}
+            description={feed.description}
+            dateTime={feed.formattedDateTime}
+            heading={feed.heading}
+            attendees= {feed.attendees}
+            isAttending={feed.attendees.includes(userId)}
+          />)}
+      </div>}
+      {/* {feeds&&feeds.map(feed => <ClassPost
         key={feed._id}
         id={feed._id}
         name={feed.name}
@@ -141,7 +159,7 @@ function Intro(props) {
         heading={feed.heading}
         attendees= {feed.attendees}
         isAttending={feed.attendees.includes(user._id)}
-      />)}
+      />)} */}
     </div>
   )
 }

@@ -5,19 +5,17 @@ import "./RenderPost.css";
 export default function RenderPost(props) {
   
   const [feeds, setFeeds] = useState([]);
-  const [isAttending, setIsAttending]= useState();
+  //const [isAttending, setIsAttending]= useState();
     
   useEffect(() => {
     fetch('/getpost/userkiprofile')
       .then(data => data.json())
       .then(data => {
-        console.log('in get post', data.post);
+        //console.log('in get post', data.post);
         if (data.status == 200) {
 
           setFeeds(data.post);
-          
-
-
+          console.log("*******************************feeds are set and userid=",props.userId);
         }
       })
   }, [])
@@ -36,7 +34,6 @@ export default function RenderPost(props) {
         attendees= {feed.attendees}
         userId= {props.userId}
         isAttending={feed.attendees.includes(props.userId)}
-        
       />)}
 
     </div>
