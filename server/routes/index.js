@@ -115,13 +115,25 @@ router.post("/addteacher", (req, res, next) => {
   );
 });
 router.post("/addpost", (req, res, next) => {
-  console.log(req.body);
+  console.log("post ko add kiya",req.body);
   var currentdate = new Date();
   var datetime = currentdate.getDate() + "/"
     + (currentdate.getMonth() + 1) + "/"
     + currentdate.getFullYear() + " "
     + currentdate.getHours() + ":"
     + currentdate.getMinutes();
+    var startDate = new Date(req.body.post.startDate);
+    var formattedStartDate = startDate.getDate() + "/"
+    + (currentdate.getMonth() + 1) + "/"
+    + currentdate.getFullYear() + " "
+    + currentdate.getHours() + ":"
+    + currentdate.getMinutes();
+    console.log("startDate", req.body.post.startDate);
+   
+    
+        var endDate= new Date(req.body.post.endDate);
+    
+   // console.log("Date check kar rhe", startDate);
 
   const newPost = new Post({
     name: req.user.username,
@@ -130,7 +142,10 @@ router.post("/addpost", (req, res, next) => {
     link: req.body.post.link,
     description: req.body.post.description,
     dateTime: currentdate,
+    startDate: startDate,
+    endDate: endDate,
     formattedDateTime: datetime,
+    formattedStartDate: formattedStartDate,
     comments: [],
     attendees: [],
   });
@@ -441,7 +456,8 @@ router.get("/getpost/:userId", (req, res, next) => {
       res.status(200).json({
         status: 200,
         post: allPost.sort((p1, p2) => (p1.dateTime > p2.dateTime ? -1 : 1)),
-        isFollowing: isFollowing
+        isFollowing: isFollowing,
+        
       });
     }
   });

@@ -1,5 +1,7 @@
 import CreateIcon from "@material-ui/icons/Create";
 import React, { useEffect, useState, useRef } from "react";
+import Form from "react-bootstrap/Form";
+//import TimePicker from "./TimePicker";
 
 import "./index.css";
 import ImageIcon from "@material-ui/icons/Image";
@@ -15,17 +17,24 @@ import ClassPost from "./ClassPost";
 import FlipMove from "react-flip-move";
 function Index() {
 
-  
+
 
   let post;
   const form = useRef(null);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(e.target[0].value);
+    console.log("button", e.target[3].value, e.target[4].value);
+    //date e.target[3].value, time e.target[4].value
+   const startDate = e.target[3].value+"T"+ e.target[4].value+':00';
+   const endDate = e.target[3].value+"T"+ e.target[5].value+':00';
+   console.log("Date",startDate, endDate);
+
     post = {
       heading: e.target[0].value,
       link: e.target[1].value,
       description: e.target[2].value,
+      startDate: startDate,
+      endDate: endDate,
     };
 
     var res = await fetch("/addpost", {
@@ -80,6 +89,20 @@ function Index() {
                 rows="3"
               ></textarea>
             </div>
+            {/* <div id="date-picker-example" class="md-form md-outline input-with-post-icon datepicker">
+              <input placeholder="Select date" type="text" id="example" class="form-control"/>
+                <label for="example">Try me...</label>
+                <i class="fas fa-calendar input-prefix" tabindex/>
+            </div> */}
+            <div className="time">
+              <p className="timeLabel">Date</p>
+              <Form.Control type="date" name='date_of_class' className="formClass" />
+              <p className="timeLabel">Start Time</p>
+              <Form.Control type="time" name='start_time ' className="formClass" />
+              <p className="timeLabel">End time</p>
+              <Form.Control type="time" name='start_time ' className="formClass" />
+            </div>
+
             <div className="btndirection">
               <button type="submit" class="btn-primary">
                 Post
@@ -95,9 +118,9 @@ function Index() {
                */}
         </div>
       </div>
-      
-       
-      
+
+
+
       {/* <Post name="vijay" description="this is a test" 
             message="This worked"
         /> */}

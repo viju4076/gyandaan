@@ -35,6 +35,7 @@ export default function RenderPost(props) {
         heading={feed.heading}
         attendees= {feed.attendees}
         userId= {props.userId}
+        startDate= {feed.formattedDateTime}
         isAttending={feed.attendees.includes(props.userId)}
         
       />)}

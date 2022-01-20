@@ -19,7 +19,10 @@ const PostSchema = new Schema({
     link: String,
     description: String,
     dateTime: Date,
+    startDate: Date,
+    endDate: Date,
     formattedDateTime: String,
+    formattedStartDate: String,
     comments: [comments],
     attendees: [ObjectId] 
 })

@@ -12,7 +12,7 @@ const ClassPost =  (props) => {
    
     const [isAttending, setIsAttending]= useState(props.isAttending);
     
-    console.log("shreya",props);
+    console.log("shreya",props.formattedStartDate);
     
     useEffect(() => {
     //     fetch('/profile/userkiprofile')
@@ -105,7 +105,7 @@ const ClassPost =  (props) => {
                         <p>{props.heading}</p>
                     </div>
                     <div className='timing'>
-                        <p>spam</p>
+                        <p>{props.formattedStartDate}</p>
                     </div>
                 </div>
                 <div className='description'>
