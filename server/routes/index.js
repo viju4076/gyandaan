@@ -123,12 +123,16 @@ router.post("/addpost", (req, res, next) => {
     + currentdate.getHours() + ":"
     + currentdate.getMinutes();
     var startDate = new Date(req.body.post.startDate);
-    var formattedStartDate = startDate.getDate() + "/"
-    + (currentdate.getMonth() + 1) + "/"
-    + currentdate.getFullYear() + " "
-    + currentdate.getHours() + ":"
-    + currentdate.getMinutes();
-    console.log("startDate", req.body.post.startDate);
+    var formattedStartDate = startDate.toLocaleString('en-US', {
+      weekday: 'short', // long, short, narrow
+      day: 'numeric', // numeric, 2-digit
+      year: 'numeric', // numeric, 2-digit
+      month: 'long', // numeric, 2-digit, long, short, narrow
+      hour: 'numeric', // numeric, 2-digit
+      minute: 'numeric', // numeric, 2-digit
+      // numeric, 2-digit
+  });
+    console.log("formatted start date",formattedStartDate);+ "/"
    
     
         var endDate= new Date(req.body.post.endDate);
