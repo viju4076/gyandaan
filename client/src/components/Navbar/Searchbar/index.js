@@ -6,10 +6,15 @@ import SearchIcon from "@material-ui/icons/Search";
 function Index() {
   const [searchUser, setSearchUser] = useState([{ username: '', _id: '' }]);
   const History = useHistory();
+
+
+
   const profileShow = (e) => {
     console.log('gupta', e.target.name);
     History.push('/profile/' + e.target.name);
   }
+
+  
   const handleChange = async (e) => {
     e.preventDefault();
     console.log(e.target.value);
