@@ -4,12 +4,12 @@ import React, { forwardRef, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import InputOption from './InputOption'
 import './classPost.css'
-
+import Comment from "./Comment/Comment";
 
 
 
 const ClassPost =  (props) => {
-   
+   const[visible,setVisible]=useState(false);
     const [isAttending, setIsAttending]= useState(props.isAttending);
     
     console.log("shreya",props);
@@ -33,6 +33,10 @@ const ClassPost =  (props) => {
     const handleJoin = () => {
         window.open(props.link, "_blank");
     }
+    const opencomment = (e) =>{
+        console.log("button clicked");
+     setVisible(!visible);
+    }
     const handleAttend = async(e)=>{
         console.log("feed ki id",props.id);
         var res = await fetch("/changeattendee", {
@@ -43,6 +47,7 @@ const ClassPost =  (props) => {
             body: JSON.stringify({
                 "isAttending" : isAttending,
               "postId": props.id,
+
 
             }),
           });
@@ -115,11 +120,9 @@ const ClassPost =  (props) => {
             </div>
             <div className="post_buttons">
                 <InputOption Icon={ThumbUpSharp} title="Like" data-toggle="tooltip" color="gray"></InputOption>
-                <InputOption Icon={ChatOutlined} title="Comment" color="gray"></InputOption>
-                {/* <InputOption Icon={ShareOutlined} title="Share" color="gray"></InputOption>
-                <InputOption Icon={SendOutlined} title="Send" color="gray"></InputOption>
-            */}
+                <button Icon={ChatOutlined} class="btn btn-primary" onClick={opencomment}> Comment </button>
             </div>
+            {visible && <Comment postid={props.id}/>}
         </div>
     )
 }
