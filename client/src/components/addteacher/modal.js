@@ -3,6 +3,7 @@ import { categories } from "../../categories/index.js";
 import { useSelector, useDispatch } from "react-redux";
 import { GET_PROFILE, UPDATE_USER } from '../../actions/types';
 import { NavLink, Router } from "react-router-dom";
+import './index.css'
 
 function Modal() {
     
@@ -13,26 +14,25 @@ function Modal() {
     }
     const [updatedUser, setUpdatedUser] = useState(useSelector(state => state.user.update_user));
     const dispatch = useDispatch();
-   
+    const [Categories, setCategories] = useState(skills);
+  
     useEffect(() => {
         fetch('/profile/userkiprofile')
             .then(data => data.json())
             .then(data => {
-                console.log('above if statement', data);
+           
                 if (data.status == 200) {
                     setUpdatedUser(data.user);
-                    console.log("inside profile", data.user);
+                    setCategories(data.user.areasOfInterest.length?(data.user.areasOfInterest):skills);
+                    setQualifications(data.user.qualifications?data.user.qualifications:"");
                    
                 }
             })
 
 
     }, []);
-    console.log("Inside modal",updatedUser);
-    const [Categories, setCategories] = useState((updatedUser&&updatedUser.areasOfInterest&&updatedUser.areasOfInterest.length)?updatedUser.areasOfInterest:skills);
-
-    console.log(Categories);
-    const [qualifications, setQualifications] = useState(updatedUser.qualifications?updatedUser.qualifications:"");
+    
+    const [qualifications, setQualifications] = useState("");
     // const dispatch = useDispatch();
    
     // //const [user, setUser] = useState(useSelector(state => state.user.update_user));
@@ -82,7 +82,8 @@ function Modal() {
             el.id == e.target.id ? { ...el, isSelected: !el.isSelected } : el
         ))
         setCategories(newCategories);
-        console.log(e.target);
+
+        console.log("*************************",newCategories);
 
     }
 
@@ -100,7 +101,7 @@ function Modal() {
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">{(updatedUser&&updatedUser.isTeacher)?"Edit skills":"Add as Teacher"}</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
