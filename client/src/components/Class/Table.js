@@ -17,8 +17,8 @@ function Table() {
             })
     }, [])
 
-    return <div className='row justify-content-center'>
-        <table class="table table-bordered">
+    return <div className='table-wrapper-scroll-y my-custom-scrollbar row justify-content-center'>
+        <table class="table table-bordered table-striped mb-0 ">
             <thead>
                 <tr>
                     <th className='th-sm'>ClassName</th>
@@ -38,8 +38,8 @@ link*/ }
                     <tr>
                         <td>{event.heading}</td>
                         <td>{event.name}</td>
-                        <td>{event.startDate}</td>
-                        <td>{event.endDate}</td>
+                        <td>{event.formattedStartDate}</td>
+                        <td>{event.duration} hours</td>
                         <td>{event.link}</td>
                     </tr>)}
             </tbody>

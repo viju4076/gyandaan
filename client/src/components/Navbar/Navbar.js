@@ -108,11 +108,17 @@ const Navbar = () => {
                 className="main-navbar"
                 activeClassName="main-nav-active"
               >
-                Categories
+                <Modal />
               </NavLink>
             </li>
             <li>
-              <Modal />
+            <NavLink
+                to="/classes"
+                className="main-navbar"
+                activeClassName="main-nav-active"
+              >
+             Classes
+             </NavLink>
             </li>
             <li></li>
             <li>

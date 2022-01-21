@@ -31,7 +31,7 @@ function Routes() {
           <Route path="/login" component={Login} exact />
 
           <Route path="/signup" component={Register} exact />
-          <Route path="/class" component={Class} exact />
+          <Route path="/classes" component={Class} exact />
           <Route path="/profile/:objectId" component={Profile} exact />
         </div>
       </BrowserRouter>

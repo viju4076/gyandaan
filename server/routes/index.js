@@ -135,11 +135,20 @@ router.post("/addpost", (req, res, next) => {
       minute: 'numeric', // numeric, 2-digit
       // numeric, 2-digit
   });
+    
     console.log("formatted start date",formattedStartDate);+ "/"
    
     
         var endDate= new Date(req.body.post.endDate);
-    
+
+        var duration = Math.abs(endDate - startDate);
+        
+        duration=duration/(1000 * 60 * 60);
+        duration=duration.toPrecision(2);
+        console.log('difference',duration);
+        
+      
+
    // console.log("Date check kar rhe", startDate);
 
   const newPost = new Post({
@@ -153,6 +162,7 @@ router.post("/addpost", (req, res, next) => {
     endDate: endDate,
     formattedDateTime: datetime,
     formattedStartDate: formattedStartDate,
+    duration:duration,
     comments: [],
     attendees: [],
   });

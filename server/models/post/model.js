@@ -23,6 +23,7 @@ const PostSchema = new Schema({
     endDate: Date,
     formattedDateTime: String,
     formattedStartDate: String,
+    duration:String,
     comments: [comments],
     attendees: [ObjectId] 
 })
