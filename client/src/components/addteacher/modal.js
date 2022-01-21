@@ -24,7 +24,7 @@ function Modal() {
                 if (data.status == 200) {
                     setUpdatedUser(data.user);
                     setCategories(data.user.areasOfInterest.length?(data.user.areasOfInterest):skills);
-                    
+                    setQualifications(data.user.qualifications?data.user.qualifications:"");
                    
                 }
             })
@@ -32,7 +32,7 @@ function Modal() {
 
     }, []);
     
-    const [qualifications, setQualifications] = useState(updatedUser.qualifications?updatedUser.qualifications:"");
+    const [qualifications, setQualifications] = useState("");
     // const dispatch = useDispatch();
    
     // //const [user, setUser] = useState(useSelector(state => state.user.update_user));
@@ -101,7 +101,7 @@ function Modal() {
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">{(updatedUser&&updatedUser.isTeacher)?"Edit skills":"Add as Teacher"}</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
