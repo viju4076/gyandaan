@@ -5,6 +5,7 @@ import Home from "../components/Home";
 import Login from "../components/Login/Login";
 import Register from "../components/Register/Register";
 import Profile from "../components/Profile";
+import Class from "../components/Class"
 function Routes() {
   var isUserLoggedIn = useSelector(state => state.signup.is_user_logged_in);
   const dispatch = useDispatch();
@@ -30,6 +31,7 @@ function Routes() {
           <Route path="/login" component={Login} exact />
 
           <Route path="/signup" component={Register} exact />
+          <Route path="/class" component={Class} exact />
           <Route path="/profile/:objectId" component={Profile} exact />
         </div>
       </BrowserRouter>

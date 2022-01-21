@@ -1,0 +1,10 @@
+.table{
+    margin-top: 25px;
+    width: 60%;
+    justify-content: center;
+}
+th{
+  font-size: 20px;  
+  font-weight: 800;
+  color: rgb(73, 79, 105);
+}
