@@ -147,6 +147,7 @@ function Intro(props) {
             heading={feed.heading}
             attendees= {feed.attendees}
             isAttending={feed.attendees.includes(userId)}
+            formattedStartDate= {feed.formattedStartDate}
           />)}
       </div>}
       {/* {feeds&&feeds.map(feed => <ClassPost
