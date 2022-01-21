@@ -3,6 +3,7 @@ import { categories } from "../../categories/index.js";
 import { useSelector, useDispatch } from "react-redux";
 import { GET_PROFILE, UPDATE_USER } from '../../actions/types';
 import { NavLink, Router } from "react-router-dom";
+import './index.css'
 
 function Modal() {
     
@@ -13,25 +14,24 @@ function Modal() {
     }
     const [updatedUser, setUpdatedUser] = useState(useSelector(state => state.user.update_user));
     const dispatch = useDispatch();
-   
+    const [Categories, setCategories] = useState(skills);
+  
     useEffect(() => {
         fetch('/profile/userkiprofile')
             .then(data => data.json())
             .then(data => {
-                console.log('above if statement', data);
+           
                 if (data.status == 200) {
                     setUpdatedUser(data.user);
-                    console.log("inside profile", data.user);
+                    setCategories(data.user.areasOfInterest.length?(data.user.areasOfInterest):skills);
+                    
                    
                 }
             })
 
 
     }, []);
-    console.log("Inside modal",updatedUser);
-    const [Categories, setCategories] = useState((updatedUser&&updatedUser.areasOfInterest&&updatedUser.areasOfInterest.length)?updatedUser.areasOfInterest:skills);
-
-    console.log(Categories);
+    
     const [qualifications, setQualifications] = useState(updatedUser.qualifications?updatedUser.qualifications:"");
     // const dispatch = useDispatch();
    
@@ -82,7 +82,8 @@ function Modal() {
             el.id == e.target.id ? { ...el, isSelected: !el.isSelected } : el
         ))
         setCategories(newCategories);
-        console.log(e.target);
+
+        console.log("*************************",newCategories);
 
     }
 

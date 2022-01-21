@@ -44,8 +44,9 @@ function Sidebar() {
     return (
         <div className="sidebar">
             <div className="sidebar_top">
-                <img src="https://analyticsindiamag.com/wp-content/uploads/2020/10/7d744a684fe03ebc7e8de545f97739dd.jpg" alt=""/>
+              <div className="sidebar_avatar">
                 { <Avatar >{user&&user.email&&user.email.charAt(0)} </Avatar> }
+                </div>
                 <h2>{user&&user.username}</h2>
                 <h4>{user&&user.email}</h4>
             </div>

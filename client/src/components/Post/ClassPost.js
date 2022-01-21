@@ -12,7 +12,7 @@ const ClassPost =  (props) => {
    const[visible,setVisible]=useState(false);
     const [isAttending, setIsAttending]= useState(props.isAttending);
     
-    console.log("shreya",props.formattedStartDate);
+
     
     useEffect(() => {
     //     fetch('/profile/userkiprofile')
