@@ -9,7 +9,7 @@ import "./index.css";
 import Searchbar from "../Navbar/Searchbar";
 function Home() {
     // const [user, setUser]= useState({email: 'xyz'});
-    const [user, setUser] = useState(useSelector(state => state.user.update_user));
+    const [user, setUser] = useState(null);
     const dispatch = useDispatch();
     useEffect(() => {
         fetch('/profile/userkiprofile')

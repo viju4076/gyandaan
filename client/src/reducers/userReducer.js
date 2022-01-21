@@ -8,7 +8,7 @@ import {
  const initState = {
    
    update_user:{},
-   user_id:"",
+   user_id:null,
   
  }
  

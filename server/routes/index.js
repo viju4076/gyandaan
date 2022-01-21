@@ -459,6 +459,7 @@ router.get("/auth", isAuth, (req, res, next) => {
   });
 });
 
+
 router.get("/profile/:userId", async (req, res, next) => {
   const userId = req.params.userId;
   console.log("userId", userId);
@@ -482,6 +483,7 @@ router.get("/profile/:userId", async (req, res, next) => {
             status: 200,
             msg: "current user profile",
             user: User[0],
+            loggedInUser: req.user 
           });
       }
     );
@@ -498,6 +500,8 @@ router.get("/logout", (req, res, next) => {
     msg: "current user logged out",
   });
 });
+
+
 router.get("/getpost/:userId", (req, res, next) => {
   console.log("Getting feeds");
   const userId = req.params.userId;
