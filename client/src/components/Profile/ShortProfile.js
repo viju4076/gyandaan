@@ -5,7 +5,7 @@ function ShortProfile({user}) {
 
     const History = useHistory();
     const profileShow = (e) => {
-        console.log('gupta', e.target);
+   
         History.push('/profile/' + user._id);
       }
 

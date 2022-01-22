@@ -1,6 +1,6 @@
 .table{
     border: 2px solid lightblue;
-    margin-top: 25px;
+    /* margin-top: 25px; */
     width: 60%;
     margin-left: 18%;
 }
@@ -17,9 +17,36 @@ td{
 }
 .my-custom-scrollbar {
   position: relative;
-  height: 600px;
-  overflow: auto;
+  max-height: 400px;
+  overflow: scroll;
   }
   .table-wrapper-scroll-y {
   display: block;
   }
+
+  .tableHeading{
+    margin:10px;
+    text-align: center;
+  
+  }
+  .tableRegistered{
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+  }
+  .tableRegistered > .icon{
+    color:#0069d9;
+    margin-left: 6px;
+     
+
+   
+  }
+ .Blink {
+    animation: blinker 1.5s cubic-bezier(.5, 0, 1, 1) infinite alternate;  
+}
+
+@keyframes blinker {  
+  from { opacity: 1; }
+  to { opacity: 0; }
+}

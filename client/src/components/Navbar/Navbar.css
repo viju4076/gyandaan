@@ -185,7 +185,9 @@ li {
     height: 8rem;
   }
 }
-
+.logo:hover{
+  cursor: pointer;
+}
 /* responsive css style  */
 @media (max-width: 998px) {
   .main-nav {
@@ -201,6 +203,8 @@ li {
   .social-media ul {
     height: 7rem;
   }
+   
+
 
   .mobile-menu-link {
     grid-column: 2/4;

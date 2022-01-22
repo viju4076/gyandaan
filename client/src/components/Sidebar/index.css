@@ -47,8 +47,19 @@
 .sidebar_stat{
     margin-top: 10px;
     display: flex;
-    justify-content: space-between;
 
+     justify-content: space-around; 
+
+}
+.stat{
+    display: flex;
+    align-items: center;
+}
+.stat>p{
+    display: flex;
+    margin-right: 5px;
+    font-size: 12px;
+   
 }
 .sidebar_stat > p{
     color: gray;
@@ -67,8 +78,12 @@
     color:#0a66c2 !important;
 
 }
+.sidebar_Top{
+    box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
 
 .sidebar_bottom{
+    box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     text-align: left;
     padding:10px;
     border: 1px solid lightgray;
@@ -78,7 +93,9 @@
 
 }
 .sidebar_bottom >p{
-    font-size: 13px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 15px;
     padding-bottom: 10px;
 }
 

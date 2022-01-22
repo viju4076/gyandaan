@@ -30,8 +30,11 @@ const Navbar = () => {
   const [updatedUser, setUpdatedUser] = useState(
     useSelector((state) => state.user.update_user)
   );
-  const isUserLoggedIn = useSelector((state) => state.signup.is_user_logged_in);
 
+  const isUserLoggedIn = useSelector((state) => state.signup.is_user_logged_in);
+  const handleJoin = () => {
+    window.location.replace("/home");
+}
   async function Addteacher() {
     {
       var res = await fetch("/addteacher", {
@@ -84,7 +87,7 @@ const Navbar = () => {
       <nav className="main-nav">
         {}
 
-        <div className="logo">
+        <div className="logo" onClick={handleJoin} data-toggle="tooltip" title="Go to Home">
           <h2>
             <span>G</span>yaan
             <span>D</span>aan
@@ -103,13 +106,9 @@ const Navbar = () => {
               </div>
             </li>
             <li>
-              <NavLink
-                to="/contact"
-                className="main-navbar"
-                activeClassName="main-nav-active"
-              >
+              
                 <Modal />
-              </NavLink>
+              
             </li>
             <li>
             <NavLink

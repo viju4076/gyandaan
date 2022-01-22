@@ -34,49 +34,58 @@ function Sidebar() {
 
   const recentItem= (topic)=>{
       return (<div className="sidebar_recentItem">
-          <span className="sidebar_hash">
-            #  
+          <span className="badge badge-pill badge-light">
+          # {topic}
           </span>
-          <p>{topic}</p>
       </div>)
   };
   
     return (
         <div className="sidebar">
+          <div className="sidebar_Top">
             <div className="sidebar_top">
               <div className="sidebar_avatar">
                 { <Avatar >{user&&user.email&&user.email.charAt(0)} </Avatar> }
                 </div>
                 <h2>{user&&user.username}</h2>
-                <h4>{user&&user.email}</h4>
+                <h4>{user&&user.qualifications}</h4>
             </div>
            
            
             <div className="sidebar_stats">
               <div className="sidebar_stat">
                {user&&user.isTeacher&&
-                <p><span class="label label-primary">Teacher</span></p>
+                <p><span class="badge badge-warning" style={{fontSize:"15px"}}>Teacher</span></p>
               
                }
                 
               </div>
+
+
               <div className="sidebar_stat">
-              <p>followers:</p>
+               
+                <div className="stat">
+                <p><span class="badge badge-pill badge-secondary">Followers</span></p>
+                
                 <p className="sidebar_statNumber">{user&&user.followers&&user.followers.length}</p>
-                <p>following:</p>
+                
+                </div>
+                <div className="stat">
+                <p ><span class="badge badge-pill badge-secondary">Following</span></p>
                 <p className="sidebar_statNumber">{user&&user.following&&user.following.length}</p>
-              </div>
+              
+                </div>
+                </div>
 
             </div>
+            </div>
         <div className="sidebar_bottom">
-            <p>Recent</p>
+            <p>Skills</p>
             {
               user&&user.areasOfInterest&&user.areasOfInterest.length>0&&user.areasOfInterest.map(interest=> (interest.isSelected&&recentItem(interest.skill)))
 
             }
-            {
-              recentItem(user&&user.qualifications)
-            }
+           
             {/* {recentItem('reactjs')}
             {recentItem('programming')}
             {recentItem('design')}
@@ -86,7 +95,7 @@ function Sidebar() {
         </div>
 
         <div className="sidebar_bottom">
-            <p>following:</p>
+            <p>Following</p>
             {
               follwing.map(user=><ShortProfile
                 user={user}

@@ -42,10 +42,8 @@ router.post(
 // });
 router.post("/search", async (req, res, next) => {
   console.log(req.body.name);
-  await User.find(
-    {
-      $or: [
-        {
+  await User.find({
+      $or: [{
           username: {
             $regex: req.body.name,
           },
@@ -85,19 +83,16 @@ router.post("/search", async (req, res, next) => {
 router.post("/addteacher", (req, res, next) => {
   console.log(req.body);
 
-  User.findOneAndUpdate(
-    {
+  User.findOneAndUpdate({
       _id: req.user._id,
-    },
-    {
+    }, {
       isTeacher: true,
       Rating: 0,
       areasOfInterest: req.body.areasOfInterest,
       Posts: [],
       Messages: [],
       qualifications: req.body.qualifications,
-    },
-    {
+    }, {
       new: true,
     },
     (err, updatedUser) => {
@@ -118,38 +113,38 @@ router.post("/addteacher", (req, res, next) => {
   );
 });
 router.post("/addpost", (req, res, next) => {
-  console.log("post ko add kiya",req.body);
+  console.log("post ko add kiya", req.body);
   var currentdate = new Date();
-  var datetime = currentdate.getDate() + "/"
-    + (currentdate.getMonth() + 1) + "/"
-    + currentdate.getFullYear() + " "
-    + currentdate.getHours() + ":"
-    + currentdate.getMinutes();
-    var startDate = new Date(req.body.post.startDate);
-    var formattedStartDate = startDate.toLocaleString('en-US', {
-      weekday: 'short', // long, short, narrow
-      day: 'numeric', // numeric, 2-digit
-      year: 'numeric', // numeric, 2-digit
-      month: 'long', // numeric, 2-digit, long, short, narrow
-      hour: 'numeric', // numeric, 2-digit
-      minute: 'numeric', // numeric, 2-digit
-      // numeric, 2-digit
+  var datetime = currentdate.getDate() + "/" +
+    (currentdate.getMonth() + 1) + "/" +
+    currentdate.getFullYear() + " " +
+    currentdate.getHours() + ":" +
+    currentdate.getMinutes();
+  var startDate = new Date(req.body.post.startDate);
+  var formattedStartDate = startDate.toLocaleString('en-US', {
+    weekday: 'short', // long, short, narrow
+    day: 'numeric', // numeric, 2-digit
+    year: 'numeric', // numeric, 2-digit
+    month: 'long', // numeric, 2-digit, long, short, narrow
+    hour: 'numeric', // numeric, 2-digit
+    minute: 'numeric', // numeric, 2-digit
+    // numeric, 2-digit
   });
-    
-    console.log("formatted start date",formattedStartDate);+ "/"
-   
-    
-        var endDate= new Date(req.body.post.endDate);
 
-        var duration = Math.abs(endDate - startDate);
-        
-        duration=duration/(1000 * 60 * 60);
-        duration=duration.toPrecision(2);
-        console.log('difference',duration);
-        
-      
+  console.log("formatted start date", formattedStartDate); + "/"
 
-   // console.log("Date check kar rhe", startDate);
+
+  var endDate = new Date(req.body.post.endDate);
+
+  var duration = Math.abs(endDate - startDate);
+
+  duration = duration / (1000 * 60 * 60);
+  duration = duration.toPrecision(2);
+  console.log('difference', duration);
+
+
+
+  // console.log("Date check kar rhe", startDate);
 
   const newPost = new Post({
     name: req.user.username,
@@ -162,7 +157,7 @@ router.post("/addpost", (req, res, next) => {
     endDate: endDate,
     formattedDateTime: datetime,
     formattedStartDate: formattedStartDate,
-    duration:duration,
+    duration: duration,
     comments: [],
     attendees: [],
   });
@@ -235,17 +230,18 @@ router.post("/addComment", (req, res, next) => {
       comments: comment,
     },
   };
-  Post.findOneAndUpdate(
-    {
+  Post.findOneAndUpdate({
       _id: postid,
     },
-    searchPost,
-    {
+    searchPost, {
       new: true,
     },
     (err, Post) => {
       if (err) {
-        res.status(200).json({ status: "400", msg: "Cannot follow " });
+        res.status(200).json({
+          status: "400",
+          msg: "Cannot follow "
+        });
       } else {
         res
           .status(200)
@@ -320,12 +316,10 @@ router.post("/changeFollower", (req, res, next) => {
     };
   }
 
-  User.findOneAndUpdate(
-    {
+  User.findOneAndUpdate({
       _id: loggedInUserId,
     },
-    searchFollowingOfLoggedIn,
-    {
+    searchFollowingOfLoggedIn, {
       new: true,
     },
     (err, loggedInUser) => {
@@ -335,12 +329,10 @@ router.post("/changeFollower", (req, res, next) => {
           msg: "Cannot follow ",
         });
       } else {
-        User.findOneAndUpdate(
-          {
+        User.findOneAndUpdate({
             _id: profileUserId,
           },
-          searchFollowersOfProfile,
-          {
+          searchFollowersOfProfile, {
             new: true,
           },
           (err, profileUser) => {
@@ -380,12 +372,10 @@ router.post("/changeattendee", (req, res, next) => {
       },
     };
   }
-  Post.findOneAndUpdate(
-    {
+  Post.findOneAndUpdate({
       _id: req.body.postId,
     },
-    searchAttendee,
-    {
+    searchAttendee, {
       new: true,
     },
     (err, post) => {
@@ -482,8 +472,7 @@ router.get("/profile/:userId", async (req, res, next) => {
       user: req.user,
     });
   } else if (userId != null) {
-    let data = await User.find(
-      {
+    let data = await User.find({
         _id: userId,
       },
       (err, User) => {
@@ -493,7 +482,7 @@ router.get("/profile/:userId", async (req, res, next) => {
             status: 200,
             msg: "current user profile",
             user: User[0],
-            loggedInUser: req.user 
+            loggedInUser: req.user
           });
       }
     );
@@ -540,11 +529,35 @@ router.get("/getpost/:userId", (req, res, next) => {
       });
     } else {
       console.log("sare post", allPost);
+      let currentDate=new Date();
+      let past = [];
+      let upcoming = [];
+      allPost.map(post => {
+        if(post.startDate&&post.duration){
+          console.log('**************',post.endDate,'   ',post.startDate);
+        if (post.endDate < currentDate) {
+          past.push(post);
+        } else {
+          upcoming.push(post);
+        }
+      }
+      })
+
+     upcoming=upcoming.map(post=>{
+       post=post.toJSON();
+       return ({
+      ...post,"isLive":currentDate>=post.startDate&&currentDate<=post.endDate});
+       })
+       
+
+
+
       res.status(200).json({
         status: 200,
         post: allPost.sort((p1, p2) => (p1.dateTime > p2.dateTime ? -1 : 1)),
         isFollowing: isFollowing,
-        
+        past:past.sort((p1, p2) => (p1.endDate > p2.endDate ? -1 : 1)),
+        upcoming:upcoming.sort((p1, p2) => (p1.startDate > p2.startDate ? 1 : -1))
       });
     }
   });
@@ -554,10 +567,15 @@ router.get("/getpost/:userId", (req, res, next) => {
 
 router.get("/getfollowing", (req, res, next) => {
   console.log("get following praya");
-  
-  User.find({ _id: req.user.following }, (err, followingList) => {
+
+  User.find({
+    _id: req.user.following
+  }, (err, followingList) => {
     if (err) {
-      res.json({ status: 200, following: [] });
+      res.json({
+        status: 200,
+        following: []
+      });
     } else {
       followingList = followingList.map((element) => {
         return {
@@ -566,7 +584,10 @@ router.get("/getfollowing", (req, res, next) => {
         };
       });
       console.log("following list", followingList);
-      res.json({ status: 200, following: followingList });
+      res.json({
+        status: 200,
+        following: followingList
+      });
     }
   });
 });

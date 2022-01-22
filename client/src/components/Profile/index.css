@@ -102,7 +102,9 @@ body {
     flex-direction: column;
     margin: 10px;
 }
-
+.shortprofile{
+  font-size: 12px;
+}
 
 .shortprofile:hover{
     cursor: pointer;
