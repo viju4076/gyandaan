@@ -1,5 +1,6 @@
 .externalHome{
   display: flex;
+  justify-content: center;
 }
 .searchcomponent{
   position: fixed;

@@ -58,6 +58,9 @@ function Home() {
                     </div>
 
                 </div>
+                <div className='internal1'>
+                    <Sidebar />
+                </div>
 
 
             </div>
