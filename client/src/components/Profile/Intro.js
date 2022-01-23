@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { UPDATE_USER } from '../../actions/types';
 import Searchbar from "../Navbar/Searchbar"
 import './index.css';
+import Rating from './Rating';
 function Intro(props) {
   //console.log('props', profileUser);
   const [feeds, setFeeds] = useState([]);
@@ -110,7 +111,7 @@ function Intro(props) {
                   </div>
                   <div className="userRating">
                     <div className="internalRating">
-                      Your Rating
+                      <Rating/>
                     </div>
                     <div className="internalRating">
                       <span class="fa fa-star checked"></span>
