@@ -42,8 +42,10 @@ router.post(
 // });
 router.post("/search", async (req, res, next) => {
   console.log(req.body.name);
-  await User.find({
-      $or: [{
+  await User.find(
+    {
+      $or: [
+        {
           username: {
             $regex: req.body.name,
           },
@@ -83,16 +85,19 @@ router.post("/search", async (req, res, next) => {
 router.post("/addteacher", (req, res, next) => {
   console.log(req.body);
 
-  User.findOneAndUpdate({
+  User.findOneAndUpdate(
+    {
       _id: req.user._id,
-    }, {
+    },
+    {
       isTeacher: true,
       Rating: 0,
       areasOfInterest: req.body.areasOfInterest,
       Posts: [],
       Messages: [],
       qualifications: req.body.qualifications,
-    }, {
+    },
+    {
       new: true,
     },
     (err, updatedUser) => {
@@ -112,27 +117,83 @@ router.post("/addteacher", (req, res, next) => {
     }
   );
 });
+router.post("/giveRating", (req, res, next) => {
+  console.log("Rating ", req.body);
+  const loggedInUserId = req.user._id;
+   User.find(
+    {
+      _id: req.body.profileId,
+    },
+    (err, profileUser) => {
+      if (!err) {
+        let rating=profileUser[0].Rating;
+      let Rating = {
+        senderId: loggedInUserId,
+        description: req.body.description,
+        rating: parseInt(req.body.rating),
+      };
+      let flag=false;
+      rating=rating.filter(element => 
+        !(element.senderId.equals(req.user._id))
+      );
+      rating.push(Rating);
+      User.findOneAndUpdate(
+        {
+          _id: req.body.profileId,
+        },
+        {Rating:rating},
+        (err, profileUser1) => {
+          if (err) {
+            res.status(200).json({
+              status: "400",
+              msg: "Cannot add rating",
+            });
+          } else {
+            console.log("rating done", profileUser1);
+            res.status(200).json({
+              status: "200",
+              msg: "added rating successfully",
+              profileUser: profileUser1,
+            });
+          }
+        }
+      );
+    }
+  });
+});
+
+  // let userRating = {
+  //   $push: {
+  //     Rating: rating,
+  //   },
+  // };
+  
 router.post("/addpost", (req, res, next) => {
   console.log("post ko add kiya", req.body);
   var currentdate = new Date();
-  var datetime = currentdate.getDate() + "/" +
-    (currentdate.getMonth() + 1) + "/" +
-    currentdate.getFullYear() + " " +
-    currentdate.getHours() + ":" +
+  var datetime =
+    currentdate.getDate() +
+    "/" +
+    (currentdate.getMonth() + 1) +
+    "/" +
+    currentdate.getFullYear() +
+    " " +
+    currentdate.getHours() +
+    ":" +
     currentdate.getMinutes();
   var startDate = new Date(req.body.post.startDate);
-  var formattedStartDate = startDate.toLocaleString('en-US', {
-    weekday: 'short', // long, short, narrow
-    day: 'numeric', // numeric, 2-digit
-    year: 'numeric', // numeric, 2-digit
-    month: 'long', // numeric, 2-digit, long, short, narrow
-    hour: 'numeric', // numeric, 2-digit
-    minute: 'numeric', // numeric, 2-digit
+  var formattedStartDate = startDate.toLocaleString("en-US", {
+    weekday: "short", // long, short, narrow
+    day: "numeric", // numeric, 2-digit
+    year: "numeric", // numeric, 2-digit
+    month: "long", // numeric, 2-digit, long, short, narrow
+    hour: "numeric", // numeric, 2-digit
+    minute: "numeric", // numeric, 2-digit
     // numeric, 2-digit
   });
 
-  console.log("formatted start date", formattedStartDate); + "/"
-
+  console.log("formatted start date", formattedStartDate);
+  +"/";
 
   var endDate = new Date(req.body.post.endDate);
 
@@ -140,9 +201,7 @@ router.post("/addpost", (req, res, next) => {
 
   duration = duration / (1000 * 60 * 60);
   duration = duration.toPrecision(2);
-  console.log('difference', duration);
-
-
+  console.log("difference", duration);
 
   // console.log("Date check kar rhe", startDate);
 
@@ -230,26 +289,26 @@ router.post("/addComment", (req, res, next) => {
       comments: comment,
     },
   };
-  Post.findOneAndUpdate({
+  Post.findOneAndUpdate(
+    {
       _id: postid,
     },
-    searchPost, {
+    searchPost,
+    {
       new: true,
     },
     (err, Post) => {
       if (err) {
         res.status(200).json({
           status: "400",
-          msg: "Cannot follow "
+          msg: "Cannot follow ",
         });
       } else {
-        res
-          .status(200)
-          .json({
-            status: "200",
-            msg: "Comment added",
-            comments: Post.comments,
-          });
+        res.status(200).json({
+          status: "200",
+          msg: "Comment added",
+          comments: Post.comments,
+        });
       }
     }
   );
@@ -316,10 +375,12 @@ router.post("/changeFollower", (req, res, next) => {
     };
   }
 
-  User.findOneAndUpdate({
+  User.findOneAndUpdate(
+    {
       _id: loggedInUserId,
     },
-    searchFollowingOfLoggedIn, {
+    searchFollowingOfLoggedIn,
+    {
       new: true,
     },
     (err, loggedInUser) => {
@@ -329,10 +390,12 @@ router.post("/changeFollower", (req, res, next) => {
           msg: "Cannot follow ",
         });
       } else {
-        User.findOneAndUpdate({
+        User.findOneAndUpdate(
+          {
             _id: profileUserId,
           },
-          searchFollowersOfProfile, {
+          searchFollowersOfProfile,
+          {
             new: true,
           },
           (err, profileUser) => {
@@ -372,10 +435,12 @@ router.post("/changeattendee", (req, res, next) => {
       },
     };
   }
-  Post.findOneAndUpdate({
+  Post.findOneAndUpdate(
+    {
       _id: req.body.postId,
     },
-    searchAttendee, {
+    searchAttendee,
+    {
       new: true,
     },
     (err, post) => {
@@ -459,7 +524,6 @@ router.get("/auth", isAuth, (req, res, next) => {
   });
 });
 
-
 router.get("/profile/:userId", async (req, res, next) => {
   const userId = req.params.userId;
   console.log("userId", userId);
@@ -472,18 +536,32 @@ router.get("/profile/:userId", async (req, res, next) => {
       user: req.user,
     });
   } else if (userId != null) {
-    let data = await User.find({
+    let data = await User.find(
+      {
         _id: userId,
       },
       (err, User) => {
-        console.log("in profile", User);
-        if (!err)
+        console.log("in profile", User[0].Rating);
+
+        if (!err) {
+          let sumRating=0;
+          var userRating = User[0].Rating.find(
+            ({senderId}) => senderId.equals(req.user._id)
+          );
+          User[0].Rating.map((element) => {
+            sumRating=sumRating+element.rating;
+          })
+          let globalRating= (sumRating/User[0].Rating.length).toPrecision(2);
+          console.log("rating di jaa chuki h ", userRating);
           res.status(200).json({
             status: 200,
             msg: "current user profile",
             user: User[0],
-            loggedInUser: req.user
+            userRating: userRating,
+            loggedInUser: req.user,
+            globalRating:globalRating
           });
+        }
       }
     );
   } else
@@ -499,7 +577,6 @@ router.get("/logout", (req, res, next) => {
     msg: "current user logged out",
   });
 });
-
 
 router.get("/getpost/:userId", (req, res, next) => {
   console.log("Getting feeds");
@@ -529,35 +606,36 @@ router.get("/getpost/:userId", (req, res, next) => {
       });
     } else {
       console.log("sare post", allPost);
-      let currentDate=new Date();
+      let currentDate = new Date();
       let past = [];
       let upcoming = [];
-      allPost.map(post => {
-        if(post.startDate&&post.duration){
-          console.log('**************',post.endDate,'   ',post.startDate);
-        if (post.endDate < currentDate) {
-          past.push(post);
-        } else {
-          upcoming.push(post);
+      allPost.map((post) => {
+        if (post.startDate && post.duration) {
+          console.log("**************", post.endDate, "   ", post.startDate);
+          if (post.endDate < currentDate) {
+            past.push(post);
+          } else {
+            upcoming.push(post);
+          }
         }
-      }
-      })
+      });
 
-     upcoming=upcoming.map(post=>{
-       post=post.toJSON();
-       return ({
-      ...post,"isLive":currentDate>=post.startDate&&currentDate<=post.endDate});
-       })
-       
-
-
+      upcoming = upcoming.map((post) => {
+        post = post.toJSON();
+        return {
+          ...post,
+          isLive: currentDate >= post.startDate && currentDate <= post.endDate,
+        };
+      });
 
       res.status(200).json({
         status: 200,
         post: allPost.sort((p1, p2) => (p1.dateTime > p2.dateTime ? -1 : 1)),
         isFollowing: isFollowing,
-        past:past.sort((p1, p2) => (p1.endDate > p2.endDate ? -1 : 1)),
-        upcoming:upcoming.sort((p1, p2) => (p1.startDate > p2.startDate ? 1 : -1))
+        past: past.sort((p1, p2) => (p1.endDate > p2.endDate ? -1 : 1)),
+        upcoming: upcoming.sort((p1, p2) =>
+          p1.startDate > p2.startDate ? 1 : -1
+        ),
       });
     }
   });
@@ -568,28 +646,31 @@ router.get("/getpost/:userId", (req, res, next) => {
 router.get("/getfollowing", (req, res, next) => {
   console.log("get following praya");
 
-  User.find({
-    _id: req.user.following
-  }, (err, followingList) => {
-    if (err) {
-      res.json({
-        status: 200,
-        following: []
-      });
-    } else {
-      followingList = followingList.map((element) => {
-        return {
-          username: element.username,
-          _id: element._id,
-        };
-      });
-      console.log("following list", followingList);
-      res.json({
-        status: 200,
-        following: followingList
-      });
+  User.find(
+    {
+      _id: req.user.following,
+    },
+    (err, followingList) => {
+      if (err) {
+        res.json({
+          status: 200,
+          following: [],
+        });
+      } else {
+        followingList = followingList.map((element) => {
+          return {
+            username: element.username,
+            _id: element._id,
+          };
+        });
+        console.log("following list", followingList);
+        res.json({
+          status: 200,
+          following: followingList,
+        });
+      }
     }
-  });
+  );
 });
 
 module.exports = router;

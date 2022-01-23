@@ -8,6 +8,11 @@ const AreasOfInterest = new Schema({
   skill: String,
   isSelected: Boolean,
 });
+const Rating = new Schema({
+  rating:Number,
+  description:String,
+  senderId:ObjectId,
+});
 const userSchema = new Schema({
   username: String,
   email: String,
@@ -17,7 +22,7 @@ const userSchema = new Schema({
   followers: [ObjectId],
   following: [ObjectId],
   isTeacher: Boolean,
-  Rating: Number,
+  Rating: [Rating],
   areasOfInterest: [AreasOfInterest],
   Posts: [{ type: ObjectId, ref: "Post" }],
   qualifications: String,
