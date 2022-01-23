@@ -551,13 +551,13 @@ router.get("/profile/:userId", async (req, res, next) => {
           User[0].Rating.map((element) => {
             sumRating=sumRating+element.rating;
           })
-          let globalRating= (sumRating/User[0].Rating.length).toPrecision(2);
+          let globalRating= (User[0].Rating.length>0)?(sumRating/User[0].Rating.length).toPrecision(2):0;
           console.log("rating di jaa chuki h ", userRating);
           res.status(200).json({
             status: 200,
             msg: "current user profile",
             user: User[0],
-            userRating: userRating,
+            userRating: userRating?userRating:"0",
             loggedInUser: req.user,
             globalRating:globalRating
           });

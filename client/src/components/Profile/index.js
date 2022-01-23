@@ -19,6 +19,7 @@ function Index() {
         console.log("above if statement", data.user);
         if (data.status == 200) {
           setUser(data.user);
+          console.log("data ka user",data);
           setRating(data.userRating.rating);
           setGlobalRating(data.globalRating);
           // console.log("*************asdf****************user ki profile", data);
