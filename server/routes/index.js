@@ -120,54 +120,59 @@ router.post("/addteacher", (req, res, next) => {
 router.post("/giveRating", (req, res, next) => {
   console.log("Rating ", req.body);
   const loggedInUserId = req.user._id;
-   User.find(
+  User.find(
     {
       _id: req.body.profileId,
     },
     (err, profileUser) => {
       if (!err) {
-        let rating=profileUser[0].Rating;
-      let Rating = {
-        senderId: loggedInUserId,
-        description: req.body.description,
-        rating: parseInt(req.body.rating),
-      };
-      let flag=false;
-      rating=rating.filter(element => 
-        !(element.senderId&&element.senderId.equals(req.user._id))
-      );
-      rating.push(Rating);
-      User.findOneAndUpdate(
-        {
-          _id: req.body.profileId,
-        },
-        {Rating:rating},
-        (err, profileUser1) => {
-          if (err) {
-            res.status(200).json({
-              status: "400",
-              msg: "Cannot add rating",
-            });
-          } else {
-            console.log("rating done", profileUser1);
-            res.status(200).json({
-              status: "200",
-              msg: "added rating successfully",
-              profileUser: profileUser1,
-            });
+        let rating = profileUser[0].Rating;
+        let Rating = {
+          senderId: loggedInUserId,
+          description: req.body.description,
+          rating: parseInt(req.body.rating),
+        };
+        let flag = false;
+        rating = rating.filter(element =>
+          !(element.senderId && element.senderId.equals(req.user._id))
+        );
+        rating.push(Rating);
+        let sumRating = 0;
+        rating.map((element) => {
+          sumRating = sumRating + (element.rating ? element.rating : 0);
+        })
+        let globalRating = rating.length > 0 ? (sumRating / rating.length).toPrecision(2) : 0;
+        User.findOneAndUpdate(
+          {
+            _id: req.body.profileId,
+          },
+          { Rating: rating, globalRating: globalRating },
+          (err, profileUser1) => {
+            if (err) {
+              res.status(200).json({
+                status: "400",
+                msg: "Cannot add rating",
+              });
+            } else {
+              console.log("rating done", profileUser1);
+              res.status(200).json({
+                status: "200",
+                msg: "added rating successfully",
+                profileUser: profileUser1,
+              });
+            }
           }
-        }
-      );
-    }
-  });
+        );
+      }
+    });
 });
 
-  // let userRating = {
-  //   $push: {
-  //     Rating: rating,
-  //   },
-  // };
-  
+// let userRating = {
+//   $push: {
+//     Rating: rating,
+//   },
+// };
+
 router.post("/addpost", (req, res, next) => {
   console.log("post ko add kiya", req.body);
   var currentdate = new Date();
@@ -334,7 +339,7 @@ router.post("/register", (req, res, next) => {
     following: [],
     qualifications: "",
     areasOfInterest: [],
-    Rating:[]
+    Rating: []
   });
 
   newUser.save().then((user) => {
@@ -545,24 +550,21 @@ router.get("/profile/:userId", async (req, res, next) => {
         console.log("in profile", User[0].Rating);
 
         if (!err) {
-          let sumRating=0;
-          
+          let sumRating = 0;
+
           var userRating = User[0].Rating.find(
-            
-            ({senderId}) =>senderId&& senderId.equals(req.user._id)
+
+            ({ senderId }) => senderId && senderId.equals(req.user._id)
           );
-          User[0].Rating.map((element) => {
-            sumRating=sumRating+(element.rating?element.rating:0);
-          })
-          let globalRating= User[0].Rating.length>0?(sumRating/User[0].Rating.length).toPrecision(2):0;
-          console.log("rating di jaa chuki h ",sumRating, User[0],globalRating);
+
+          User
           res.status(200).json({
             status: 200,
             msg: "current user profile",
             user: User[0],
-            userRating: userRating?userRating:"0",
+            userRating: userRating ? userRating : "0",
             loggedInUser: req.user,
-            globalRating:globalRating
+            globalRating: User[0].globalRating
           });
         }
       }
@@ -676,4 +678,18 @@ router.get("/getfollowing", (req, res, next) => {
   );
 });
 
+router.get("/getTopRated", (req, res) => {
+  //let users ;
+  console.log('top');
+  User.find({}, (err, users) => {
+    if (!err) {
+      console.log('bissu', users);
+      users.map(user => { username: user.username; id: user._id; globalRating: user.globalRating });
+      res.status(200).json({ message: 'toprated users', users });
+    }
+
+
+  }).sort({ "globalRating": -1 }).limit(7);
+
+})
 module.exports = router;

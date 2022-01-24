@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { UPDATE_USER, LOGGED_IN_USER } from '../../actions/types';
 import { useSelector, useDispatch } from "react-redux";
 import Navbar from '../Navbar/Navbar';
+import RightSidebar from "../RightSidebar";
 import Sidebar from "../Sidebar";
 import Post from "../Post";
 import RenderPost from '../Post/RenderPost';
@@ -29,7 +30,7 @@ function Home() {
                             user_id: data.user._id
                         }
                     });
-                    
+
 
                 }
             })
@@ -50,16 +51,16 @@ function Home() {
 
                 <div className='internal2'>
                     <div className='postGenerator'>
-                        {user&&user.isTeacher && <Post />}
+                        {user && user.isTeacher && <Post />}
                     </div>
 
                     <div className='feeds'>
-                       {user&& <RenderPost userId= {user._id}/>}
+                        {user && <RenderPost userId={user._id} />}
                     </div>
 
                 </div>
                 <div className='internal1'>
-                    <Sidebar />
+                    <RightSidebar />
                 </div>
 
 

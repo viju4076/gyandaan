@@ -9,9 +9,9 @@ const AreasOfInterest = new Schema({
   isSelected: Boolean,
 });
 const Rating = new Schema({
-  rating:Number,
-  description:String,
-  senderId:ObjectId,
+  rating: Number,
+  description: String,
+  senderId: ObjectId,
 });
 const userSchema = new Schema({
   username: String,
@@ -26,6 +26,7 @@ const userSchema = new Schema({
   areasOfInterest: [AreasOfInterest],
   Posts: [{ type: ObjectId, ref: "Post" }],
   qualifications: String,
+  globalRating: Number
 });
 userSchema.index({ "username": "text" });
 const User = connection.model("User", userSchema);
