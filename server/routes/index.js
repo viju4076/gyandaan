@@ -698,7 +698,22 @@ router.get("/getTopRated", (req, res) => {
     Post.find({attendees:req.user._id, startDate: { $gt: currentDate }},(err,classes)=>{
       if (!err) {
         console.log('upcoming classes', classes);
-        res.status(200).json({ message: 'upcoming classes', classes });
+        
+       let newClasses = classes.map((newClass) => {
+          newClass = newClass.toJSON();
+          console.log("date di jaa chuki",newClass.startDate, currentDate);
+          const diffTime = Math.abs(newClass.startDate - currentDate);
+          const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+          const diffHours = diffTime / 36e5;
+          return {
+            ...newClass,
+            difference: diffDays<1?Math.floor(diffHours)+" hours":diffDays+" days",
+          };
+        
+        })
+        
+        
+        res.status(200).json({ message: 'upcoming classes', classes: newClasses });
       }    
 
     }).sort({"startDate":1}).limit(2);

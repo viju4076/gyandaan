@@ -4,16 +4,16 @@ import { Link } from "react-router-dom";
 function TopRatedTable({ users }) {
 
     return (
-        <div className='table-wrapper-scroll-y my-custom-scrollbar row justify-content-center'>
+        <div >
             <div className='tableHeading'>
                 <h2>Top Rated Users</h2>
             </div>
             <table class="toprated table table-bordered table-striped mb-0 ">
                 <thead>
                     <tr>
-                        <th className='th-sm'>Rank</th>
-                        <th className='th-sm'>name</th>
-                        <th className='th-sm'>Rating</th>
+                        <th className='th-sm ratedHeading'>Rank</th>
+                        <th className='th-sm ratedHeading'>name</th>
+                        <th className='th-sm ratedHeading'>Rating</th>
                     </tr>
                 </thead>
                 <tbody>

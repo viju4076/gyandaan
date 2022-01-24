@@ -2,7 +2,7 @@
 import { Avatar } from '@material-ui/core';
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from "react-redux";
-import "./index.css";
+import "./Table.css";
 import ShortProfile from '../Profile/ShortProfile';
 import TopRatedTable from './TopRatedTable'
 
@@ -14,6 +14,10 @@ function Index() {
     const [follwing, setFollowing] = useState([]);
     const [TopUsers, setTopUsers] = useState();
     const [upcomingClasses,setUpcomingClasses]=useState();
+    const handleClick =()=>{
+        window.open("/classes", "_blank");
+    }
+    
     useEffect(() => {
         console.log('useeffect right');
         fetch('/getfollowing')
@@ -31,7 +35,7 @@ function Index() {
             fetch('/getUpcomingClasses')
             .then(data => data.json())
             .then(data => {
-                console.table('upcoming classes',data.classes);
+                console.table('upcoming classes',data.classes, data.classes[0].duration);
                 setUpcomingClasses(data.classes);
               
             })
@@ -59,13 +63,19 @@ function Index() {
     return (
         <div className="sidebar">
             <div className="sidebar_Top">
-            <div className="sidebar_bottom">
-                <p>Upcoming Classes</p>
+            <div className="sidebar_bottom1"> 
+                <p>Upcoming Classes </p>
+                
                 {
                   upcomingClasses&&upcomingClasses.map((element)=>
-                      <div className='sidebarClass'>
-                       <h4>{element.heading}</h4>
-                       <h6>{element.name}</h6>
+                      
+                      <div className='sidebarClass '  data-toggle="tooltip" title="click to see all classes" style= {{cursor:"pointer"}}  >
+                      
+                       <h3 className='sidebarHeading' onClick={handleClick}>{element.heading}</h3>
+                     
+                       <a href={"/profile/"+element.senderId}><h4 className='sidebarHeading1' >{element.name}</h4></a>
+                
+                       <h6>{element.difference}</h6>
                         
                       </div>
                      
