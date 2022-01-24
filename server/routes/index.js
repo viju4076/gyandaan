@@ -134,7 +134,7 @@ router.post("/giveRating", (req, res, next) => {
       };
       let flag=false;
       rating=rating.filter(element => 
-        !(element.senderId.equals(req.user._id))
+        !(element.senderId&&element.senderId.equals(req.user._id))
       );
       rating.push(Rating);
       User.findOneAndUpdate(
@@ -334,6 +334,7 @@ router.post("/register", (req, res, next) => {
     following: [],
     qualifications: "",
     areasOfInterest: [],
+    Rating:[]
   });
 
   newUser.save().then((user) => {
@@ -545,14 +546,16 @@ router.get("/profile/:userId", async (req, res, next) => {
 
         if (!err) {
           let sumRating=0;
+          
           var userRating = User[0].Rating.find(
-            ({senderId}) => senderId.equals(req.user._id)
+            
+            ({senderId}) =>senderId&& senderId.equals(req.user._id)
           );
           User[0].Rating.map((element) => {
-            sumRating=sumRating+element.rating;
+            sumRating=sumRating+(element.rating?element.rating:0);
           })
-          let globalRating= (User[0].Rating.length>0)?(sumRating/User[0].Rating.length).toPrecision(2):0;
-          console.log("rating di jaa chuki h ", userRating);
+          let globalRating= User[0].Rating.length>0?(sumRating/User[0].Rating.length).toPrecision(2):0;
+          console.log("rating di jaa chuki h ",sumRating, User[0],globalRating);
           res.status(200).json({
             status: 200,
             msg: "current user profile",

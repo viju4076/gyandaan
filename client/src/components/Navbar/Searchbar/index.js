@@ -1,17 +1,13 @@
-import React, { useState } from "react";
-import { useHistory } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
 import './index.css';
 // import $ from "jquery";
 import SearchIcon from "@material-ui/icons/Search";
 function Index() {
   const [searchUser, setSearchUser] = useState([{ username: '', _id: '' }]);
-  const History = useHistory();
-
-
-
+ 
   const profileShow = (e) => {
     console.log('gupta', e.target.name);
-    History.push('/profile/' + e.target.name);
+      window.open('/profile/' + e.target.name);
   }
 
   
