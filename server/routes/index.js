@@ -692,4 +692,17 @@ router.get("/getTopRated", (req, res) => {
   }).sort({ "globalRating": -1 }).limit(7);
 
 })
+
+ router.get("/getUpcomingClasses",(req,res)=>{
+      let currentDate=new Date();
+    Post.find({attendees:req.user._id, startDate: { $gt: currentDate }},(err,classes)=>{
+      if (!err) {
+        console.log('upcoming classes', classes);
+        res.status(200).json({ message: 'upcoming classes', classes });
+      }    
+
+    }).sort({"startDate":1}).limit(2);
+    
+ })
+
 module.exports = router;

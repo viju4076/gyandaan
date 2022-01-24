@@ -13,6 +13,7 @@ function Index() {
     let user = useSelector(state => state.user.update_user);
     const [follwing, setFollowing] = useState([]);
     const [TopUsers, setTopUsers] = useState();
+    const [upcomingClasses,setUpcomingClasses]=useState();
     useEffect(() => {
         console.log('useeffect right');
         fetch('/getfollowing')
@@ -26,6 +27,13 @@ function Index() {
             .then(data => {
                 console.table(data.users);
                 setTopUsers(data.users);
+            })
+            fetch('/getUpcomingClasses')
+            .then(data => data.json())
+            .then(data => {
+                console.table('upcoming classes',data.classes);
+                setUpcomingClasses(data.classes);
+              
             })
 
     }
@@ -51,6 +59,21 @@ function Index() {
     return (
         <div className="sidebar">
             <div className="sidebar_Top">
+            <div className="sidebar_bottom">
+                <p>Upcoming Classes</p>
+                {
+                  upcomingClasses&&upcomingClasses.map((element)=>
+                      <div className='sidebarClass'>
+                       <h4>{element.heading}</h4>
+                       <h6>{element.name}</h6>
+                        
+                      </div>
+                     
+
+                  )
+                }
+
+            </div>
                 <div className="sidebar_top">
                     <TopRatedTable users={TopUsers} />
                 </div>
