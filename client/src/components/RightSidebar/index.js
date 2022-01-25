@@ -36,7 +36,7 @@ function Index() {
             .then(data => data.json())
             .then(data => {
 
-             console.table('upcoming classes',data.classes, data.classes[0].duration);
+            // console.table('upcoming classes',data.classes, data.classes[0].duration);
                 setUpcomingClasses(data.classes);
               
             })
