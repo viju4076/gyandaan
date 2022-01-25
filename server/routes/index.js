@@ -693,6 +693,37 @@ router.get("/getTopRated", (req, res) => {
 
 })
 
+
+router.get("/getTopContributors", (req, res) => {
+  //let users ;
+  console.log('top');
+  Post.aggregate([
+       
+        {
+          $match: { endDate: { $lt: new Date() } }
+        }
+        ,
+        {
+          $group:
+          {
+              _id: { senderId: "$senderId", name:"$name" },
+              totalPosts: { $sum: 1 },
+          }
+      },{
+          $sort:{
+              totalPosts:-1
+          }
+      },
+  
+    ]).limit(7)
+      .then(result=>res.status(200).json({ message: '***top contributors***', result }))
+      .catch(error=>res.status(200).json({message:"error",result:{}}));
+
+})
+
+
+
+
  router.get("/getUpcomingClasses",(req,res)=>{
       let currentDate=new Date();
     Post.find({attendees:req.user._id, startDate: { $gt: currentDate }},(err,classes)=>{
