@@ -3,9 +3,6 @@
   justify-content: center;
 }
 .searchcomponent{
-  position: fixed;
-  margin-left: 296px;
-    margin-top: 40px;
   z-index:2000;  
 }
 .internal1{

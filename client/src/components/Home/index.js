@@ -41,7 +41,7 @@ function Home() {
         <div>
             <Navbar />
             <div className='searchcomponent'>
-                <Searchbar />
+                {/* <Searchbar /> */}
             </div>
             <div className="externalHome">
                 <div className='internal1'>
