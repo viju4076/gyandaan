@@ -6,9 +6,27 @@ const User = require("../models/user/model");
 const isAuth = require("./authMiddleware").isAuth;
 const isAdmin = require("./authMiddleware").isAdmin;
 const Post = require("../models/post/model");
+const nodemailer = require("nodemailer");
+require("dotenv").config();
 /**
  * -------------- POST ROUTES ----------------
  */
+const transporter = nodemailer.createTransport({
+  host:'smtp.gmail.com', //replace with your email provider
+  port: 3000,
+  secure : false,
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.PASSWORD,
+  },
+});
+transporter.verify(function (error, success) {
+  if (error) {
+    console.log("error aa gyi h ", error);
+  } else {
+    console.log("Server is ready to take our messages");
+  }
+});
 router.post(
   "/login",
   passport.authenticate("local", {
@@ -133,15 +151,17 @@ router.post("/giveRating", (req, res, next) => {
           rating: parseInt(req.body.rating),
         };
         let flag = false;
-        rating = rating.filter(element =>
-          !(element.senderId && element.senderId.equals(req.user._id))
+        rating = rating.filter(
+          (element) =>
+            !(element.senderId && element.senderId.equals(req.user._id))
         );
         rating.push(Rating);
         let sumRating = 0;
         rating.map((element) => {
           sumRating = sumRating + (element.rating ? element.rating : 0);
-        })
-        let globalRating = rating.length > 0 ? (sumRating / rating.length).toPrecision(2) : 0;
+        });
+        let globalRating =
+          rating.length > 0 ? (sumRating / rating.length).toPrecision(2) : 0;
         User.findOneAndUpdate(
           {
             _id: req.body.profileId,
@@ -164,7 +184,8 @@ router.post("/giveRating", (req, res, next) => {
           }
         );
       }
-    });
+    }
+  );
 });
 
 // let userRating = {
@@ -322,7 +343,8 @@ router.post("/register", (req, res, next) => {
   console.log("Hii");
   const saltHash = genPassword(req.body.password);
   console.log(req.body);
-
+  let recieveremail = req.body.email;
+  let recievername = req.body.username;
   const salt = saltHash.salt;
   const hash = saltHash.hash;
 
@@ -339,17 +361,33 @@ router.post("/register", (req, res, next) => {
     following: [],
     qualifications: "",
     areasOfInterest: [],
-    Rating: []
+    Rating: [],
   });
+  var mail = {
+    from: recievername,
+    to: recieveremail, // receiver email,
+  };
 
-  newUser.save().then((user) => {
-    console.log(user);
-    res.status(201).json({
-      message: "User registered successfully",
-      user: user,
-    });
+  transporter.sendMail(mail, (err, data) => {
+    if (err) {
+      res.json({
+        status: "fail",
+      });
+    } else {
+      res.json({
+        status: "success",
+      });
+    }
   });
 });
+//   newUser.save().then((user) => {
+//     console.log(user);
+//     res.status(201).json({
+//       message: "User registered successfully",
+//       user: user,
+//     });
+//   });
+// //});
 router.post("/changeFollower", (req, res, next) => {
   console.log(req.body);
   const loggedInUserId = req.user._id;
@@ -553,18 +591,17 @@ router.get("/profile/:userId", async (req, res, next) => {
           let sumRating = 0;
 
           var userRating = User[0].Rating.find(
-
             ({ senderId }) => senderId && senderId.equals(req.user._id)
           );
 
-          User
+          User;
           res.status(200).json({
             status: 200,
             msg: "current user profile",
             user: User[0],
             userRating: userRating ? userRating : "0",
             loggedInUser: req.user,
-            globalRating: User[0].globalRating
+            globalRating: User[0].globalRating,
           });
         }
       }
@@ -680,44 +717,53 @@ router.get("/getfollowing", (req, res, next) => {
 
 router.get("/getTopRated", (req, res) => {
   //let users ;
-  console.log('top');
+  console.log("top");
   User.find({}, (err, users) => {
     if (!err) {
-      console.log('bissu', users);
-      users.map(user => { username: user.username; id: user._id; globalRating: user.globalRating });
-      res.status(200).json({ message: 'toprated users', users });
+      console.log("bissu", users);
+      users.map((user) => {
+        username: user.username;
+        id: user._id;
+        globalRating: user.globalRating;
+      });
+      res.status(200).json({ message: "toprated users", users });
     }
+  })
+    .sort({ globalRating: -1 })
+    .limit(7);
+});
 
-
-  }).sort({ "globalRating": -1 }).limit(7);
-
-})
-
- router.get("/getUpcomingClasses",(req,res)=>{
-      let currentDate=new Date();
-    Post.find({attendees:req.user._id, startDate: { $gt: currentDate }},(err,classes)=>{
+router.get("/getUpcomingClasses", (req, res) => {
+  let currentDate = new Date();
+  Post.find(
+    { attendees: req.user._id, startDate: { $gt: currentDate } },
+    (err, classes) => {
       if (!err) {
-        console.log('upcoming classes', classes);
-        
-       let newClasses = classes.map((newClass) => {
+        console.log("upcoming classes", classes);
+
+        let newClasses = classes.map((newClass) => {
           newClass = newClass.toJSON();
-          console.log("date di jaa chuki",newClass.startDate, currentDate);
+          console.log("date di jaa chuki", newClass.startDate, currentDate);
           const diffTime = Math.abs(newClass.startDate - currentDate);
           const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
           const diffHours = diffTime / 36e5;
           return {
             ...newClass,
-            difference: diffDays<1?Math.floor(diffHours)+" hours":diffDays+" days",
+            difference:
+              diffDays < 1
+                ? Math.floor(diffHours) + " hours"
+                : diffDays + " days",
           };
-        
-        })
-        
-        
-        res.status(200).json({ message: 'upcoming classes', classes: newClasses });
-      }    
+        });
 
-    }).sort({"startDate":1}).limit(2);
-    
- })
+        res
+          .status(200)
+          .json({ message: "upcoming classes", classes: newClasses });
+      }
+    }
+  )
+    .sort({ startDate: 1 })
+    .limit(2);
+});
 
 module.exports = router;
