@@ -4,8 +4,8 @@ import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from "react-redux";
 import "./Table.css";
 import ShortProfile from '../Profile/ShortProfile';
-import TopRatedTable from './TopRatedTable'
-
+import TopRatedTable from './TopRatedTable';
+import TopContributors from './TopContributors';
 function Index() {
     //const user=useSelector(selectUser);
     const dispatch = useDispatch();
@@ -14,6 +14,7 @@ function Index() {
     const [follwing, setFollowing] = useState([]);
     const [TopUsers, setTopUsers] = useState();
     const [upcomingClasses,setUpcomingClasses]=useState();
+    const [topContributors,setTopContributors]=useState();
     const handleClick =()=>{
         window.open("/classes", "_blank");
     }
@@ -32,13 +33,20 @@ function Index() {
                 console.table(data.users);
                 setTopUsers(data.users);
             })
-            fetch('/getUpcomingClasses')
+
+        fetch('/getUpcomingClasses')
             .then(data => data.json())
             .then(data => {
 
-             console.table('upcoming classes',data.classes, data.classes[0].duration);
+          //   console.table('upcoming classes',data.classes, data.classes[0].duration);
                 setUpcomingClasses(data.classes);
               
+            })
+
+        fetch('/getTopContributors')
+            .then(data=>data.json())
+            .then(data=>{
+                setTopContributors(data.result);
             })
 
     }
@@ -94,12 +102,8 @@ function Index() {
 
                 </div>
             </div>
-            <div className="sidebar_bottom">
-                <p>Skills</p>
-                {
-                    user && user.areasOfInterest && user.areasOfInterest.length > 0 && user.areasOfInterest.map(interest => (interest.isSelected && recentItem(interest.skill)))
-
-                }
+            <div className="sidebar_top">
+                    <TopContributors users={topContributors} />
 
                 {/* {recentItem('reactjs')}
             {recentItem('programming')}

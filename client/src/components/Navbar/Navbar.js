@@ -1,5 +1,5 @@
 /* eslint-disable no-lone-blocks */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Navbar.css";
 import { GET_PROFILE, UPDATE_USER } from "../../actions/types";
 import { IS_USER_LOGGED_IN, SET_USER_ID } from "../../actions/types";
@@ -21,6 +21,8 @@ import { propTypes } from "react-bootstrap/esm/Image";
 
 import Modal from "../addteacher/modal.js";
 
+
+
 const Navbar = () => {
   const [showMediaIcons, setShowMediaIcons] = useState(false);
   const [open, setOpen] = useState(false);
@@ -30,6 +32,19 @@ const Navbar = () => {
   const [updatedUser, setUpdatedUser] = useState(
     useSelector((state) => state.user.update_user)
   );
+
+
+
+  useEffect(()=>{
+    // let x=;
+    console.log("dom eleemntsfsafsadfsf",);
+    var rect = document.querySelector(".searchbar").getClientRects()[0];
+    var list=document.querySelector(".list-group");
+    list.style.left = rect.x + "px";
+    list.style.width = rect.width + "px";
+    console.log(list.getClientRects());
+  })
+
 
   const isUserLoggedIn = useSelector((state) => state.signup.is_user_logged_in);
   const handleJoin = () => {
@@ -100,10 +115,12 @@ const Navbar = () => {
             showMediaIcons ? "menu-link mobile-menu-link" : "menu-link"
           }
         >
-          <ul>
+          <ul className="linkList">
             <li>
-              <div className="external">
-              </div>
+               <div>
+                <Searchbar/>
+               </div>
+              
             </li>
             <li>
               
@@ -133,44 +150,7 @@ const Navbar = () => {
         </div>
 
         {/* 3rd social media links */}
-        <div className="social-media">
-          <ul className="social-media-desktop">
-            <li>
-              <a
-                href="https://www.facebook.com/profile.php?id=100075450080489"
-                target="_thapa"
-              >
-                <FaFacebookSquare className="facebook" />
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://www.instagram.com/ngochanakyapahal/"
-                target="_thapa"
-              >
-                <FaInstagramSquare className="instagram" />
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://www.youtube.com/channel/UCwfaAHy4zQUb2APNOGXUCCA"
-                target="_thapa"
-              >
-                <FaYoutubeSquare className="youtube" />
-              </a>
-            </li>
-            <li>
-              <Button onClick={handleLogout}> Logout </Button>
-            </li>
-          </ul>
 
-          {/* hamburget menu start  */}
-          <div className="hamburger-menu">
-            <a href="#" onClick={() => setShowMediaIcons(!showMediaIcons)}>
-              <GiHamburgerMenu />
-            </a>
-          </div>
-        </div>
       </nav>
     </div>
   );

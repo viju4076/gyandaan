@@ -33,33 +33,33 @@ function Index() {
     }
   };
   return (
-    <>
-      <div className="externallist">
-        <div className="internallist">
-          <form class="form-inline d-flex justify-content-center md-form form-sm ">
-            <input
-              class="searchbar"
+    
+      <div className="searchboxouter">
+
+       
+           <div className="searchbox">
+           <input
               type="text"
+              className="searchbar"
               placeholder="Search"
               aria-label="Search"
               onChange={handleChange}
             />
-            <SearchIcon className="header__searchIcon" />
-          </form>
-        </div>
+            <SearchIcon className="fa fa-search search" style={{color:"blue"}} />
+           </div>
+            
+
         <div className="internallist">
-          <div class="list-group " >
+          <div class="list-group" >
             {
 
               searchUser.map(user => <button type="button" name={user._id} class="list-group-item list-group-item-action active" onClick={profileShow}>
                 {user.username}
               </button>)
             }
-          </div>
+        </div>
         </div>
       </div>
-      {/*  */}
-    </>
   );
 }
 
