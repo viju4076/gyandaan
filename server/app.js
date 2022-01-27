@@ -5,6 +5,8 @@ var passport = require('passport');
 var crypto = require('crypto');
 var routes = require('./routes');
 const connection = require('./config/database');
+const path=require('path');
+
 
 // Package documentation - https://www.npmjs.com/package/connect-mongo
 const MongoStore = require('connect-mongo')(session);
@@ -21,6 +23,7 @@ var app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+app.use(express.static(path.join(__dirname, 'public')));
 
 
 /**
@@ -58,7 +61,16 @@ app.use((req, res, next) => {
 /**
  * -------------- ROUTES ----------------
  */
-
+ app.get('/', (req, res, next) => {
+    
+    res.sendFile(`${__dirname}/index.html`, (err) => {
+      if (err) {
+        console.log(err);
+        res.end(err.message);
+      }
+    });
+  
+});
 // Imports all of the routes from ./routes/index.js
 app.use(routes);
 
@@ -68,4 +80,4 @@ app.use(routes);
  */
 
 // Server listens on http://localhost:3000
-app.listen(3001);
+app.listen(process.env.PORT || 3001);
