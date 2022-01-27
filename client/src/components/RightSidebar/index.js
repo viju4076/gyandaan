@@ -113,13 +113,13 @@ function Index() {
 
             </div>
 
-            <div className="sidebar_bottom">
+            {/* <div className="sidebar_bottom">
                 <p>Following</p>
                 {
                     follwing.map(user => <ShortProfile
                         user={user}
                     />)
-                }
+                } */}
 
                 {/* {recentItem('reactjs')}
             {recentItem('programming')}
@@ -127,7 +127,7 @@ function Index() {
             {recentItem('developer')}
             */}
 
-            </div>
+            {/* </div> */}
 
         </div>
     )

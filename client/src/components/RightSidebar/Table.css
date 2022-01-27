@@ -1,8 +1,9 @@
-.toprated{
+.toprated1{
     border: 2px solid rgb(141, 150, 151) !important;
     /* margin-top: 25px; */
     width: 60%;
-    margin-left: 0% !important;
+    justify-content: center;
+    margin-left: 7.5% !important;
 }
 .ratedHeading{
   
@@ -29,6 +30,12 @@
     font-weight: 600;
     font-size: 18px;
     padding-bottom: 10px;
+}
+.sidebar_top{
+/* display: flex !important;
+justify-content: center !important; */
+
+/* margin-left: 8% !important; */
 }
 /* .sidebarHeading>h4{
   font-size: 14px !important;

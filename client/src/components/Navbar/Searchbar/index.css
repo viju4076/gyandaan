@@ -26,11 +26,14 @@
 
 .searchbar{
   height: 25px;
+  width:500px;
+  /* margin-left: -40%; */
 }
 .searchbox{
   display: flex;
   align-items: center;
-  
+  /* width: 200px; */
+
 }
 .searchboxouter{
   display: flex;

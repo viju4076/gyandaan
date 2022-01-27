@@ -26,7 +26,7 @@ function Index() {
     res = await res.json();
     // console.log(res);
     if (res.status === "400") {
-      window.alert("cannot search");
+      window.alert("cannot match the specified value");
     } else {
       var result = res.users.map(function (a) { return { _id: a._id, username: a.username } });
       setSearchUser(result);

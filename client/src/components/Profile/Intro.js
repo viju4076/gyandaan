@@ -57,7 +57,7 @@ function Intro(props) {
       setIsFollowing(!isFollowing);
       setProfileUser(res.profileUser);
       console.log("profileUser", res.profileUser);
-      window.alert("Button clicked");
+      window.alert("Followed Successfully");
       dispatch({
         type: UPDATE_USER,
         payload: {

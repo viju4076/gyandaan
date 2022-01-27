@@ -8,7 +8,7 @@ function TopRatedTable({ users }) {
             <div className='tableHeading'>
                 <h2>Top Rated Users</h2>
             </div>
-            <table class="toprated table table-bordered table-striped mb-0 ">
+            <table class="toprated1 table table-bordered table-striped mb-0 ">
                 <thead>
                     <tr>
                         <th className='th-sm ratedHeading'>Rank</th>

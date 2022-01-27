@@ -58,11 +58,12 @@ function Login() {
     }
     return (
         <div className='login'>
-            <Link to='/'>
-                <img
-                    className='login_logo'
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/1280px-Amazon_logo.svg.png"/>
-            </Link>
+             <div className="logo">
+          <h2>
+            <span>G</span>yaan
+            <span>D</span>aan
+          </h2>
+        </div>
             <div className='login_container'>
                 <h1>Sign in</h1>
                 <form method="POST">
@@ -71,14 +72,10 @@ function Login() {
                     <h5>Password</h5>
                     <input type='password' value={password} onChange={(e) => setPassword(e.target.value)}
                     />
-                    <button className='loginbutton' onClick={loginUser}> Sign In </button>
+                    <button className='btn btn-info'style={{marginLeft:"40%",fontSize:"15px"}} onClick={loginUser} > Sign In </button>
                 </form>
-                <p>
-                    By signing in you agree to Amazon condition of Use and sale. Please see our privacy notes,
-                    our cookies notice and our internet based Ads notice.
-                </p>
                 <Link to="/signup">
-                <button className='registerbutton'> Create your Amazon Account</button>
+                <button className='btn btn-info' style={{marginTop:"4%",marginLeft:"15%",fontSize:"15px"}} > Create your GyaanDaan Account</button>
                 </Link>
             </div>
         </div>

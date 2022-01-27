@@ -46,43 +46,39 @@ function Register() {
  }
     return (
         <div className='register'>
-            <Link to='/'>
-                <img
-                    className='register_logo'
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/1280px-Amazon_logo.svg.png"/>
-            </Link>
+            <div className="logo">
+          <h2>
+            <span>G</span>yaan
+            <span>D</span>aan
+          </h2>
+        </div>
             <div className='register_container'>
                 <h1>Sign in</h1>
                 <form method='post'>
                     <h5>Full Name</h5>
-                    <input type='text' name="username" id="name" autoComplete='off'
+                    <input type='text' name="username" id="name" autoComplete='off' placeholder='Enter Name'
                         value={user.username} 
                         onChange={handleInputs}/>
                     <h5>Email ID</h5>
-                    <input type='text' name="email" id="email" autoComplete='off'
+                    <input type='text' name="email" id="email" autoComplete='off' placeholder='Enter Email'
                         value={user.email} 
                         onChange={handleInputs}/>
                     <h5>Mobile Number</h5>
-                    <input type='text' name="phone" id="phone" autoComplete='off'
+                    <input type='text' name="phone" id="phone" autoComplete='off' placeholder='Enter phone Number'
                         value={user.phone} 
                         onChange={handleInputs}/>
                     <h5>Password</h5>
-                    <input type='password' name="password" id="password" autoComplete='off'
+                    <input type='password' name="password" id="password" autoComplete='off' placeholder='******'
                         value={user.password} 
                         onChange={handleInputs}/>
                     <h5>Confirm Password</h5>
-                    <input type='password' name="cpassword" id="cpassword" autoComplete='off'
+                    <input type='password' name="cpassword" id="cpassword" autoComplete='off'  placeholder='******'
                         value={user.cpassword} 
                         onChange={handleInputs}/>
-                    <input type="submit" name="signup" id="signup" className="form-submit" value="Register"
-                    onClick={PostData}/>
+                    <button className='btn btn-info' style={{marginLeft:"40%",fontSize:"15px"}}onClick={PostData}>Register</button>
                 </form>
-                <p>
-                    By signing in you agree to Amazon condition of Use and sale. Please see our privacy notes,
-                    our cookies notice and our internet based Ads notice.
-                </p>
                 <Link to="/Login">
-                <button className='loginbutton'> Already Sign in ? Login here</button>
+                <button className='btn btn-info' style={{marginTop:"5px",marginLeft:"15%",fontSize:"15px"}} > Already Sign in ? Login here</button>
                 </Link>
             </div>
         </div>

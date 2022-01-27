@@ -325,8 +325,18 @@ li {
     font-size: 3.8rem;
   }
 }
+.editskill{
+  width:200px;
+  display: flex;
+  justify-content: center;
+}
 .main-navbar {
   text-decoration: none;
+  width:100px;
+}
+.logoutbtn{
+  width:100px;
+  cursor: pointer;
 }
 ul li DropdownButton {
   text-decoration: none;
@@ -349,7 +359,7 @@ ul li DropdownButton {
 }
 
 .linkList{
-  flex-basis: 500px;
+  flex-basis: 1000px;
   justify-content: space-evenly;
 }
 

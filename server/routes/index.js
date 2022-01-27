@@ -6,27 +6,27 @@ const User = require("../models/user/model");
 const isAuth = require("./authMiddleware").isAuth;
 const isAdmin = require("./authMiddleware").isAdmin;
 const Post = require("../models/post/model");
-const nodemailer = require("nodemailer");
+// const nodemailer = require("nodemailer");
 require("dotenv").config();
 /**
  * -------------- POST ROUTES ----------------
  */
-const transporter = nodemailer.createTransport({
-  host:'smtp.gmail.com', //replace with your email provider
-  port: 3000,
-  secure : false,
-  auth: {
-    user: process.env.EMAIL,
-    pass: process.env.PASSWORD,
-  },
-});
-transporter.verify(function (error, success) {
-  if (error) {
-    console.log("error aa gyi h ", error);
-  } else {
-    console.log("Server is ready to take our messages");
-  }
-});
+// const transporter = nodemailer.createTransport({
+//   host: "smtp.gmail.com", //replace with your email provider
+//   port: 3000,
+//   secure: false,
+//   auth: {
+//     user: process.env.EMAIL,
+//     pass: process.env.PASSWORD,
+//   },
+// });
+// transporter.verify(function (error, success) {
+//   if (error) {
+//     console.log("error aa gyi h ", error);
+//   } else {
+//     console.log("Server is ready to take our messages");
+//   }
+// });
 router.post(
   "/login",
   passport.authenticate("local", {
@@ -363,31 +363,31 @@ router.post("/register", (req, res, next) => {
     areasOfInterest: [],
     Rating: [],
   });
-  var mail = {
-    from: recievername,
-    to: recieveremail, // receiver email,
-  };
+  //   var mail = {
+  //     from: recievername,
+  //     to: recieveremail, // receiver email,
+  //   };
 
-  transporter.sendMail(mail, (err, data) => {
-    if (err) {
-      res.json({
-        status: "fail",
-      });
-    } else {
-      res.json({
-        status: "success",
-      });
-    }
+  //   transporter.sendMail(mail, (err, data) => {
+  //     if (err) {
+  //       res.json({
+  //         status: "fail",
+  //       });
+  //     } else {
+  //       res.json({
+  //         status: "success",
+  //       });
+  //     }
+  //   });
+  // });
+  newUser.save().then((user) => {
+    console.log(user);
+    res.status(201).json({
+      message: "User registered successfully",
+      user: user,
+    });
   });
 });
-//   newUser.save().then((user) => {
-//     console.log(user);
-//     res.status(201).json({
-//       message: "User registered successfully",
-//       user: user,
-//     });
-//   });
-// //});
 router.post("/changeFollower", (req, res, next) => {
   console.log(req.body);
   const loggedInUserId = req.user._id;
@@ -733,45 +733,41 @@ router.get("/getTopRated", (req, res) => {
     .limit(7);
 });
 
-
 //   }).sort({ "globalRating": -1 }).limit(7);
 
 // })
 
-
 router.get("/getTopContributors", (req, res) => {
   //let users ;
-  console.log('top');
+  console.log("top");
   Post.aggregate([
-       
-        {
-          $match: { endDate: { $lt: new Date() } }
-        }
-        ,
-        {
-          $group:
-          {
-              _id: { senderId: "$senderId", name:"$name" },
-              totalPosts: { $sum: 1 },
-          }
-      },{
-          $sort:{
-              totalPosts:-1
-          }
+    {
+      $match: { endDate: { $lt: new Date() } },
+    },
+    {
+      $group: {
+        _id: { senderId: "$senderId", name: "$name" },
+        totalPosts: { $sum: 1 },
       },
-  
-    ]).limit(7)
-      .then(result=>res.status(200).json({ message: '***top contributors***', result }))
-      .catch(error=>res.status(200).json({message:"error",result:{}}));
+    },
+    {
+      $sort: {
+        totalPosts: -1,
+      },
+    },
+  ])
+    .limit(7)
+    .then((result) =>
+      res.status(200).json({ message: "***top contributors***", result })
+    )
+    .catch((error) => res.status(200).json({ message: "error", result: {} }));
+});
 
-})
-
-
-
-
- router.get("/getUpcomingClasses",(req,res)=>{
-      let currentDate=new Date();
-    Post.find({attendees:req.user._id, startDate: { $gt: currentDate }},(err,classes)=>{
+router.get("/getUpcomingClasses", (req, res) => {
+  let currentDate = new Date();
+  Post.find(
+    { attendees: req.user._id, startDate: { $gt: currentDate } },
+    (err, classes) => {
       if (!err) {
         console.log("upcoming classes", classes);
 

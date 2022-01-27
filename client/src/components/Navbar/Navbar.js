@@ -122,7 +122,7 @@ const Navbar = () => {
                </div>
               
             </li>
-            <li>
+            <li className="editskill">
               
                 <Modal />
               
@@ -137,14 +137,14 @@ const Navbar = () => {
              </NavLink>
             </li>
             <li></li>
-            <li>
-              <NavLink
-                to="/contact"
-                className="main-navbar"
-                activeClassName="main-nav-active"
-              >
-                Contact us
-              </NavLink>
+            <li onClick={handleLogout} className="logoutbtn">
+              {/* <NavLink
+                to="/contact" */}
+                {/* className="main-navbar"
+                activeClassName="main-nav-active" */}
+                Log out
+              {/* </NavLink> */}
+
             </li>
           </ul>
         </div>
