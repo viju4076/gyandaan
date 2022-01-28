@@ -454,7 +454,7 @@ router.get("/activate/:token", function (req, res) {
             // req.flash('error','Email ID already registered! Please log in.');
             // res.redirect('/login');
           } else {
-            const saltHash = genPassword(req.body.password);
+            const saltHash = genPassword(decodedToken.password);
             // console.log(req.body);
             const salt = saltHash.salt;
             const hash = saltHash.hash;
@@ -471,10 +471,18 @@ router.get("/activate/:token", function (req, res) {
               qualifications: "",
               areasOfInterest: [],
               Rating: [],
-            })
+            });
+            newUser.save().then((user) => {
+              console.log(user);
+              res.status(201).json({
+                message: "User registered successfully",
+                user: user,
+              });
+            });
+            
           }
         })
-      }
+      }})}
   else {
     console.log("Account activation error");
     req.flash("error", "INTERNAL SERVER ERROR");
