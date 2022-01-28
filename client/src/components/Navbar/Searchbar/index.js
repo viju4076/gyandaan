@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import './index.css';
 // import $ from "jquery";
+import {Link} from "react-router-dom";
 import SearchIcon from "@material-ui/icons/Search";
 function Index() {
   const [searchUser, setSearchUser] = useState([{ username: '', _id: '' }]);
@@ -54,8 +55,8 @@ function Index() {
           <div class="list-group" >
             {
 
-              searchUser.map(user => <Link to={"/profile/" + user._id} class="list-group-item list-group-item-action active">
-              {user.username}
+            searchUser.map(user => <Link to={"/profile/" + user._id} class="list-group-item list-group-item-action active">
+            {user.username}
             </Link> )
             }
         </div>

@@ -19,7 +19,7 @@ function Routes() {
               render={() => {
                 return (
                   isUserLoggedIn ?
-                    <Redirect to="/home" /> :
+                    <Redirect to="/" /> :
                     <Redirect to="/login" />
                 )
               }}
@@ -27,7 +27,7 @@ function Routes() {
               exact />
 
           </Switch>
-          <Route path="/home" component={Home} exact />
+          <Route path="/" component={Home} exact />
           <Route path="/login" component={Login} exact />
 
           <Route path="/signup" component={Register} exact />
