@@ -48,7 +48,7 @@ const Navbar = () => {
 
   const isUserLoggedIn = useSelector((state) => state.signup.is_user_logged_in);
   const handleJoin = () => {
-    window.location.replace("/home");
+    window.location.replace("/");
 }
   async function Addteacher() {
     {

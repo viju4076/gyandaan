@@ -53,7 +53,7 @@ function Login() {
           //  dispatch({})
             
 
-            History.push("/home");
+            History.push("/");
         }
     }
     return (

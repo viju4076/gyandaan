@@ -9,9 +9,6 @@ const comments = new Schema({
     description: String,
     dateTime: String
 })
-
-
-
 const PostSchema = new Schema({
     name: String,
     senderId: ObjectId,
