@@ -351,67 +351,103 @@ router.post("/register", (req, res, next) => {
   const salt = saltHash.salt;
   const hash = saltHash.hash;
 
-  const newUser = new User({
-    username: req.body.username,
-    email: req.body.email,
-    phone: req.body.phone,
-    password: req.body.password,
-    cpassword: req.body.cpassword,
-    hash: hash,
-    salt: salt,
-    isTeacher: false,
-    followers: [],
-    following: [],
-    qualifications: "",
-    areasOfInterest: [],
-    Rating: [],
-  });
-  const token = jwt.sign(
-    {
+ User.find({email:req.body.email},(err,user)=>{
+   if(err){
+     res.status(210).json({
+      msg:"Some error occurred", 
+      status:"210"
+     })
+   }  
+
+    if(user.length){
+      res.status(210).json({
+        status:"210",
+        msg: "User already exist",
+        
+      });
+    }
+    const newUser = new User({
       username: req.body.username,
-      password: req.body.password,
       email: req.body.email,
       phone: req.body.phone,
-    },
-    process.env.JWT_KEY,
-    { expiresIn: "60m" }
-  );
-  const CLIENT_URL = "http://" + req.headers.host;
-  const output = `<h2>Please click on below link to activate your account</h2>
-                  <p>${CLIENT_URL}/activate/${token}</p>   
-                  <p><b>NOTE: </b> The above activation link expires in 60 minutes.</p>
-                                `;
-  const transporter = nodemailer.createTransport({
-    // host: 'mail.google.com',
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false,
-    auth: {
-      user: process.env.MAIL_ID,
-      pass: process.env.MAIL_PASSWORD,
-    },
-    tls: {
-      rejectUnauthorized: false,
-    },
-  });
-  const mailOptions = {
-    from: '"GYAANDAAN"',
-    to: req.body.email,
-    subject: "Account Verification:",
-    text: "",
-    html: output,
-  };
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.log(error);
-      // req.flash('error',"Something went wrong on our end. Please register again");
-      // res.redirect('/register');
-    } else {
-      console.log("Message sent: %s", info.messageId);
-      // req.flash('success',"Activation link sent to registered email ID. Please activate to log in.");
-      //res.redirect('/login');
-    }
-  });
+      password: req.body.password,
+      cpassword: req.body.cpassword,
+      hash: hash,
+      salt: salt,
+      isTeacher: false,
+      followers: [],
+      following: [],
+      qualifications: "",
+      areasOfInterest: [],
+      Rating: [],
+    });
+   
+  
+  
+    const token = jwt.sign(
+      {
+        username: req.body.username,
+        password: req.body.password,
+        email: req.body.email,
+        phone: req.body.phone,
+      },
+      process.env.JWT_KEY,
+      { expiresIn: "60m" }
+    );
+    const CLIENT_URL = "http://" + req.headers.host;
+    const output = `<h2>Please click on below link to activate your account</h2>
+                    <p>${CLIENT_URL}/activate/${token}</p>   
+                    <p><b>NOTE: </b> The above activation link expires in 60 minutes.</p>
+                                  `;
+    const transporter = nodemailer.createTransport({
+      // host: 'mail.google.com',
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.MAIL_ID,
+        pass: process.env.MAIL_PASSWORD,
+      },
+      tls: {
+        rejectUnauthorized: false,
+      },
+    });
+    const mailOptions = {
+      from: '"GYAANDAAN"',
+      to: req.body.email,
+      subject: "Account Verification:",
+      text: "",
+      html: output,
+    };
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error);
+        res.status(210).json({
+          status:"210",
+          msg: "Some error occurred",
+          
+        }); 
+        // req.flash('error',"Something went wrong on our end. Please register again");
+        // res.redirect('/register');
+      } else {
+        console.log("Message sent: %s", info.messageId);
+        res.status(200).json({
+          status:"200",
+          msg: "Mail has been sent to you email for verification",
+          
+        });
+        // req.flash('success',"Activation link sent to registered email ID. Please activate to log in.");
+        //res.redirect('/login');
+      }
+    
+
+  
+ })
+
+
+  
+ 
+});
 });
 //   var mail = {
 //     from: recievername,
@@ -450,7 +486,7 @@ router.get("/activate/:token", function (req, res) {
       } else {
         User.findOne({ email: decodedToken.email }).then((foundUser) => {
           if (foundUser) {
-            console.log("user already exists");
+            res.render("response",{url:process.env.FRONT_END_URL,msg:"Account already verified, now u can login"});
             // req.flash('error','Email ID already registered! Please log in.');
             // res.redirect('/login');
           } else {
@@ -474,10 +510,7 @@ router.get("/activate/:token", function (req, res) {
             });
             newUser.save().then((user) => {
               console.log(user);
-              res.status(201).json({
-                message: "User registered successfully",
-                user: user,
-              });
+              res.render("response",{url:process.env.FRONT_END_URL,msg:"Account verified, now you can login"});
             });
 
           }
