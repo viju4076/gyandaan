@@ -19,16 +19,16 @@ function Routes() {
             <Route path="/"
               render={() => {
                 return (
-                  isUserLoggedIn!=="random"&&(console.log(isUserLoggedIn))&&(isUserLoggedIn ?
-                    <Redirect to="/home" /> :
+                  (isUserLoggedIn ?
+                    <Redirect to="/" /> :
                     <Redirect to="/login" />
                 ))
               }}
 
-              exact />
+               />
 
           </Switch>
-          <Route path="/home" component={Home} exact />
+          <Route path="/" component={Home} exact />
           <Route path="/login" component={Login} exact />
 
           <Route path="/signup" component={Register} exact />
