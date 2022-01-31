@@ -34,12 +34,13 @@ function Register() {
     });
     const data=await res.json();
     console.log(data);
-    if(data.status === 422 || !data){
-        window.alert("Invalid registration");
+    if(!data||data.status === "210" ){
+        window.alert(data.msg);
         console.log("Invalid Registration");
+        
     }
     else{
-        window.alert("Registration Successful");
+        window.alert(data.msg);
         console.log("Successful Registration");
         History.push("/Login");
     }
