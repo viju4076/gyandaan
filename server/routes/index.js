@@ -413,23 +413,23 @@ router.post("/register", (req, res, next) => {
     }
   });
 });
-  //   var mail = {
-  //     from: recievername,
-  //     to: recieveremail, // receiver email,
-  //   };
+//   var mail = {
+//     from: recievername,
+//     to: recieveremail, // receiver email,
+//   };
 
-  //   transporter.sendMail(mail, (err, data) => {
-  //     if (err) {
-  //       res.json({
-  //         status: "fail",
-  //       });
-  //     } else {
-  //       res.json({
-  //         status: "success",
-  //       });
-  //     }
-  //   });
-  // });
+//   transporter.sendMail(mail, (err, data) => {
+//     if (err) {
+//       res.json({
+//         status: "fail",
+//       });
+//     } else {
+//       res.json({
+//         status: "success",
+//       });
+//     }
+//   });
+// });
 //   newUser.save().then((user) => {
 //     console.log(user);
 //     res.status(201).json({
@@ -479,10 +479,12 @@ router.get("/activate/:token", function (req, res) {
                 user: user,
               });
             });
-            
+
           }
         })
-      }})}
+      }
+    })
+  }
   else {
     console.log("Account activation error");
     req.flash("error", "INTERNAL SERVER ERROR");
