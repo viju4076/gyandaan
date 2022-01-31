@@ -7,9 +7,10 @@ import Register from "../components/Register/Register";
 import Profile from "../components/Profile";
 import Class from "../components/Class"
 function Routes() {
-  var isUserLoggedIn = useSelector(state => state.signup.is_user_logged_in);
-  const dispatch = useDispatch();
-
+  var isUserLoggedIn;
+  isUserLoggedIn=useSelector(state => state.signup.is_user_logged_in);
+  console.log(isUserLoggedIn);
+   
   return (
     <div>
       <BrowserRouter>
@@ -18,16 +19,16 @@ function Routes() {
             <Route path="/"
               render={() => {
                 return (
-                  isUserLoggedIn ?
-                    <Redirect to="/" /> :
+                  isUserLoggedIn!=="random"&&(console.log(isUserLoggedIn))&&(isUserLoggedIn ?
+                    <Redirect to="/home" /> :
                     <Redirect to="/login" />
-                )
+                ))
               }}
 
               exact />
 
           </Switch>
-          <Route path="/" component={Home} exact />
+          <Route path="/home" component={Home} exact />
           <Route path="/login" component={Login} exact />
 
           <Route path="/signup" component={Register} exact />
