@@ -5,7 +5,8 @@ import { useSelector } from 'react-redux'
 import InputOption from './InputOption'
 import './classPost.css'
 import Comment from "./Comment/Comment";
-
+// import Modal from "../addteacher/modal.js";
+import Share from "./Share";
 
 
 const ClassPost =  (props) => {
@@ -121,8 +122,9 @@ const ClassPost =  (props) => {
             <div className="post_buttons">
                 <InputOption Icon={ThumbUpSharp} title="Like" data-toggle="tooltip" color="gray"></InputOption>
                 <button Icon={ChatOutlined} class="btn btn-primary" onClick={opencomment}> Comment </button>
+                <Share url={window.location.href + "posts/"+ props.id}/>
             </div>
-            {visible && <Comment postid={props.id}/>}
+            {visible && <Comment postid={props.id} user={props.user}/>}
         </div>
     )
 }

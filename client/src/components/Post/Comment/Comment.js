@@ -5,7 +5,9 @@ import { useSelector, useDispatch } from "react-redux";
 import CommentText from './CommentText';
 const Comment = (props) => {
   const [comments,setComments]=useState(null);
-  let user=useSelector(state=>state.user.update_user);
+  let user=props.user;
+  console.log(user);
+  // let user=useSelector(state=>state.user.update_user);
   const [desc,setDesc]=useState();
   useEffect(() => {
     fetch(`/getComments/${props.postid}`)
@@ -57,7 +59,7 @@ const submitComment = async (e) =>{
         <div class="d-flex flex-column col-md-8">
             <div class="coment-bottom bg-white p-2 px-4">
                 <div class="d-flex flex-row add-comment-section mt-4 mb-4">
-                { <Avatar >{user&&user.email&&user.email.charAt(0)} </Avatar> }
+                {Object.keys(user).length!== 0 &&  <Avatar >{user.email&&user.email.charAt(0)} </Avatar> }
                 <input type="text" class="form-control mr-3" placeholder="Add comment" onChange={handleInputs} value={desc}/>
                 <button class="btn btn-primary" type="button" onClick={submitComment}>Comment</button></div>
                 {comments && comments.map(comment=><CommentText

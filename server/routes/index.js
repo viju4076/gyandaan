@@ -702,7 +702,30 @@ router.get("/auth", isAuth, (req, res, next) => {
     userId: req.user._id,
   });
 });
-
+router.get("/posts/:postId", async (req, res, next) => {
+  const postId = req.params.postId;
+  console.log("postId", postId);
+    let data = await Post.find(
+      {
+        _id: postId,
+      },
+      (err, Post) => {
+        if(Post.length){
+          res.status(200).json({
+            status: 200,
+            msg: "current Post",
+            post: Post[0],
+            user:req.user,
+          });
+        }
+        else{
+          res.status(210).json({
+            msg: "Can't get current post",
+          });
+        }
+        }
+    );
+  }); 
 router.get("/profile/:userId", async (req, res, next) => {
   const userId = req.params.userId;
   console.log("userId", userId);
