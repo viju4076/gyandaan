@@ -29,27 +29,43 @@ const Navbar = () => {
   const [show, setShow] = useState(false);
   const History = useHistory();
   const dispatch = useDispatch();
-  const [updatedUser, setUpdatedUser] = useState(
-    useSelector((state) => state.user.update_user)
-  );
+  
+  const [updatedUser, setUpdatedUser] = useState(null);
+  
 
 
 
   useEffect(()=>{
     // let x=;
+    fetch('/profile/userkiprofile')
+    .then(data => data.json())
+    .then(data => {
+   
+        if (data.status == 200) {
+          console.log("**********************",data.user);
+             setUpdatedUser(data.user);
+            
+        }
+    })
+
+     
     console.log("dom eleemntsfsafsadfsf",);
     var rect = document.querySelector(".searchbar").getClientRects()[0];
     var list=document.querySelector(".list-group");
     list.style.left = rect.x + "px";
     list.style.width = rect.width + "px";
     console.log(list.getClientRects());
-  })
+  },[])
 
 
   const isUserLoggedIn = useSelector((state) => state.signup.is_user_logged_in);
   const handleJoin = () => {
     window.location.replace("/");
 }
+  const handleLogin=()=>{
+    window.location.replace("/login");
+  }
+
   async function Addteacher() {
     {
       var res = await fetch("/addteacher", {
@@ -124,11 +140,11 @@ const Navbar = () => {
             </li>
             <li className="editskill">
               
-                <Modal />
+               {updatedUser&& <Modal />}
               
             </li>
             <li>
-            <NavLink
+             <NavLink
                 to="/classes"
                 className="main-navbar"
                 activeClassName="main-nav-active"
@@ -137,15 +153,14 @@ const Navbar = () => {
              </NavLink>
             </li>
             <li></li>
-            <li onClick={handleLogout} className="logoutbtn">
-              {/* <NavLink
-                to="/contact" */}
-                {/* className="main-navbar"
-                activeClassName="main-nav-active" */}
+            {updatedUser?<li onClick={handleLogout} className="logoutbtn">
                 Log out
-              {/* </NavLink> */}
-
+             
+            </li>:<li onClick={handleLogin} className="logoutbtn">
+                Login 
+             
             </li>
+            }
           </ul>
         </div>
 

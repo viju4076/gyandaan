@@ -122,6 +122,7 @@ const ClassPost =  (props) => {
             <div className="post_buttons">
                 <InputOption Icon={ThumbUpSharp} title="Like" data-toggle="tooltip" color="gray"></InputOption>
                 <button Icon={ChatOutlined} class="btn btn-primary" onClick={opencomment}> Comment </button>
+                {console.log("---------------",props.id)}
                 <Share url={window.location.href + "posts/"+ props.id}/>
             </div>
             {visible && <Comment postid={props.id} user={props.user}/>}

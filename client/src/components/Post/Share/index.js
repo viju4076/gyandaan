@@ -19,15 +19,15 @@ function index(props) {
           type="button"
           class="btn btn-primary mx-auto"
           data-toggle="modal"
-          data-target="#exampleModal2"
+          data-target={"#"+props.url}
         >
           {" "}
-          Share on social media{" "}
+          Share {" "}
         </button>{" "}
       </div>
       <div
         class="modal fade"
-        id="exampleModal2"
+        id={props.url}
         tabindex="-1"
         role="dialog"
         aria-labelledby="exampleModalLabel"

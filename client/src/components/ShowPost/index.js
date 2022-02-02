@@ -7,11 +7,18 @@ import { useParams } from "react-router-dom";
 import InputOption from "../Post/InputOption"
 import Navbar from "../Navbar/Navbar";
 import "./index.css";
+import Sidebar from '../Sidebar';
 const Index =  () => {
     const [user,setUser]=useState(null);
+    const [postUser,setPostUser]=useState(null);
+    const [rating,setRating]=useState('');
     const [post, setPost]= useState(null);
     const { objectId } = useParams();
     useEffect(() => {
+
+       
+
+
         fetch(`/posts/${objectId}`)
         .then(data => data.json())
         .then(data => {
@@ -19,6 +26,28 @@ const Index =  () => {
                 console.log("inside post", data.post);
             setPost(data.post);
             setUser(data.user);
+         
+            
+        fetch(`/profile/${data.post.senderId}`)
+      .then((data) => data.json())
+      .then((data) => {
+        if (data.status == 200) {
+
+          setPostUser(data.user);
+          console.log("data ka user",data);
+          setRating(data.userRating.rating);
+         
+          // console.log("*************asdf****************user ki profile", data);
+          
+        }
+      });
+
+
+
+
+
+
+
             }
             else{
                 window.alert(data.msg);
@@ -63,8 +92,10 @@ const Index =  () => {
     return (
         <>
         <Navbar/>
-        <div className="postExternal">
-        <div className='post1'>
+        <div className="externalShow">
+          <Sidebar user={postUser}/>
+          <div className="postExternal">
+        <div className='post2'>
              <div className='post_side'>
 
                 <div className="post_header">
@@ -95,7 +126,7 @@ const Index =  () => {
   
 
 
-            <div className="post_body" >
+            <div className="post_body1" >
                 <div className="headingAndTiming" data-toggle="tooltip" title="click to join meet" onClick={handleJoin}>
                     <div className='heading'>
                         <p>{post && post.heading}</p>
@@ -116,7 +147,9 @@ const Index =  () => {
             {post && user &&  <Comment postid={post._id} user={user}/>} 
             </div>
         </div>
-        </>
+  
+        </div>
+              </>
     )
 }
 

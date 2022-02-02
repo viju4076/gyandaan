@@ -56,7 +56,7 @@ const submitComment = async (e) =>{
   return( 
     <div class="container">
     <div class="d-flex justify-content-center row" id="commentstarting" >
-        <div class="d-flex flex-column col-md-8">
+        <div class="d-flex flex-column col-md-12">
             <div class="coment-bottom bg-white p-2 px-4">
                 <div class="d-flex flex-row add-comment-section mt-4 mb-4">
                 {Object.keys(user).length!== 0 &&  <Avatar >{user.email&&user.email.charAt(0)} </Avatar> }

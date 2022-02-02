@@ -749,7 +749,7 @@ router.get("/profile/:userId", async (req, res, next) => {
           let sumRating = 0;
 
           var userRating = User[0].Rating.find(
-            ({ senderId }) => senderId && senderId.equals(req.user._id)
+            ({ senderId }) => senderId && senderId.equals(req.user?req.user._id:0)
           );
 
           User;
@@ -845,10 +845,10 @@ router.get("/getpost/:userId", (req, res, next) => {
 
 router.get("/getfollowing", (req, res, next) => {
   console.log("get following praya");
-
+  
   User.find(
     {
-      _id: req.user.following,
+      _id: req.user?req.user.following:0,
     },
     (err, followingList) => {
       if (err) {

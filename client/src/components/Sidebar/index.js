@@ -6,24 +6,24 @@ import "./index.css";
 import ShortProfile from '../Profile/ShortProfile';
 
 
-function Sidebar() {
+function Sidebar(props) {
   //const user=useSelector(selectUser);
   const dispatch = useDispatch();
   
-  let user=useSelector(state=>state.user.update_user);
-  const [follwing,setFollowing] = useState([]);
-  useEffect(()=>{
+  let user=props.user;
+  console.log('***********',props.user.following);
+  // useEffect(()=>{
     
-      fetch('/getfollowing')
-      .then(data=>data.json())
-      .then(data=>{
-        setFollowing(data.following);
-      })
+  //     fetch('/getfollowing')
+  //     .then(data=>data.json())
+  //     .then(data=>{
+  //       setFollowing(data.following);
+  //     })
 
-  }
+  // }
         
 
-  ,[user]); 
+  // ,[user]); 
    
   
   const profileShow = (e) => {
@@ -49,6 +49,13 @@ function Sidebar() {
                 </div>
                 <h2>{user&&user.username}</h2>
                 <h4>{user&&user.qualifications}</h4>
+                <div className="globalRating">
+                    <div className="internalRating">Gyandaan Rating</div>
+                    <div className="internalRating">
+                      {user&&user.globalRating}
+                      <span class="fa fa-star checked"></span>
+                    </div>
+                  </div>
             </div>
            
            
@@ -97,7 +104,7 @@ function Sidebar() {
         <div className="sidebar_bottom">
             <p>Following</p>
             {
-              follwing.map(user=><ShortProfile
+             user&&user.following&& user.following.map(user=><ShortProfile
                 user={user}
               />)
             }
