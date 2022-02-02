@@ -12,7 +12,8 @@ import Share from "./Share";
 const ClassPost =  (props) => {
    const[visible,setVisible]=useState(false);
     const [isAttending, setIsAttending]= useState(props.isAttending);
-    
+    const [noOfLikes, setNoOfLikes] = useState(0);
+    const [isLiked, setIsLiked] = useState(props.isLiked);
 
     
     useEffect(() => {
@@ -27,6 +28,7 @@ const ClassPost =  (props) => {
                // setIsAttending(props.attendees.includes(props.userId));
     //         }
     //     })
+      
     setIsAttending(props.isAttending);
 
      },[])
@@ -37,6 +39,33 @@ const ClassPost =  (props) => {
     const opencomment = (e) =>{
         console.log("button clicked");
      setVisible(!visible);
+    }
+    const handleLike = async (e) =>{
+        
+        console.log("Like clicked");
+        const res=await fetch("/changeLike", {
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body: JSON.stringify({
+               postid:props.id,
+               isLiked: isLiked,
+            })
+        });
+        const data=await res.json();
+        console.log(data);
+        if(data.status === 210 || !data){
+            window.alert("Cann't Like");
+          //  console.log("Invalid Registration");
+        }
+        else{
+         console.log("Liked done");
+         setIsLiked(data.isLiked);
+         
+        
+            //console.log("Successful Registration");
+     }
     }
     const handleAttend = async(e)=>{
         console.log("feed ki id",props.id);
@@ -120,10 +149,15 @@ const ClassPost =  (props) => {
 
             </div>
             <div className="post_buttons">
-                <InputOption Icon={ThumbUpSharp} title="Like" data-toggle="tooltip" color="gray"></InputOption>
+                <button Icon={ThumbUpSharp}  class="btn btn-primary" onClick={handleLike} >{isLiked?"Liked":"Like"}</button>
                 <button Icon={ChatOutlined} class="btn btn-primary" onClick={opencomment}> Comment </button>
                 {console.log("---------------",props.id)}
                 <Share url={window.location.href + "posts/"+ props.id}/>
+            </div>
+            <div>
+                {isLiked?<li>Liked by you  {props.likes>1?"and "+ (props.likes-1)+" others":""}</li>
+                :props.likes>0&&<li>Liked by {props.likes} others</li>
+                }
             </div>
             {visible && <Comment postid={props.id} user={props.user}/>}
         </div>

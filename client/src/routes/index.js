@@ -29,7 +29,7 @@ function Routes() {
                />
 
           </Switch>
-          <Route path="/" component={Home} exact />
+          <Route path="/home" component={Home} exact />
           <Route path="/login" component={Login} exact />
 
           <Route path="/signup" component={Register} exact />

@@ -22,7 +22,8 @@ const PostSchema = new Schema({
     formattedStartDate: String,
     duration:String,
     comments: [comments],
-    attendees: [ObjectId] 
+    attendees: [ObjectId],
+    likes: [ObjectId],
 })
 
 const Post = connection.model('Post', PostSchema);

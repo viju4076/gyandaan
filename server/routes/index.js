@@ -248,6 +248,7 @@ router.post("/addpost", (req, res, next) => {
     duration: duration,
     comments: [],
     attendees: [],
+    likes: [],
   });
   console.log(newPost);
   newPost.save().then((err, post) => {
@@ -449,6 +450,54 @@ router.post("/register", (req, res, next) => {
  
 });
 });
+
+
+router.post("/changeLike", (req, res, next) => {
+  
+  console.log(req.body);
+  const loggedInUserId = req.user._id;
+  const postid = req.body.postid;
+  const isLiked = req.body.isLiked;
+  
+  let searchPost = {
+    $push: {
+      likes: loggedInUserId
+    },
+  };
+  if(isLiked){
+
+    searchPost = {
+      $pull: {
+        likes: loggedInUserId
+      },
+    };
+  }
+  Post.findOneAndUpdate(
+    {
+      _id: postid,
+    },
+    searchPost,
+    {
+      new: true,
+    },
+    (err, Post) => {
+      if (err) {
+        res.status(210).json({
+          status: "210",
+          msg: "Cann't like ",
+        });
+      } else {
+        console.log(Post,"Like");
+        res.status(200).json({
+          status: "200",
+          msg: "Liked",
+          likes: Post.likes,
+          isLiked: Post.likes.includes(loggedInUserId),
+        });
+      }
+    }
+  );
+});
 //   var mail = {
 //     from: recievername,
 //     to: recieveremail, // receiver email,
@@ -507,6 +556,7 @@ router.get("/activate/:token", function (req, res) {
               qualifications: "",
               areasOfInterest: [],
               Rating: [],
+              
             });
             newUser.save().then((user) => {
               console.log(user);

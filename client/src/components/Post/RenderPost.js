@@ -33,6 +33,8 @@ export default function RenderPost(props) {
         userId= {props.userId}
         formattedStartDate= {feed.formattedStartDate}
         isAttending={feed.attendees.includes(props.userId)}
+        isLiked={feed.likes.includes(props.userId)}
+        likes= {feed.likes.length}
         user={user}
       />)}
 
