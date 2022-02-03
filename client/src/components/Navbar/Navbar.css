@@ -177,6 +177,12 @@ li {
   text-align: center;
 }
 
+.navbarDropDown{
+  margin-left: -10px;
+  display: flex ;
+  flex-direction: column ;
+}
+
 /* responsive css style  */
 @media (max-width: 1080px) {
   .main-nav {

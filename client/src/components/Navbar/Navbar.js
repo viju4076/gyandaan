@@ -1,4 +1,6 @@
 /* eslint-disable no-lone-blocks */
+import { Avatar } from '@material-ui/core';
+
 import React, { useEffect, useState } from "react";
 import "./Navbar.css";
 import { GET_PROFILE, UPDATE_USER } from "../../actions/types";
@@ -65,7 +67,9 @@ const Navbar = () => {
   const handleLogin=()=>{
     window.location.replace("/login");
   }
-
+ const handleProfile=()=>{
+   window.location.replace("/myProfile");
+ }
   async function Addteacher() {
     {
       var res = await fetch("/addteacher", {
@@ -152,11 +156,26 @@ const Navbar = () => {
              Classes
              </NavLink>
             </li>
-            <li></li>
-            {updatedUser?<li onClick={handleLogout} className="logoutbtn">
-                Log out
+           
+            
+           
+            {updatedUser? <> <div className="navbarAvatar">
+            {<Avatar >{updatedUser && updatedUser.email && updatedUser.email.charAt(0)} </Avatar>}
+          </div>
+           <li class="nav-item dropdown navbarDropDown">  
+        <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+         
+        </a>
+        
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" onClick={handleProfile}>My Profile</a>
+          <a class="dropdown-item" onClick={handleLogout} >Logout</a>
+       
+        </div>
+      </li>
+         </>
              
-            </li>:<li onClick={handleLogin} className="logoutbtn">
+              :<li onClick={handleLogin} className="logoutbtn">
                 Login 
              
             </li>

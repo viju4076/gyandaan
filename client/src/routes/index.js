@@ -7,6 +7,7 @@ import Register from "../components/Register/Register";
 import Profile from "../components/Profile";
 import Class from "../components/Class";
 import ShowPost from "../components/ShowPost";
+import EditProfile from "../components/EditProfile"
 function Routes() {
   var isUserLoggedIn;
   isUserLoggedIn=useSelector(state => state.signup.is_user_logged_in);
@@ -16,7 +17,7 @@ function Routes() {
     <div>
       <BrowserRouter>
         <div className="page-content">
-          <Switch>
+          {/* <Switch>
             <Route path="/"
               render={() => {
                 return (
@@ -28,14 +29,15 @@ function Routes() {
               exact
                />
 
-          </Switch>
-          <Route path="/home" component={Home} exact />
+          </Switch> */}
+          <Route path="/" component={Home} exact />
           <Route path="/login" component={Login} exact />
 
           <Route path="/signup" component={Register} exact />
           <Route path="/classes" component={Class} exact />
           <Route path="/profile/:objectId" component={Profile} exact />
           <Route path="/posts/:objectId" component={ShowPost} exact />
+          <Route path="/myProfile" component={EditProfile} exact/>
         </div>
       </BrowserRouter>
 
