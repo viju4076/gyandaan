@@ -142,11 +142,11 @@ const Navbar = () => {
                </div>
               
             </li>
-            <li className="editskill">
+            {/* <li className="editskill">
               
                {updatedUser&& <Modal />}
               
-            </li>
+            </li> */}
             <li>
              <NavLink
                 to="/classes"
@@ -167,7 +167,7 @@ const Navbar = () => {
          
         </a>
         
-        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+        <div class="dropdown-menu " aria-labelledby="navbarDropdownMenuLink" style={{cursor: "pointer"}}>
           <a class="dropdown-item" onClick={handleProfile}>My Profile</a>
           <a class="dropdown-item" onClick={handleLogout} >Logout</a>
        

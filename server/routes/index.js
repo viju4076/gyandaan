@@ -138,6 +138,42 @@ router.post("/addteacher", (req, res, next) => {
     }
   );
 });
+
+router.post("/updateprofile", (req, res, next) => {
+  console.log(req.body);
+
+  User.findOneAndUpdate(
+    {
+      _id: req.user._id,
+    },
+    {
+      isTeacher: req.body.isTeacher,
+      areasOfInterest: req.body.areasOfInterest,
+      qualifications: req.body.qualifications,
+      email: req.body.email,
+      username: req.body.username,
+      phone: req.body.phone,
+    },
+    {
+      new: true,
+    },
+    (err, updatedUser) => {
+      if (err) {
+        res.status(200).json({
+          status: "400",
+          msg: "Cannot update profile ",
+        });
+      } else {
+        console.log(updatedUser);
+        res.status(200).json({
+          status: "200",
+          msg: "profile updated",
+          updatedUser: updatedUser,
+        });
+      }
+    }
+  );
+});
 router.post("/giveRating", (req, res, next) => {
   console.log("Rating ", req.body);
   const loggedInUserId = req.user._id;
