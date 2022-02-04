@@ -9,13 +9,19 @@ function Index() {
     const skills = [];
     const [Categories, setCategories] = useState(skills);
     const [isTeacher,setIsTeacher]=useState(false);
-
+    const [username,setUsername]=useState('');
+    const [email,setEmail]=useState('');
+    const [phone,setPhone]=useState('');
+    const [qualifications,setQualifications]=useState('');   
+  
     for (var i = 0; i < categories.length; i++) {
         skills.push({ id: categories[i].id, skill: categories[i].skill, isSelected: false });
     }
-
+ 
     const dispatch = useDispatch();
-
+    const handleTeacher=(e)=>{
+        setIsTeacher(!isTeacher);
+    }
     const handleClick = (e) => {
 
         let newCategories = Categories.map(el => (
@@ -36,7 +42,10 @@ function Index() {
                     setUser(data.user);
                     setIsTeacher(data.user.isTeacher);
                     setCategories(data.user.areasOfInterest.length ? (data.user.areasOfInterest) : skills);
-
+                    setUsername(data.username);
+                    setEmail(data.email);
+                    setPhone(data.phone);
+                    setQualifications(data.qualifications); 
                 }
             })
 
@@ -52,7 +61,7 @@ function Index() {
     return (
         <>
             <Navbar />
-            <div class="container rounded bg-white mt-5 mb-5">
+            {user&&<div class="container rounded bg-white mt-5 mb-5">
                 <div class="row">
                     <div class="col-md-3 border-right">
                         <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg" /><span class="font-weight-bold">{user && user.username}</span><span class="text-black-50">{user && user.email}</span><span> </span></div>
@@ -63,11 +72,11 @@ function Index() {
                                 <h4 class="text-right">Profile Settings</h4>
                             </div>
                             <div class="row mt-2">
-                                <div class="col-md-12"><label class="labels">Full Name</label><input type="text" class="form-control" placeholder={user && user.username} value="" /></div>
+                                <div class="col-md-12"><label class="labels">Full Name</label><input type="text" class="form-control" placeholder={user.username} value={user.username} /></div>
                             </div>
                             <div class="row mt-3">
-                                <div class="col-md-12"><label class="labels">Email ID</label><input type="text" class="form-control" placeholder={user && user.email} value="" /></div>
-                                <div class="col-md-12"><label class="labels">Mobile Number</label><input type="text" class="form-control" placeholder={user && user.phone} value="/" /></div>
+                                <div class="col-md-12"><label class="labels">Email ID</label><input type="text" class="form-control" placeholder={user.email} value={user.email} /></div>
+                                <div class="col-md-12"><label class="labels">Mobile Number</label><input type="text" class="form-control" placeholder={user.phone} value={user.phone} /></div>
                             </div>
                             <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button">Save Profile</button></div>
                         </div>
@@ -78,9 +87,9 @@ function Index() {
                     <div class="p-4 py-5">
                     
                     <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked={isTeacher}/>
-                    <label class="form-check-label" for="flexCheckDefault">
-                     Teacher
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked={isTeacher} style={{height:"20px",width:"20px"}} onClick={handleTeacher}/>
+                    <label class="form-check-label" for="flexCheckDefault" style={{marginLeft:"10px"}}>
+                     <h2>Teacher</h2>
                     </label>  
                   </div>
                    
@@ -108,7 +117,7 @@ function Index() {
                                 </div>
                                 
                             </div>
-                            <div class="col-md-12"><label class="labels">Qualifications</label><input type="text" class="form-control" placeholder={user && user.qualifications} value="" /></div>
+                            <div class="col-md-12"><label class="labels">Qualifications</label><input type="text" class="form-control" placeholder={user.qualifications} value={user.qualifications} /></div>
                             
 
                         </div>
@@ -117,6 +126,7 @@ function Index() {
                 </div>
                     
             </div></div>
+            }
 
         </>
     );
