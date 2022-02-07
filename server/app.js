@@ -5,8 +5,8 @@ var passport = require('passport');
 var crypto = require('crypto');
 var routes = require('./routes');
 const connection = require('./config/database');
-const path=require('path');
-
+const path = require('path');
+const fileUpload = require('express-fileupload');
 
 // Package documentation - https://www.npmjs.com/package/connect-mongo
 const MongoStore = require('connect-mongo')(session);
@@ -22,7 +22,8 @@ require('dotenv').config();
 var app = express();
 app.set('view engine', 'ejs');
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
+app.use(fileUpload());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
@@ -62,14 +63,14 @@ app.use((req, res, next) => {
  * -------------- ROUTES ----------------
  */
 //  app.get('/', (req, res, next) => {
-    
+
 //     res.sendFile(`${__dirname}/index.html`, (err) => {
 //       if (err) {
 //         console.log(err);
 //         res.end(err.message);
 //       }
 //     });
-  
+
 // });
 // Imports all of the routes from ./routes/index.js
 app.use(routes);
