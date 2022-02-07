@@ -36,6 +36,7 @@ export default function RenderPost(props) {
         isLiked={feed.likes.includes(props.userId)}
         likes= {feed.likes.length}
         user={user}
+        userAvataar={feed.senderAvataar}
       />)}
 
     </div>

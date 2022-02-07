@@ -2,8 +2,8 @@ const dotenv = require('dotenv');
 const AWS = require('aws-sdk');
 const { v4: uuidv4 } = require('uuid');
 const sharp = require('sharp');
-const imagemin = import('imagemin');
-const mozjpeg = require('imagemin-mozjpeg');
+//const imagemin = import('imagemin');
+//const mozjpeg = require('imagemin-mozjpeg');
 const isJpg = import('is-jpg');
 const fs = require("fs");
 
@@ -45,7 +45,9 @@ const uploadSingleFile = async (file) => {
         const fileRes = await s3.upload(fileParams).promise();
         return fileRes.Location;
     } catch (err) {
+        
         console.log(err);
+        return null;
     }
 };
 

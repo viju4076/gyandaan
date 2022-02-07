@@ -6,11 +6,13 @@ const User = require("../models/user/model");
 const isAuth = require("./authMiddleware").isAuth;
 const isAdmin = require("./authMiddleware").isAdmin;
 const Post = require("../models/post/model");
+
 var nodemailer = require("nodemailer");
 const { check, validationResult } = require("express-validator");
 // const nodemailer = require("nodemailer");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
+const { uploadSingleFile, downloadFIle } = require('../helper/fileUpload');
 /**
  * -------------- POST ROUTES ----------------
  */
@@ -138,6 +140,53 @@ router.post("/addteacher", (req, res, next) => {
     }
   );
 });
+
+router.post("/updateavataar",async (req,res,next)=>{
+    
+   const url=await uploadSingleFile(req.files.file);
+   if(!url){
+      return  res.status(210).json({
+        status: "210",
+        msg: "error in uploading avataar"
+      });
+   }
+  const date=new Date();
+  const avataar={
+    dateModified:date,
+    link:url
+  }
+  User.findOneAndUpdate(
+    {
+      _id: req.user._id,
+    },
+    {
+      avataar: avataar
+    },
+    {
+      new: true,
+    },
+    (err, updatedUser) => {
+      if (err) {
+        res.status(210).json({
+          status: "400",
+          msg: "Cannot update profile ",
+        });
+      } else {
+        console.log(updatedUser);
+        res.status(200).json({
+          status: "200",
+          msg: "avataar updated",
+          updatedUser: updatedUser,
+        });
+      }
+    }
+  );
+
+   
+
+
+})
+
 
 router.post("/updateprofile", (req, res, next) => {
   console.log(req.body);
@@ -285,6 +334,7 @@ router.post("/addpost", (req, res, next) => {
     comments: [],
     attendees: [],
     likes: [],
+    senderAvataar:req.user.avataar?req.user.avataar.link:null
   });
   console.log(newPost);
   newPost.save().then((err, post) => {
