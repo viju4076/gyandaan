@@ -13,6 +13,13 @@ const Rating = new Schema({
   description: String,
   senderId: ObjectId,
 });
+
+const Avataar=new Schema({
+   link:String,
+   dateModified:Date,
+
+})
+
 const userSchema = new Schema({
   username: String,
   email: String,
@@ -26,7 +33,8 @@ const userSchema = new Schema({
   areasOfInterest: [AreasOfInterest],
   Posts: [{ type: ObjectId, ref: "Post" }],
   qualifications: String,
-  globalRating: Number
+  globalRating: Number,
+  avataar:Avataar
 });
 userSchema.index({ "username": "text" });
 const User = connection.model("User", userSchema);

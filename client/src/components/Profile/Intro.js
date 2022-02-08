@@ -81,7 +81,7 @@ function Intro(props) {
               <div class="text-center">
                 {" "}
                 <img
-                  src="https://i.imgur.com/bDLhJiP.jpg"
+                 src={profileUser.avataar?profileUser.avataar.link:"https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"}
                   width="100"
                   class="rounded-circle"
                 />{" "}
@@ -157,6 +157,7 @@ function Intro(props) {
                 attendees={feed.attendees}
                 isAttending={feed.attendees.includes(userId)}
                 formattedStartDate={feed.formattedStartDate}
+                userAvataar={feed.senderAvataar}
               />
             ))}
         </div>

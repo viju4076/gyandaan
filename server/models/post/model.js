@@ -12,6 +12,7 @@ const comments = new Schema({
 const PostSchema = new Schema({
     name: String,
     senderId: ObjectId,
+    senderAvataar:String,
     heading: String,
     link: String,
     description: String,
