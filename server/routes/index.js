@@ -153,6 +153,7 @@ router.post("/updateprofile", (req, res, next) => {
       email: req.body.email,
       username: req.body.username,
       phone: req.body.phone,
+    
     },
     {
       new: true,
