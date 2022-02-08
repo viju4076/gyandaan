@@ -74,7 +74,9 @@ function Index() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("name", e.target, e.target[0].value, "mail", e.target[1].value, "phone", e.target[2].value, e.target[5].value);
+       // console.log("name", e.target, e.target[0].value, "mail", e.target[1].value, "phone", e.target[2].value, e.target[5].value);
+        var categories=isTeacher?Categories:[];
+        var qualifications=isTeacher?e.target[5].value:null;
         var res = await fetch('/updateprofile', {
             method: "POST",
             headers: {
@@ -82,8 +84,8 @@ function Index() {
             },
             body: JSON.stringify({
                 "isTeacher": isTeacher,
-                "areasOfInterest": Categories,
-                "qualifications": e.target[5].value,
+                "areasOfInterest": categories,
+                "qualifications": qualifications,
                 "email": e.target[1].value,
                 "username": e.target[0].value,
                 "phone": e.target[2].value,
@@ -159,8 +161,8 @@ function Index() {
                             </form>
                         </div>
                         <form onSubmit={handleSubmit} ref={form} >
-                             <div class="col-md-12 ">
-                            <div class="col-md-5 ">
+                             <div class="col-md-12 " style={{display:"flex"}}>
+                            <div class="col-md-7 border-right">
                                 <div class="p-3 py-5">
                                     <div class="d-flex justify-content-between align-items-center mb-3">
                                         <h4 class="text-right">Profile Settings</h4>
@@ -182,7 +184,7 @@ function Index() {
                             </div>
 
 
-                            <div class="col-md-12">
+                            <div class="col-md-5">
                                 <div class="p-4 py-5">
 
                                     <div class="form-check">

@@ -362,7 +362,7 @@ ul li DropdownButton {
 }
 
 .linkList{
-  flex-basis: 1000px;
+  flex-basis: 800px;
   justify-content: space-evenly;
 }
 

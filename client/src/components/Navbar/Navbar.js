@@ -142,12 +142,7 @@ const Navbar = () => {
                </div>
               
             </li>
-            <li className="editskill">
-              
-               {updatedUser&& <Modal />}
-              
-            </li>
-            <li>
+                        <li>
              <NavLink
                 to="/classes"
                 className="main-navbar"
@@ -169,8 +164,10 @@ const Navbar = () => {
         
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
           <a class="dropdown-item" onClick={handleProfile}>My Profile</a>
+          <a class="dropdown-item"  >Followers</a>
+          <a class="dropdown-item"  >Following</a>
           <a class="dropdown-item" onClick={handleLogout} >Logout</a>
-       
+          
         </div>
       </li>
          </>

@@ -14,7 +14,6 @@ const ClassPost =  (props) => {
     const [isAttending, setIsAttending]= useState(props.isAttending);
     const [noOfLikes, setNoOfLikes] = useState(0);
     const [isLiked, setIsLiked] = useState(props.isLiked);
-   console.log("post ka malik ka photo",props.userAvataar);
     
     useEffect(() => {
     //     fetch('/profile/userkiprofile')
@@ -107,7 +106,7 @@ const ClassPost =  (props) => {
             <div className='post_side'>
 
                 <div className="post_header">
-                {props.userAvataar?<Avatar src={props.userAvataar} />:<Avatar>{props.email && props.email.charAt(0)} </Avatar>}
+                {props.userAvataar?<Avatar src={props.userAvataar} />:<Avatar>{props.name && props.name.charAt(0)} </Avatar>}
 
                     <div className="post_info">
                         <h2>{props.name}</h2>

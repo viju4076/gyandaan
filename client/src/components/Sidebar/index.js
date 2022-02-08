@@ -45,7 +45,7 @@ function Sidebar(props) {
       <div className="sidebar_Top">
         <div className="sidebar_top">
           <div className="sidebar_avatar">
-          {user.avataar?<Avatar src={user.avataar.link} />:<Avatar>{user.email && user.email.charAt(0)} </Avatar>}
+          {user&&(user.avataar?<Avatar src={user.avataar.link} />:<Avatar>{user.email && user.email.charAt(0)} </Avatar>)}
           </div>
           <h2>{user && user.username}</h2>
           <h4>{user && user.qualifications}</h4>

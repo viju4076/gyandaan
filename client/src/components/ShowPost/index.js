@@ -99,7 +99,7 @@ const Index =  () => {
              <div className='post_side'>
 
                 <div className="post_header">
-                {post.userAvataar?<Avatar src={post.userAvataar} />:<Avatar>{post.email && post.email.charAt(0)} </Avatar>}
+                {post&&(post.senderAvataar?<Avatar src={post.senderAvataar} />:<Avatar>{post.name && post.name.charAt(0)} </Avatar>)}
 
                     <div className="post_info">
                         <h2>{post && post.name}</h2>
