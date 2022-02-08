@@ -1,6 +1,6 @@
 /* eslint-disable no-lone-blocks */
 import { Avatar } from '@material-ui/core';
-
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import React, { useEffect, useState } from "react";
 import "./Navbar.css";
 import { GET_PROFILE, UPDATE_USER } from "../../actions/types";
@@ -52,11 +52,16 @@ const Navbar = () => {
 
      
     console.log("dom eleemntsfsafsadfsf",);
+    // var rect1 = document.querySelector(".linkList").getClientRects()[0].getBoundingClientRect();
+    // console.log("ggggggggggg",rect1);
     var rect = document.querySelector(".searchbar").getClientRects()[0];
+    // rect1.style.left = 280+ "px";
+
     var list=document.querySelector(".list-group");
-    list.style.left = rect.x + "px";
-    list.style.width = rect.width + "px";
-    console.log(list.getClientRects());
+    // console.log("ffffffffffffffffffffffffffff",rect);
+    list.style.left = rect.left+ "px";
+     list.style.width = rect.width + "px";
+    console.log("jjjjjjjjjjj",list.getClientRects());
   },[])
 
 
@@ -151,9 +156,14 @@ const Navbar = () => {
              Classes
              </NavLink>
             </li>
-           
+           <li>
+             <div style={{width:"100px", display:"flex", alignItems:"center",flexDirection:"column",marginTop:"5px"}}>
+           <i class="fa fa-bell" style={{color:"blue", fontSize:"x-large"}}></i>
+           <span style={{fontSize:"12px"}}>Notifications</span>
+           </div>
+           </li>
             
-           
+           <li>
             {updatedUser? <> <div className="navbarAvatar">
               {updatedUser.avataar?<Avatar src={updatedUser.avataar.link} />:<Avatar>{updatedUser.email && updatedUser.email.charAt(0)} </Avatar>}
           </div>
@@ -177,6 +187,7 @@ const Navbar = () => {
              
             </li>
             }
+            </li>
           </ul>
         </div>
 
