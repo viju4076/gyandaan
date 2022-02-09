@@ -336,17 +336,10 @@ router.post("/addpost", (req, res, next) => {
     likes: [],
     senderAvataar: req.user.avataar ? req.user.avataar.link : null
   });
-  console.log(newPost);
-  newPost.save().then((err, post) => {
-    console.log(post);
-
-    if (err) {
-      console.log(err);
-      res.status(210).json({
-        message: "Failed to add post",
-      });
-    } else {
-      console.log('####');
+  //console.log(newPost);
+  newPost.save().then((post) => {
+    
+      console.log('asdfgh');
       let newNotification = {
         $push: {
           notifications: {
@@ -359,33 +352,35 @@ router.post("/addpost", (req, res, next) => {
           },
         },
       };
+      console.log("asdf",post);
       let followers = req.user.followers;
-      User.findAndUpdate(
+      followers.map(id =>{ 
+        console.log("iddddddddddddd",id);
+      User.findOneAndUpdate(
         {
-          _id: followers,
+          _id: id,
         },
         newNotification,
         {
           new: true,
         },
         (err, loggedInUser) => {
+          //console.log("@@@@@@",loggedInUser);
           if (err) {
             res.status(200).json({
               status: "400",
-              msg: "Cannot follow ",
+              msg: "Cannot add post ",
             });
           } else {
-            console.log('mm', loggedInUser);
-            res.status(201).json({
-              message: "Post registered successfully",
-            });
+            if(loggedInUser){
+             console.log('successful',loggedInUser.username);
+            }
           }
-        }
-      );
+        })
+        });
+        res.status(200).json({status:"200",msg:"Added post successfully"});
     }
-  }
-  );
-
+  ).catch((error) => res.status(200).json({status:"400", message: "error"}));
 });
 
 router.get("/getComments/:postId", (req, res, next) => {

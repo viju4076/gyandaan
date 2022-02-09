@@ -7,12 +7,13 @@ import Register from "../components/Register/Register";
 import Profile from "../components/Profile";
 import Class from "../components/Class";
 import ShowPost from "../components/ShowPost";
-import EditProfile from "../components/EditProfile"
+import EditProfile from "../components/EditProfile";
+import Notifications from "../components/Notifications";
 function Routes() {
   var isUserLoggedIn;
-  isUserLoggedIn=useSelector(state => state.signup.is_user_logged_in);
+  isUserLoggedIn = useSelector((state) => state.signup.is_user_logged_in);
   console.log(isUserLoggedIn);
-   
+
   return (
     <div>
       <BrowserRouter>
@@ -37,12 +38,12 @@ function Routes() {
           <Route path="/classes" component={Class} exact />
           <Route path="/profile/:objectId" component={Profile} exact />
           <Route path="/posts/:objectId" component={ShowPost} exact />
-          <Route path="/myProfile" component={EditProfile} exact/>
+          <Route path="/myProfile" component={EditProfile} exact />
+          <Route path="/notifications" component={Notifications} exact />
         </div>
       </BrowserRouter>
-
     </div>
-  )
+  );
 }
 
-export default Routes
+export default Routes;

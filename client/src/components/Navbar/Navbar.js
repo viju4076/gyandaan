@@ -52,16 +52,16 @@ const Navbar = () => {
 
      
     console.log("dom eleemntsfsafsadfsf",);
-    // var rect1 = document.querySelector(".linkList").getClientRects()[0].getBoundingClientRect();
-    // console.log("ggggggggggg",rect1);
-    var rect = document.querySelector(".searchbar").getClientRects()[0];
-    // rect1.style.left = 280+ "px";
+    // // var rect1 = document.querySelector(".linkList").getClientRects()[0].getBoundingClientRect();
+    // // console.log("ggggggggggg",rect1);
+    // var rect = document.querySelector(".searchbar").getClientRects()[0];
+    // // rect1.style.left = 280+ "px";
 
-    var list=document.querySelector(".list-group");
-    // console.log("ffffffffffffffffffffffffffff",rect);
-    list.style.left = rect.left+ "px";
-     list.style.width = rect.width + "px";
-    console.log("jjjjjjjjjjj",list.getClientRects());
+    // var list=document.querySelector(".list-group");
+    // // console.log("ffffffffffffffffffffffffffff",rect);
+    // //  list.style.left = rect.left+ "px";
+    //  list.style.width = rect.width + "px";
+    // console.log("jjjjjjjjjjj",list.getClientRects());
   },[])
 
 
