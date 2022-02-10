@@ -14,9 +14,18 @@ const Rating = new Schema({
   senderId: ObjectId,
 });
 
-const Avataar=new Schema({
-   link:String,
-   dateModified:Date,
+const Notifications = new Schema({
+  type: String,
+  description: String,
+  clickable_link: String,
+  senderName: String,
+  senderAvatar: String,
+  Date: Date
+});
+
+const Avataar = new Schema({
+  link: String,
+  dateModified: Date,
 
 })
 
@@ -34,7 +43,8 @@ const userSchema = new Schema({
   Posts: [{ type: ObjectId, ref: "Post" }],
   qualifications: String,
   globalRating: Number,
-  avataar:Avataar
+  avataar: Avataar,
+  notifications: [Notifications]
 });
 userSchema.index({ "username": "text" });
 const User = connection.model("User", userSchema);
