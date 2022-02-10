@@ -7,14 +7,17 @@ import Sidebar from "../Sidebar";
 const Index = () => {
     const [user, setUser] = useState(null);
     const dispatch = useDispatch();
+    const [recentNotifications,setRecentNotifications]=useState(null);
+    const [earlierNotifications,setEarlierNotifications]=useState(null);
+    
+
     useEffect(() => {
         fetch('/profile/userkiprofile')
             .then(data => data.json())
             .then(data => {
-                console.log('above if statement', data);
+               
                 if (data.status == 200) {
                     setUser(data.user);
-                    console.log("inside profile", data.user);
                     dispatch({
                         type: UPDATE_USER, payload: {
                             update_user: data.user
@@ -29,6 +32,20 @@ const Index = () => {
 
                 }
             })
+           
+            fetch('/getNotifications')
+            .then(data => data.json())
+            .then(data => {
+                if (data.status == 200) {
+                    setEarlierNotifications(data.earlierNotifications);
+                    setRecentNotifications(data.recentNotifications);
+                    
+                    
+                }
+            })
+
+
+
     }, []);
     return (
       <>
@@ -45,14 +62,19 @@ const Index = () => {
                     <h6 class="m-0">Recent</h6>
                 </div>
                 <div class="box-body p-0">
-
-                    <div class="p-3 d-flex align-items-center bg-light border-bottom osahan-post-header">
-                        <div class="dropdown-list-image mr-3">
-                            <img class="rounded-circle" src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="" />
+                    {recentNotifications&& recentNotifications.map(notification=>{
+                        return (
+                        <div class="notification p-3 d-flex align-items-center bg-light border-bottom osahan-post-header" onClick={(e)=>{
+                            window.open(notification.clickableLink, '_blank').focus();
+                        }}>
+                        <div class="dropdown-list-image mr-3" onClick={(e)=>{
+                            window.open("/profile/"+notification.senderId, '_blank').focus();
+                        }}>
+                            <img class="rounded-circle" src={notification.senderAvatar} alt="" />
                         </div>
                         <div class="font-weight-bold mr-3">
-                            <div class="text-truncate">DAILY RUNDOWN: WEDNESDAY</div>
-                            <div class="small">Income tax sops on the cards, The bias in VC funding, and other top news for you</div>
+                            <div class="text-truncate">{notification.description}</div>
+                            {/* <div class="small">Income tax sops on the cards, The bias in VC funding, and other top news for you</div> */}
                         </div>
                         <span class="ml-auto mb-auto">
                             <div class="btn-group">
@@ -67,8 +89,11 @@ const Index = () => {
                             <br />
                             <div class="text-right text-muted pt-1">3d</div>
                         </span>
-                    </div>
-                    
+                    </div>);
+
+
+                    })}   
+                                        
                 </div>
             </div>
             <div class="box shadow-sm rounded bg-white mb-3">
@@ -76,11 +101,18 @@ const Index = () => {
                     <h6 class="m-0">Earlier</h6>
                 </div>
                 <div class="box-body p-0">
-                    <div class="p-3 d-flex align-items-center border-bottom osahan-post-header">
-                        <div class="dropdown-list-image mr-3 d-flex align-items-center bg-danger justify-content-center rounded-circle text-white">DRM</div>
-                        <div class="font-weight-bold mr-3">
-                            <div class="text-truncate">DAILY RUNDOWN: MONDAY</div>
-                            <div class="small">Nunc purus metus, aliquam vitae venenatis sit amet, porta non est.</div>
+                    {earlierNotifications&&earlierNotifications.map(notification=>{
+                       return (
+                        <div class="notification p-3 d-flex align-items-center border-bottom osahan-post-header" onClick={(e)=>{
+                            window.open(notification.clickableLink, '_blank').focus();
+                        }}>
+                        <div class="dropdown-list-image mr-3" onClick={(e)=>{
+                            window.open("/profile/"+notification.senderId, '_blank').focus();
+                        }}>
+                            <img class="rounded-circle" src={notification.senderAvatar} alt="" />
+                        </div> <div class="font-weight-bold mr-3">
+                            <div class="text-truncate">{notification.description}</div>
+                            {/* <div class="small">Nunc purus metus, aliquam vitae venenatis sit amet, porta non est.</div> */}
                         </div>
                         <span class="ml-auto mb-auto">
                             <div class="btn-group">
@@ -96,6 +128,9 @@ const Index = () => {
                             <div class="text-right text-muted pt-1">3d</div>
                         </span>
                     </div>
+                       ); 
+                    })}
+                    
                     </div>
             </div>
         </div>

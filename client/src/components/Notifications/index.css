@@ -12,3 +12,6 @@
     background-color: #e5f7f0;
     border-color: #d8f7eb;
 }
+.notification{
+    cursor: pointer;
+}

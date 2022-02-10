@@ -344,8 +344,9 @@ router.post("/addpost", (req, res, next) => {
         $push: {
           notifications: {
             type: 'post',
+            senderId:req.user._id,
             description: req.user.username + ' sent a post',
-            clickable_link: '/post/' + newPost._id,
+            clickableLink: '/posts/' + newPost._id,
             senderName: req.user.username,
             senderAvatar: req.user.avataar.link,
             Date: currentdate
@@ -877,7 +878,7 @@ router.get("/posts/:postId", async (req, res, next) => {
       _id: postId,
     },
     (err, Post) => {
-      if (Post.length) {
+      if (Post&&Post.length) {
         res.status(200).json({
           status: 200,
           msg: "current Post",
@@ -1121,9 +1122,25 @@ router.get("/getUpcomingClasses", (req, res) => {
     .limit(2);
 });
 router.get("/getNotifications", (req, res) => {
+
+ let recentNotifications=[],earlierNotifications=[];
+ var HOUR=60*60*1000;
+ var currentDate=new Date();
+ req.user.notifications.map((notification)=>{
+   console.log('inside notifications',notification.Date,currentDate-notification.Date<10*HOUR);
+   if(currentDate-notification.Date<10*HOUR)
+      recentNotifications.push(notification);
+   else
+      earlierNotifications.push(notification); 
+  })
+  earlierNotifications.sort((p1, p2) => (p1.Date > p2.Date ? -1 : 1))
+  recentNotifications.sort((p1, p2) => (p1.Date > p2.Date ? -1 : 1))
+   
+
   res
     .status(200)
-    .json({ message: "notification", Notifications: req.user.notifications });
+    .json({ status:"200", 
+      message: "notification", earlierNotifications: earlierNotifications, recentNotifications:recentNotifications });
 
 });
 module.exports = router;

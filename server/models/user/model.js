@@ -17,9 +17,10 @@ const Rating = new Schema({
 const Notifications = new Schema({
   type: String,
   description: String,
-  clickable_link: String,
+  clickableLink: String,
   senderName: String,
   senderAvatar: String,
+  senderId:ObjectId,
   Date: Date
 });
 

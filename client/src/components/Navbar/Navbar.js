@@ -1,6 +1,6 @@
 /* eslint-disable no-lone-blocks */
 import { Avatar } from '@material-ui/core';
-import NotificationsIcon from '@mui/icons-material/Notifications';
+//import NotificationsIcon from '@mui/icons-material/Notifications';
 import React, { useEffect, useState } from "react";
 import "./Navbar.css";
 import { GET_PROFILE, UPDATE_USER } from "../../actions/types";
@@ -51,14 +51,6 @@ const Navbar = () => {
     })
 
      
-<<<<<<< HEAD
-    
-    var rect = document.querySelector(".searchbar").getClientRects()[0];
-    var list=document.querySelector(".list-group");
-    list.style.left = rect.x + "px";
-    list.style.width = rect.width + "px";
-    console.log(list.getClientRects());
-=======
     console.log("dom eleemntsfsafsadfsf",);
     // // var rect1 = document.querySelector(".linkList").getClientRects()[0].getBoundingClientRect();
     // // console.log("ggggggggggg",rect1);
@@ -70,7 +62,6 @@ const Navbar = () => {
     // //  list.style.left = rect.left+ "px";
     //  list.style.width = rect.width + "px";
     // console.log("jjjjjjjjjjj",list.getClientRects());
->>>>>>> df386ce82c354c49f0be22846f8465414220ad41
   },[])
 
 
