@@ -369,3 +369,6 @@ ul li DropdownButton {
 .linkList > li{
   display: flex;
 }
+.searchboxouter{
+  left:"240px" !important;
+}

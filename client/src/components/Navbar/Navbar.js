@@ -51,7 +51,7 @@ const Navbar = () => {
     })
 
      
-    console.log("dom eleemntsfsafsadfsf",);
+    
     var rect = document.querySelector(".searchbar").getClientRects()[0];
     var list=document.querySelector(".list-group");
     list.style.left = rect.x + "px";
