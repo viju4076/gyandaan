@@ -102,6 +102,33 @@ li {
   grid-column: 2/3;
 }
 
+.number-notification {
+  position: relative;
+  padding: 3px 3px 2px 3px;
+  background-color:red;
+  color:white;
+  font-family: arial;
+  font-weight:bold;
+  font-size: 10px;
+  border-radius: 4px;
+  box-shadow:1px 1px 1px silver;
+}
+.fa .number-notification {
+  top: -1rem;
+  right: 1rem;
+}
+h3 .fa .number-notification {
+  top: -1.2rem;
+  right: 1.2rem;
+}
+h2 .fa .number-notification {
+  top: -1.5rem;
+  right: 1.5rem;
+}
+h1 .fa .number-notification {
+  top: -2.2rem;
+  right: 1.8rem;
+}
 /* ----------- Grid part ends ----------------- */
 
 .logo h2 {

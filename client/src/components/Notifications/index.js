@@ -87,7 +87,7 @@ const Index = () => {
                                 </div>
                             </div>
                             <br />
-                            <div class="text-right text-muted pt-1">{notification.difference}</div>
+                            <div class="text-right text-muted pt-1">{notification.difference }</div>
                         </span>
                     </div>);
 

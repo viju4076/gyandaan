@@ -202,7 +202,7 @@ router.post("/updateprofile", (req, res, next) => {
       email: req.body.email,
       username: req.body.username,
       phone: req.body.phone,
-    
+
     },
     {
       new: true,
@@ -339,25 +339,25 @@ router.post("/addpost", (req, res, next) => {
   });
   //console.log(newPost);
   newPost.save().then((post) => {
-    
-      console.log('asdfgh');
-      let newNotification = {
-        $push: {
-          notifications: {
-            type: 'post',
-            senderId:req.user._id,
-            description: req.user.username + ' sent a post',
-            clickableLink: '/posts/' + newPost._id,
-            senderName: req.user.username,
-            senderAvatar: req.user.avataar.link,
-            Date: currentdate
-          },
+
+    console.log('asdfgh');
+    let newNotification = {
+      $push: {
+        notifications: {
+          type: 'post',
+          senderId: req.user._id,
+          description: req.user.username + ' sent a post',
+          clickableLink: '/posts/' + newPost._id,
+          senderName: req.user.username,
+          senderAvatar: req.user.avataar.link,
+          Date: currentdate
         },
-      };
-      console.log("asdf",post);
-      let followers = req.user.followers;
-      followers.map(id =>{ 
-        console.log("iddddddddddddd",id);
+      },
+    };
+    console.log("asdf", post);
+    let followers = req.user.followers;
+    followers.map(id => {
+      console.log("iddddddddddddd", id);
       User.findOneAndUpdate(
         {
           _id: id,
@@ -374,15 +374,15 @@ router.post("/addpost", (req, res, next) => {
               msg: "Cannot add post ",
             });
           } else {
-            if(loggedInUser){
-             console.log('successful',loggedInUser.username);
+            if (loggedInUser) {
+              console.log('successful', loggedInUser.username);
             }
           }
         })
-        });
-        res.status(200).json({status:"200",msg:"Added post successfully"});
-    }
-  ).catch((error) => res.status(200).json({status:"400", message: "error"}));
+    });
+    res.status(200).json({ status: "200", msg: "Added post successfully" });
+  }
+  ).catch((error) => res.status(200).json({ status: "400", message: "error" }));
 });
 
 router.get("/getComments/:postId", (req, res, next) => {
@@ -453,6 +453,41 @@ router.post("/addComment", (req, res, next) => {
           msg: "Cannot follow ",
         });
       } else {
+
+        let newNotification = {
+          $push: {
+            notifications: {
+              type: 'comments',
+              senderId: req.user._id,
+              description: req.user.username + ' commented on your post',
+              clickableLink: '/posts/' + postid,
+              senderName: req.user.username,
+              senderAvatar: req.user.avataar.link,
+              Date: currentdate
+            },
+          },
+        };
+        User.findOneAndUpdate(
+          {
+            _id: Post.senderId,
+          },
+          newNotification,
+          {
+            new: true,
+          },
+          (err, loggedInUser) => {
+            //console.log("@@@@@@",loggedInUser);
+            if (err) {
+              res.status(200).json({
+                status: "400",
+                msg: "Cannot update notification",
+              });
+            } else {
+              if (loggedInUser) {
+                console.log('successful', loggedInUser.username);
+              }
+            }
+          })
         res.status(200).json({
           status: "200",
           msg: "Comment added",
@@ -577,6 +612,7 @@ router.post("/changeLike", (req, res, next) => {
   const loggedInUserId = req.user._id;
   const postid = req.body.postid;
   const isLiked = req.body.isLiked;
+  const currentdate = new Date();
 
   let searchPost = {
     $push: {
@@ -606,12 +642,50 @@ router.post("/changeLike", (req, res, next) => {
           msg: "Cann't like ",
         });
       } else {
+        if (!isLiked) {
+          let newNotification = {
+            $push: {
+              notifications: {
+                type: 'likes',
+                senderId: req.user._id,
+                description: req.user.username + ' liked your post',
+                clickableLink: '/posts/' + postid,
+                senderName: req.user.username,
+                senderAvatar: req.user.avataar.link,
+                Date: currentdate
+              },
+            },
+          };
+          User.findOneAndUpdate(
+            {
+              _id: Post.senderId,
+            },
+            newNotification,
+            {
+              new: true,
+            },
+            (err, loggedInUser) => {
+              //console.log("@@@@@@",loggedInUser);
+              if (err) {
+                res.status(200).json({
+                  status: "400",
+                  msg: "Cannot update notification",
+                });
+              } else {
+                if (loggedInUser) {
+                  console.log('successful', loggedInUser.username);
+                }
+              }
+            })
+        }
+
         console.log(Post, "Like");
         res.status(200).json({
           status: "200",
           msg: "Liked",
           likes: Post.likes,
           isLiked: Post.likes.includes(loggedInUserId),
+
         });
       }
     }
@@ -698,6 +772,7 @@ router.post("/changeFollower", (req, res, next) => {
   const profileUserId = req.body.userId;
   const userId = req.body.userId; //profile
   const isFollowing = req.body.isFollowing;
+  const currentdate = new Date();
 
   console.log("Is following", isFollowing);
   let searchFollowersOfProfile = {
@@ -753,13 +828,50 @@ router.post("/changeFollower", (req, res, next) => {
                 msg: "Cannot add as a teacher ",
               });
             } else {
-              console.log("follow wale part", profileUser);
-              res.status(200).json({
-                status: "200",
-                msg: "Follow and following done",
-                profileUser: profileUser,
-                loggedInUser: loggedInUser,
-              });
+              if (!isFollowing) {
+                let newNotification = {
+                  $push: {
+                    notifications: {
+                      type: 'follow',
+                      senderId: req.user._id,
+                      description: req.user.username + ' started following you',
+                      clickableLink: "/profile/" + req.user._id,
+                      senderName: req.user.username,
+                      senderAvatar: req.user.avataar.link,
+                      Date: currentdate
+                    },
+                  },
+                };
+                User.findOneAndUpdate(
+                  {
+                    _id: profileUserId,
+                  },
+                  newNotification,
+                  {
+                    new: true,
+                  },
+                  (err, profileUser) => {
+                    //console.log("@@@@@@",profileUser);
+                    if (err) {
+                      res.status(200).json({
+                        status: "400",
+                        msg: "Cannot update notification",
+                      });
+                    } else {
+                      if (profileUser) {
+                        console.log('successful', profileUser.username);
+                      }
+                    }
+                  })
+                }
+                console.log("follow wale part", profileUser);
+                res.status(200).json({
+                  status: "200",
+                  msg: isFollowing? "Unfollowed sucessfully": "Followed successfully",
+                  profileUser: profileUser,
+                  loggedInUser: loggedInUser,
+                });
+              
             }
           }
         );
@@ -879,7 +991,7 @@ router.get("/posts/:postId", async (req, res, next) => {
       _id: postId,
     },
     (err, Post) => {
-      if (Post&&Post.length) {
+      if (Post && Post.length) {
         res.status(200).json({
           status: 200,
           msg: "current Post",
@@ -1124,48 +1236,50 @@ router.get("/getUpcomingClasses", (req, res) => {
 });
 router.get("/getNotifications", (req, res) => {
 
-  
 
 
 
 
- let recentNotifications=[],earlierNotifications=[];
- var HOUR=60*60*1000;
- var currentDate=new Date();
- 
+
+  let recentNotifications = [], earlierNotifications = [];
+  var HOUR = 60 * 60 * 1000;
+  var currentDate = new Date();
 
 
- 
- 
- req.user.notifications.map((notification)=>{
-   notification=notification.toJSON();
-   
-   //console.log('inside notifications',notification.Date,currentDate-notification.Date<10*HOUR);
-   const diffTime = Math.abs(notification.Date - currentDate);
-   const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-   const diffHours = Math.floor(diffTime / 36e5);
-   const diffMinutes=Math.floor(diffTime/6e4);
-   let notification1=notification;
-   if(diffMinutes<60)
-      notification1={...notification1,difference:diffMinutes + " m"}
-      else if(diffHours<24)
-      notification1={...notification1,difference:diffHours + " h"}
-      else
-      notification1={...notification1,difference:diffDays+" d"}
-     console.log("changed notification",notification1); 
-   if(currentDate-notification.Date<10*HOUR)
+
+
+
+  req.user.notifications.map((notification) => {
+    notification = notification.toJSON();
+
+    //console.log('inside notifications',notification.Date,currentDate-notification.Date<10*HOUR);
+    const diffTime = Math.abs(notification.Date - currentDate);
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    const diffHours = Math.floor(diffTime / 36e5);
+    const diffMinutes = Math.floor(diffTime / 6e4);
+    let notification1 = notification;
+    if (diffMinutes < 60)
+      notification1 = { ...notification1, difference: diffMinutes + " m" }
+    else if (diffHours < 24)
+      notification1 = { ...notification1, difference: diffHours + " h" }
+    else
+      notification1 = { ...notification1, difference: diffDays + " d" }
+    console.log("changed notification", notification1);
+    if (currentDate - notification.Date < 10 * HOUR)
       recentNotifications.push(notification1);
-   else
-      earlierNotifications.push(notification1); 
+    else
+      earlierNotifications.push(notification1);
   })
   earlierNotifications.sort((p1, p2) => (p1.Date > p2.Date ? -1 : 1))
   recentNotifications.sort((p1, p2) => (p1.Date > p2.Date ? -1 : 1))
-   
+
 
   res
     .status(200)
-    .json({ status:"200", 
-      message: "notification", earlierNotifications: earlierNotifications, recentNotifications:recentNotifications });
+    .json({
+      status: "200",
+      message: "notification", earlierNotifications: earlierNotifications, recentNotifications: recentNotifications
+    });
 
 });
 module.exports = router;

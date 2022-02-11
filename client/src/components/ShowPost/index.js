@@ -13,7 +13,9 @@ const Index =  () => {
     const [postUser,setPostUser]=useState(null);
     const [rating,setRating]=useState('');
     const [post, setPost]= useState(null);
+    const [isLiked, setIsLiked] = useState();
     const { objectId } = useParams();
+    const [likes, setLikes]= useState();
     useEffect(() => {
 
        
@@ -26,6 +28,8 @@ const Index =  () => {
                 console.log("inside post", data.post);
             setPost(data.post);
             setUser(data.user);
+            setIsLiked(data.post.likes.includes(data.user._id));
+            setLikes(data.post.likes.length);
          
             
         fetch(`/profile/${data.post.senderId}`)
@@ -77,6 +81,7 @@ const Index =  () => {
     //       }
        
     // }
+
     const dateTime = (date) => {
         var currentdate = new Date();
         var dateStringWithTime = new Date('YYYY-MM-DD HH:MM:SS');
@@ -86,6 +91,33 @@ const Index =  () => {
             + currentdate.getHours() + ":"
             + currentdate.getMinutes();
         return date;
+    }
+    const handleLike = async (e) =>{
+        
+        console.log("Like clicked");
+        const res=await fetch("/changeLike", {
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body: JSON.stringify({
+               postid:post._id,
+               isLiked: isLiked,
+            })
+        });
+        const data=await res.json();
+        console.log(data);
+        if(data.status === 210 || !data){
+            window.alert("Cann't Like");
+          //  console.log("Invalid Registration");
+        }
+        else{
+         console.log("Liked done");
+         setIsLiked(data.isLiked);
+         
+        
+            //console.log("Successful Registration");
+     }
     }
     // console.log('posts ke post', post);
 
@@ -141,8 +173,15 @@ const Index =  () => {
 
             </div>
             <div className="post_buttons">
-                <InputOption Icon={ThumbUpSharp} title="Like" data-toggle="tooltip" color="gray"></InputOption>
-                <button Icon={ChatOutlined} class="btn btn-primary"> Comment </button>
+                <button Icon={ThumbUpSharp}  class="btn btn-primary" onClick={handleLike} >{isLiked?"Liked":"Like"}</button>
+                <button Icon={ChatOutlined} class="btn btn-primary" > Comment </button>
+              
+              
+            </div>
+            <div>
+                {isLiked?<li>Liked by you  {likes>1?"and "+ (likes-1)+" others":""}</li>
+                :likes>0&&<li>Liked by {likes} others</li>
+                }
             </div>
             {post && user &&  <Comment postid={post._id} user={user}/>} 
             </div>

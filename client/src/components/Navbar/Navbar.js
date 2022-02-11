@@ -29,6 +29,7 @@ const Navbar = () => {
   const [showMediaIcons, setShowMediaIcons] = useState(false);
   const [open, setOpen] = useState(false);
   const [show, setShow] = useState(false);
+  const [recentNotifications,setRecentNotifications]=useState(null);
   const History = useHistory();
   const dispatch = useDispatch();
   
@@ -49,6 +50,17 @@ const Navbar = () => {
             
         }
     })
+
+    fetch('/getNotifications')
+            .then(data => data.json())
+            .then(data => {
+                if (data.status == 200) {
+                    
+                    setRecentNotifications(data.recentNotifications);
+                    
+                    
+                }
+            })
 
      
     console.log("dom eleemntsfsafsadfsf",);
@@ -160,7 +172,9 @@ const Navbar = () => {
              <NavLink to="/notifications" className="main-navbar"
                 activeClassName="main-nav-active">
              <div style={{width:"100px", display:"flex", alignItems:"center",flexDirection:"column",marginTop:"5px"}}>
-           <i class="fa fa-bell" style={{color:"blue", fontSize:"x-large"}}></i>
+           <i class="fa fa-bell" style={{color:"blue", fontSize:"x-large"}}>
+           <span class="number-notification">{recentNotifications&&recentNotifications.length}</span>
+           </i>
            <span style={{fontSize:"12px"}}>Notifications</span>
            </div>
            </NavLink>
