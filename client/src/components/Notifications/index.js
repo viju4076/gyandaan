@@ -87,7 +87,7 @@ const Index = () => {
                                 </div>
                             </div>
                             <br />
-                            <div class="text-right text-muted pt-1">3d</div>
+                            <div class="text-right text-muted pt-1">{notification.difference}</div>
                         </span>
                     </div>);
 
@@ -125,7 +125,7 @@ const Index = () => {
                                 </div>
                             </div>
                             <br />
-                            <div class="text-right text-muted pt-1">3d</div>
+                            <div class="text-right text-muted pt-1">{notification.difference}</div>
                         </span>
                     </div>
                        ); 

@@ -157,10 +157,13 @@ const Navbar = () => {
              </NavLink>
             </li>
            <li>
+             <NavLink to="/notifications" className="main-navbar"
+                activeClassName="main-nav-active">
              <div style={{width:"100px", display:"flex", alignItems:"center",flexDirection:"column",marginTop:"5px"}}>
            <i class="fa fa-bell" style={{color:"blue", fontSize:"x-large"}}></i>
            <span style={{fontSize:"12px"}}>Notifications</span>
            </div>
+           </NavLink>
            </li>
             
            <li>
