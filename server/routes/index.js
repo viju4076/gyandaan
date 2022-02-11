@@ -1123,15 +1123,39 @@ router.get("/getUpcomingClasses", (req, res) => {
 });
 router.get("/getNotifications", (req, res) => {
 
+  
+
+
+
+
  let recentNotifications=[],earlierNotifications=[];
  var HOUR=60*60*1000;
  var currentDate=new Date();
+ 
+
+
+ 
+ 
  req.user.notifications.map((notification)=>{
-   console.log('inside notifications',notification.Date,currentDate-notification.Date<10*HOUR);
+   notification=notification.toJSON();
+   
+   //console.log('inside notifications',notification.Date,currentDate-notification.Date<10*HOUR);
+   const diffTime = Math.abs(notification.Date - currentDate);
+   const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+   const diffHours = Math.floor(diffTime / 36e5);
+   const diffMinutes=Math.floor(diffTime/6e4);
+   let notification1=notification;
+   if(diffMinutes<60)
+      notification1={...notification1,difference:diffMinutes + " m"}
+      else if(diffHours<24)
+      notification1={...notification1,difference:diffHours + " h"}
+      else
+      notification1={...notification1,difference:diffDays+" d"}
+     console.log("changed notification",notification1); 
    if(currentDate-notification.Date<10*HOUR)
-      recentNotifications.push(notification);
+      recentNotifications.push(notification1);
    else
-      earlierNotifications.push(notification); 
+      earlierNotifications.push(notification1); 
   })
   earlierNotifications.sort((p1, p2) => (p1.Date > p2.Date ? -1 : 1))
   recentNotifications.sort((p1, p2) => (p1.Date > p2.Date ? -1 : 1))
