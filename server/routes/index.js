@@ -12,7 +12,7 @@ const { check, validationResult } = require("express-validator");
 // const nodemailer = require("nodemailer");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
-const { uploadSingleFile, downloadFIle } = require('../helper/fileUpload');
+const { uploadSingleFile, downloadFIle } = require("../helper/fileUpload");
 /**
  * -------------- POST ROUTES ----------------
  */
@@ -142,25 +142,24 @@ router.post("/addteacher", (req, res, next) => {
 });
 
 router.post("/updateavataar", async (req, res, next) => {
-
   const url = await uploadSingleFile(req.files.file);
   if (!url) {
     return res.status(210).json({
       status: "210",
-      msg: "error in uploading avataar"
+      msg: "error in uploading avataar",
     });
   }
   const date = new Date();
   const avataar = {
     dateModified: date,
-    link: url
-  }
+    link: url,
+  };
   User.findOneAndUpdate(
     {
       _id: req.user._id,
     },
     {
-      avataar: avataar
+      avataar: avataar,
     },
     {
       new: true,
@@ -181,12 +180,7 @@ router.post("/updateavataar", async (req, res, next) => {
       }
     }
   );
-
-
-
-
-})
-
+});
 
 router.post("/updateprofile", (req, res, next) => {
   console.log(req.body);
@@ -202,7 +196,6 @@ router.post("/updateprofile", (req, res, next) => {
       email: req.body.email,
       username: req.body.username,
       phone: req.body.phone,
-
     },
     {
       new: true,
@@ -335,54 +328,58 @@ router.post("/addpost", (req, res, next) => {
     comments: [],
     attendees: [],
     likes: [],
-    senderAvataar: req.user.avataar ? req.user.avataar.link : null
+    senderAvataar: req.user.avataar ? req.user.avataar.link : null,
   });
   //console.log(newPost);
-  newPost.save().then((post) => {
-
-    console.log('asdfgh');
-    let newNotification = {
-      $push: {
-        notifications: {
-          type: 'post',
-          senderId: req.user._id,
-          description: req.user.username + ' sent a post',
-          clickableLink: '/posts/' + newPost._id,
-          senderName: req.user.username,
-          senderAvatar: req.user.avataar.link,
-          Date: currentdate
+  newPost
+    .save()
+    .then((post) => {
+      console.log("asdfgh");
+      let newNotification = {
+        $push: {
+          notifications: {
+            type: "post",
+            senderId: req.user._id,
+            description: req.user.username + " sent a post",
+            clickableLink: "/posts/" + newPost._id,
+            senderName: req.user.username,
+            senderAvatar: req.user.avataar.link,
+            Date: currentdate,
+          },
         },
-      },
-    };
-    console.log("asdf", post);
-    let followers = req.user.followers;
-    followers.map(id => {
-      console.log("iddddddddddddd", id);
-      User.findOneAndUpdate(
-        {
-          _id: id,
-        },
-        newNotification,
-        {
-          new: true,
-        },
-        (err, loggedInUser) => {
-          //console.log("@@@@@@",loggedInUser);
-          if (err) {
-            res.status(200).json({
-              status: "400",
-              msg: "Cannot add post ",
-            });
-          } else {
-            if (loggedInUser) {
-              console.log('successful', loggedInUser.username);
+      };
+      console.log("asdf", post);
+      let followers = req.user.followers;
+      followers.map((id) => {
+        console.log("iddddddddddddd", id);
+        User.findOneAndUpdate(
+          {
+            _id: id,
+          },
+          newNotification,
+          {
+            new: true,
+          },
+          (err, loggedInUser) => {
+            //console.log("@@@@@@",loggedInUser);
+            if (err) {
+              res.status(200).json({
+                status: "400",
+                msg: "Cannot add post ",
+              });
+            } else {
+              if (loggedInUser) {
+                console.log("successful", loggedInUser.username);
+              }
             }
           }
-        })
-    });
-    res.status(200).json({ status: "200", msg: "Added post successfully" });
-  }
-  ).catch((error) => res.status(200).json({ status: "400", message: "error" }));
+        );
+      });
+      res.status(200).json({ status: "200", msg: "Added post successfully" });
+    })
+    .catch((error) =>
+      res.status(200).json({ status: "400", message: "error" })
+    );
 });
 
 router.get("/getComments/:postId", (req, res, next) => {
@@ -453,17 +450,16 @@ router.post("/addComment", (req, res, next) => {
           msg: "Cannot follow ",
         });
       } else {
-
         let newNotification = {
           $push: {
             notifications: {
-              type: 'comments',
+              type: "comments",
               senderId: req.user._id,
-              description: req.user.username + ' commented on your post',
-              clickableLink: '/posts/' + postid,
+              description: req.user.username + " commented on your post",
+              clickableLink: "/posts/" + postid,
               senderName: req.user.username,
               senderAvatar: req.user.avataar.link,
-              Date: currentdate
+              Date: currentdate,
             },
           },
         };
@@ -484,10 +480,11 @@ router.post("/addComment", (req, res, next) => {
               });
             } else {
               if (loggedInUser) {
-                console.log('successful', loggedInUser.username);
+                console.log("successful", loggedInUser.username);
               }
             }
-          })
+          }
+        );
         res.status(200).json({
           status: "200",
           msg: "Comment added",
@@ -510,15 +507,14 @@ router.post("/register", (req, res, next) => {
     if (err) {
       res.status(210).json({
         msg: "Some error occurred",
-        status: "210"
-      })
+        status: "210",
+      });
     }
 
     if (user.length) {
       res.status(210).json({
         status: "210",
         msg: "User already exist",
-
       });
     }
     const newUser = new User({
@@ -536,8 +532,6 @@ router.post("/register", (req, res, next) => {
       areasOfInterest: [],
       Rating: [],
     });
-
-
 
     const token = jwt.sign(
       {
@@ -580,7 +574,6 @@ router.post("/register", (req, res, next) => {
         res.status(210).json({
           status: "210",
           msg: "Some error occurred",
-
         });
         // req.flash('error',"Something went wrong on our end. Please register again");
         // res.redirect('/register');
@@ -589,25 +582,15 @@ router.post("/register", (req, res, next) => {
         res.status(200).json({
           status: "200",
           msg: "Mail has been sent to you email for verification",
-
         });
         // req.flash('success',"Activation link sent to registered email ID. Please activate to log in.");
         //res.redirect('/login');
       }
-
-
-
-    })
-
-
-
-
+    });
   });
 });
 
-
 router.post("/changeLike", (req, res, next) => {
-
   console.log(req.body);
   const loggedInUserId = req.user._id;
   const postid = req.body.postid;
@@ -616,14 +599,13 @@ router.post("/changeLike", (req, res, next) => {
 
   let searchPost = {
     $push: {
-      likes: loggedInUserId
+      likes: loggedInUserId,
     },
   };
   if (isLiked) {
-
     searchPost = {
       $pull: {
-        likes: loggedInUserId
+        likes: loggedInUserId,
       },
     };
   }
@@ -646,13 +628,13 @@ router.post("/changeLike", (req, res, next) => {
           let newNotification = {
             $push: {
               notifications: {
-                type: 'likes',
+                type: "likes",
                 senderId: req.user._id,
-                description: req.user.username + ' liked your post',
-                clickableLink: '/posts/' + postid,
+                description: req.user.username + " liked your post",
+                clickableLink: "/posts/" + postid,
                 senderName: req.user.username,
                 senderAvatar: req.user.avataar.link,
-                Date: currentdate
+                Date: currentdate,
               },
             },
           };
@@ -673,10 +655,11 @@ router.post("/changeLike", (req, res, next) => {
                 });
               } else {
                 if (loggedInUser) {
-                  console.log('successful', loggedInUser.username);
+                  console.log("successful", loggedInUser.username);
                 }
               }
-            })
+            }
+          );
         }
 
         console.log(Post, "Like");
@@ -685,7 +668,6 @@ router.post("/changeLike", (req, res, next) => {
           msg: "Liked",
           likes: Post.likes,
           isLiked: Post.likes.includes(loggedInUserId),
-
         });
       }
     }
@@ -728,7 +710,10 @@ router.get("/activate/:token", function (req, res) {
       } else {
         User.findOne({ email: decodedToken.email }).then((foundUser) => {
           if (foundUser) {
-            res.render("response", { url: process.env.FRONT_END_URL, msg: "Account already verified, now u can login" });
+            res.render("response", {
+              url: process.env.FRONT_END_URL,
+              msg: "Account already verified, now u can login",
+            });
             // req.flash('error','Email ID already registered! Please log in.');
             // res.redirect('/login');
           } else {
@@ -749,19 +734,19 @@ router.get("/activate/:token", function (req, res) {
               qualifications: "",
               areasOfInterest: [],
               Rating: [],
-
             });
             newUser.save().then((user) => {
               console.log(user);
-              res.render("response", { url: process.env.FRONT_END_URL, msg: "Account verified, now you can login" });
+              res.render("response", {
+                url: process.env.FRONT_END_URL,
+                msg: "Account verified, now you can login",
+              });
             });
-
           }
-        })
+        });
       }
-    })
-  }
-  else {
+    });
+  } else {
     console.log("Account activation error");
     req.flash("error", "INTERNAL SERVER ERROR");
   }
@@ -832,13 +817,13 @@ router.post("/changeFollower", (req, res, next) => {
                 let newNotification = {
                   $push: {
                     notifications: {
-                      type: 'follow',
+                      type: "follow",
                       senderId: req.user._id,
-                      description: req.user.username + ' started following you',
+                      description: req.user.username + " started following you",
                       clickableLink: "/profile/" + req.user._id,
                       senderName: req.user.username,
                       senderAvatar: req.user.avataar.link,
-                      Date: currentdate
+                      Date: currentdate,
                     },
                   },
                 };
@@ -859,19 +844,21 @@ router.post("/changeFollower", (req, res, next) => {
                       });
                     } else {
                       if (profileUser) {
-                        console.log('successful', profileUser.username);
+                        console.log("successful", profileUser.username);
                       }
                     }
-                  })
-                }
-                console.log("follow wale part", profileUser);
-                res.status(200).json({
-                  status: "200",
-                  msg: isFollowing? "Unfollowed sucessfully": "Followed successfully",
-                  profileUser: profileUser,
-                  loggedInUser: loggedInUser,
-                });
-              
+                  }
+                );
+              }
+              console.log("follow wale part", profileUser);
+              res.status(200).json({
+                status: "200",
+                msg: isFollowing
+                  ? "Unfollowed sucessfully"
+                  : "Followed successfully",
+                profileUser: profileUser,
+                loggedInUser: loggedInUser,
+              });
             }
           }
         );
@@ -998,8 +985,7 @@ router.get("/posts/:postId", async (req, res, next) => {
           post: Post[0],
           user: req.user,
         });
-      }
-      else {
+      } else {
         res.status(210).json({
           msg: "Can't get current post",
         });
@@ -1008,6 +994,8 @@ router.get("/posts/:postId", async (req, res, next) => {
   );
 });
 router.get("/profile/:userId", async (req, res, next) => {
+  console.log("getprofile");
+  let currentdate = new Date();
   const userId = req.params.userId;
   console.log("userId", userId);
 
@@ -1019,37 +1007,142 @@ router.get("/profile/:userId", async (req, res, next) => {
       user: req.user,
     });
   } else if (userId != null) {
+    console.log("ab to dikha do profile");
     let data = await User.find(
       {
         _id: userId,
       },
-      (err, User) => {
-        console.log("in profile", User[0].Rating);
+      (err, Users) => {
+        console.log("in profile", Users[0].Rating);
 
         if (!err) {
           let sumRating = 0;
 
-          var userRating = User[0].Rating.find(
-            ({ senderId }) => senderId && senderId.equals(req.user ? req.user._id : 0)
+          var userRating = Users[0].Rating.find(
+            ({ senderId }) =>
+              senderId && senderId.equals(req.user ? req.user._id : 0)
           );
-
-          User;
-          res.status(200).json({
-            status: 200,
-            msg: "current user profile",
-            user: User[0],
-            userRating: userRating ? userRating : "0",
-            loggedInUser: req.user,
-            globalRating: User[0].globalRating,
-          });
+          User.find(
+            {
+              _id: userId,
+            },
+            (err, profileUser) => {
+              //console.log("@@@@@@",profileUser);
+              if (err) {
+                res.status(200).json({
+                  status: "400",
+                  msg: "Cannot update notification",
+                });
+              } else {  
+                var senderAlreadyPresent = false;
+                if (profileUser) {
+                  console.log("55555555", profileUser[0].notifications);
+                  notifications = profileUser[0].notifications;
+                  notifications.forEach((notification) => {
+                    notification = notification.toJSON();
+                    if (notification.type === "viewed" && notification.senderId.equals(req.user._id)) {
+                        senderAlreadyPresent = true;
+                        console.log("99999999999");
+                    }
+                  });
+                  if (senderAlreadyPresent===false){
+                    let newNotification = {
+                      $push: {
+                        notifications: {
+                          type: "viewed",
+                          senderId: req.user._id,
+                          description: req.user.username + " viewed your profile",
+                          clickableLink: "/profile/" + req.user._id,
+                          senderName: req.user.username,
+                          senderAvatar: req.user.avataar ? req.user.avataar.link : "",
+                          Date: currentdate,
+                        },
+                      },
+                    };
+                    User.findOneAndUpdate(
+                      {
+                        _id: userId,
+                      },
+                      newNotification,
+                      {
+                        new: true,
+                      },
+                      (err, profileUser) => {
+                        //console.log("@@@@@@",profileUser);
+                        if (err) {
+                          res.status(200).json({
+                            status: "400",
+                            msg: "Cannot update notification",
+                          });
+                        } else {
+                          if (profileUser) {
+                            console.log("successful", profileUser.username);
+                          }
+                        }
+                      }
+                    );
+                    res.status(200).json({
+                      status: 200,
+                      msg: "current user profile",
+                      user: Users[0],
+                      userRating: userRating ? userRating : "0",
+                      loggedInUser: req.user,
+                      globalRating: Users[0].globalRating,
+                    });
+              }
+              else{
+                res.status(200).json({
+                  status: 200,
+                  msg: "current user profile",
+                  user: Users[0],
+                  userRating: userRating ? userRating : "0",
+                  loggedInUser: req.user,
+                  globalRating: Users[0].globalRating,
+                });
+              }
+            }
+          }
+        });
+          //   User.findOneAndUpdate(
+          //     {
+          //       _id: userId,
+          //     },
+          //     newNotification,
+          //     {
+          //       new: true,
+          //     },
+          //     (err, profileUser) => {
+          //       //console.log("@@@@@@",profileUser);
+          //       if (err) {
+          //         res.status(200).json({
+          //           status: "400",
+          //           msg: "Cannot update notification",
+          //         });
+          //       } else {
+          //         if (profileUser) {
+          //           console.log("successful", profileUser.username);
+          //         }
+          //       }
+          //     }
+          //   );
+          // res.status(200).json({
+          //   status: 200,
+          //   msg: "current user profile",
+          //   user: Users[0],
+          //   userRating: userRating ? userRating : "0",
+          //   loggedInUser: req.user,
+          //   globalRating: Users[0].globalRating,
+          // });
         }
-      }
-    );
-  } else
+    else{
     res.status(210).json({
       message: "Can't get current user",
     });
+  }
 });
+  }
+}
+);
 router.get("/logout", (req, res, next) => {
   console.log("Logged out");
   req.logout();
@@ -1235,19 +1328,10 @@ router.get("/getUpcomingClasses", (req, res) => {
     .limit(2);
 });
 router.get("/getNotifications", (req, res) => {
-
-
-
-
-
-
-  let recentNotifications = [], earlierNotifications = [];
+  let recentNotifications = [],
+    earlierNotifications = [];
   var HOUR = 60 * 60 * 1000;
   var currentDate = new Date();
-
-
-
-
 
   req.user.notifications.map((notification) => {
     notification = notification.toJSON();
@@ -1259,27 +1343,23 @@ router.get("/getNotifications", (req, res) => {
     const diffMinutes = Math.floor(diffTime / 6e4);
     let notification1 = notification;
     if (diffMinutes < 60)
-      notification1 = { ...notification1, difference: diffMinutes + " m" }
+      notification1 = { ...notification1, difference: diffMinutes + " m" };
     else if (diffHours < 24)
-      notification1 = { ...notification1, difference: diffHours + " h" }
-    else
-      notification1 = { ...notification1, difference: diffDays + " d" }
+      notification1 = { ...notification1, difference: diffHours + " h" };
+    else notification1 = { ...notification1, difference: diffDays + " d" };
     console.log("changed notification", notification1);
     if (currentDate - notification.Date < 10 * HOUR)
       recentNotifications.push(notification1);
-    else
-      earlierNotifications.push(notification1);
-  })
-  earlierNotifications.sort((p1, p2) => (p1.Date > p2.Date ? -1 : 1))
-  recentNotifications.sort((p1, p2) => (p1.Date > p2.Date ? -1 : 1))
+    else earlierNotifications.push(notification1);
+  });
+  earlierNotifications.sort((p1, p2) => (p1.Date > p2.Date ? -1 : 1));
+  recentNotifications.sort((p1, p2) => (p1.Date > p2.Date ? -1 : 1));
 
-
-  res
-    .status(200)
-    .json({
-      status: "200",
-      message: "notification", earlierNotifications: earlierNotifications, recentNotifications: recentNotifications
-    });
-
+  res.status(200).json({
+    status: "200",
+    message: "notification",
+    earlierNotifications: earlierNotifications,
+    recentNotifications: recentNotifications,
+  });
 });
 module.exports = router;
