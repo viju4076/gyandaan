@@ -141,19 +141,19 @@ router.post("/addteacher", (req, res, next) => {
   );
 });
 
-router.post("/updateavataar",async (req,res,next)=>{
-    
-   const url=await uploadSingleFile(req.files.file);
-   if(!url){
-      return  res.status(210).json({
-        status: "210",
-        msg: "error in uploading avataar"
-      });
-   }
-  const date=new Date();
-  const avataar={
-    dateModified:date,
-    link:url
+router.post("/updateavataar", async (req, res, next) => {
+
+  const url = await uploadSingleFile(req.files.file);
+  if (!url) {
+    return res.status(210).json({
+      status: "210",
+      msg: "error in uploading avataar"
+    });
+  }
+  const date = new Date();
+  const avataar = {
+    dateModified: date,
+    link: url
   }
   User.findOneAndUpdate(
     {
@@ -182,7 +182,7 @@ router.post("/updateavataar",async (req,res,next)=>{
     }
   );
 
-   
+
 
 
 })
@@ -335,22 +335,54 @@ router.post("/addpost", (req, res, next) => {
     comments: [],
     attendees: [],
     likes: [],
-    senderAvataar:req.user.avataar?req.user.avataar.link:null
+    senderAvataar: req.user.avataar ? req.user.avataar.link : null
   });
-  console.log(newPost);
-  newPost.save().then((err, post) => {
-    console.log(post);
-    if (err) {
-      console.log(err);
-      res.status(210).json({
-        message: "Failed to add post",
-      });
-    } else {
-      res.status(201).json({
-        message: "Post registered successfully",
-      });
+  //console.log(newPost);
+  newPost.save().then((post) => {
+    
+      console.log('asdfgh');
+      let newNotification = {
+        $push: {
+          notifications: {
+            type: 'post',
+            senderId:req.user._id,
+            description: req.user.username + ' sent a post',
+            clickableLink: '/posts/' + newPost._id,
+            senderName: req.user.username,
+            senderAvatar: req.user.avataar.link,
+            Date: currentdate
+          },
+        },
+      };
+      console.log("asdf",post);
+      let followers = req.user.followers;
+      followers.map(id =>{ 
+        console.log("iddddddddddddd",id);
+      User.findOneAndUpdate(
+        {
+          _id: id,
+        },
+        newNotification,
+        {
+          new: true,
+        },
+        (err, loggedInUser) => {
+          //console.log("@@@@@@",loggedInUser);
+          if (err) {
+            res.status(200).json({
+              status: "400",
+              msg: "Cannot add post ",
+            });
+          } else {
+            if(loggedInUser){
+             console.log('successful',loggedInUser.username);
+            }
+          }
+        })
+        });
+        res.status(200).json({status:"200",msg:"Added post successfully"});
     }
-  });
+  ).catch((error) => res.status(200).json({status:"400", message: "error"}));
 });
 
 router.get("/getComments/:postId", (req, res, next) => {
@@ -439,19 +471,19 @@ router.post("/register", (req, res, next) => {
   const salt = saltHash.salt;
   const hash = saltHash.hash;
 
- User.find({email:req.body.email},(err,user)=>{
-   if(err){
-     res.status(210).json({
-      msg:"Some error occurred", 
-      status:"210"
-     })
-   }  
-
-    if(user.length){
+  User.find({ email: req.body.email }, (err, user) => {
+    if (err) {
       res.status(210).json({
-        status:"210",
+        msg: "Some error occurred",
+        status: "210"
+      })
+    }
+
+    if (user.length) {
+      res.status(210).json({
+        status: "210",
         msg: "User already exist",
-        
+
       });
     }
     const newUser = new User({
@@ -469,9 +501,9 @@ router.post("/register", (req, res, next) => {
       areasOfInterest: [],
       Rating: [],
     });
-   
-  
-  
+
+
+
     const token = jwt.sign(
       {
         username: req.body.username,
@@ -511,47 +543,47 @@ router.post("/register", (req, res, next) => {
       if (error) {
         console.log(error);
         res.status(210).json({
-          status:"210",
+          status: "210",
           msg: "Some error occurred",
-          
-        }); 
+
+        });
         // req.flash('error',"Something went wrong on our end. Please register again");
         // res.redirect('/register');
       } else {
         console.log("Message sent: %s", info.messageId);
         res.status(200).json({
-          status:"200",
+          status: "200",
           msg: "Mail has been sent to you email for verification",
-          
+
         });
         // req.flash('success',"Activation link sent to registered email ID. Please activate to log in.");
         //res.redirect('/login');
       }
-    
-
-  
- })
 
 
-  
- 
-});
+
+    })
+
+
+
+
+  });
 });
 
 
 router.post("/changeLike", (req, res, next) => {
-  
+
   console.log(req.body);
   const loggedInUserId = req.user._id;
   const postid = req.body.postid;
   const isLiked = req.body.isLiked;
-  
+
   let searchPost = {
     $push: {
       likes: loggedInUserId
     },
   };
-  if(isLiked){
+  if (isLiked) {
 
     searchPost = {
       $pull: {
@@ -574,7 +606,7 @@ router.post("/changeLike", (req, res, next) => {
           msg: "Cann't like ",
         });
       } else {
-        console.log(Post,"Like");
+        console.log(Post, "Like");
         res.status(200).json({
           status: "200",
           msg: "Liked",
@@ -622,7 +654,7 @@ router.get("/activate/:token", function (req, res) {
       } else {
         User.findOne({ email: decodedToken.email }).then((foundUser) => {
           if (foundUser) {
-            res.render("response",{url:process.env.FRONT_END_URL,msg:"Account already verified, now u can login"});
+            res.render("response", { url: process.env.FRONT_END_URL, msg: "Account already verified, now u can login" });
             // req.flash('error','Email ID already registered! Please log in.');
             // res.redirect('/login');
           } else {
@@ -643,11 +675,11 @@ router.get("/activate/:token", function (req, res) {
               qualifications: "",
               areasOfInterest: [],
               Rating: [],
-              
+
             });
             newUser.save().then((user) => {
               console.log(user);
-              res.render("response",{url:process.env.FRONT_END_URL,msg:"Account verified, now you can login"});
+              res.render("response", { url: process.env.FRONT_END_URL, msg: "Account verified, now you can login" });
             });
 
           }
@@ -842,27 +874,27 @@ router.get("/auth", isAuth, (req, res, next) => {
 router.get("/posts/:postId", async (req, res, next) => {
   const postId = req.params.postId;
   console.log("postId", postId);
-    let data = await Post.find(
-      {
-        _id: postId,
-      },
-      (err, Post) => {
-        if(Post.length){
-          res.status(200).json({
-            status: 200,
-            msg: "current Post",
-            post: Post[0],
-            user:req.user,
-          });
-        }
-        else{
-          res.status(210).json({
-            msg: "Can't get current post",
-          });
-        }
-        }
-    );
-  }); 
+  let data = await Post.find(
+    {
+      _id: postId,
+    },
+    (err, Post) => {
+      if (Post&&Post.length) {
+        res.status(200).json({
+          status: 200,
+          msg: "current Post",
+          post: Post[0],
+          user: req.user,
+        });
+      }
+      else {
+        res.status(210).json({
+          msg: "Can't get current post",
+        });
+      }
+    }
+  );
+});
 router.get("/profile/:userId", async (req, res, next) => {
   const userId = req.params.userId;
   console.log("userId", userId);
@@ -886,7 +918,7 @@ router.get("/profile/:userId", async (req, res, next) => {
           let sumRating = 0;
 
           var userRating = User[0].Rating.find(
-            ({ senderId }) => senderId && senderId.equals(req.user?req.user._id:0)
+            ({ senderId }) => senderId && senderId.equals(req.user ? req.user._id : 0)
           );
 
           User;
@@ -982,10 +1014,10 @@ router.get("/getpost/:userId", (req, res, next) => {
 
 router.get("/getfollowing", (req, res, next) => {
   console.log("get following praya");
-  
+
   User.find(
     {
-      _id: req.user?req.user.following:0,
+      _id: req.user ? req.user.following : 0,
     },
     (err, followingList) => {
       if (err) {
@@ -1090,5 +1122,26 @@ router.get("/getUpcomingClasses", (req, res) => {
     .sort({ startDate: 1 })
     .limit(2);
 });
+router.get("/getNotifications", (req, res) => {
 
+ let recentNotifications=[],earlierNotifications=[];
+ var HOUR=60*60*1000;
+ var currentDate=new Date();
+ req.user.notifications.map((notification)=>{
+   console.log('inside notifications',notification.Date,currentDate-notification.Date<10*HOUR);
+   if(currentDate-notification.Date<10*HOUR)
+      recentNotifications.push(notification);
+   else
+      earlierNotifications.push(notification); 
+  })
+  earlierNotifications.sort((p1, p2) => (p1.Date > p2.Date ? -1 : 1))
+  recentNotifications.sort((p1, p2) => (p1.Date > p2.Date ? -1 : 1))
+   
+
+  res
+    .status(200)
+    .json({ status:"200", 
+      message: "notification", earlierNotifications: earlierNotifications, recentNotifications:recentNotifications });
+
+});
 module.exports = router;

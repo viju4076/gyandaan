@@ -59,7 +59,7 @@ const submitComment = async (e) =>{
         <div class="d-flex flex-column col-md-12">
             <div class="coment-bottom bg-white p-2 px-4">
                 <div class="d-flex flex-row add-comment-section mt-4 mb-4">
-                {Object.keys(user).length!== 0 &&  <Avatar >{user.email&&user.email.charAt(0)} </Avatar> }
+                {Object.keys(user).length!== 0 && (user.avataar?<Avatar src={user.avataar.link} />:<Avatar>{user.email && user.email.charAt(0)} </Avatar>)}
                 <input type="text" class="form-control mr-3" placeholder="Add comment" onChange={handleInputs} value={desc}/>
                 <button class="btn btn-primary" type="button" onClick={submitComment}>Comment</button></div>
                 {comments && comments.map(comment=><CommentText
